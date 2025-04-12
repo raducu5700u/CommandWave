@@ -37,6 +37,7 @@ playbooks/*.md
 !playbooks/example_*.md
 scripted_tabs/*
 !scripted_tabs/.gitkeep
+PROJECT_TASKS.md
 
 # OS specific
 .DS_Store
