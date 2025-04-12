@@ -16,6 +16,14 @@
         <div class="header-controls">
             <button class="header-notes-btn" id="globalNotesBtn">Global Notes</button>
             <button class="header-notes-btn" id="tabNotesBtn">Tab Notes</button>
+            <div class="settings-dropdown">
+                <button class="header-notes-btn" id="settingsBtn">Settings</button>
+                <div class="settings-dropdown-content" id="settingsDropdown">
+                    <a href="#" id="tutorialsMenuItem">Tutorials</a>
+                    <a href="#" id="themeMenuItem">Theme</a>
+                    <a href="#" id="aboutMenuItem">About</a>
+                </div>
+            </div>
         </div>
     </header>
 
@@ -66,7 +74,6 @@
                         <button id="createPlaybookBtn" class="create-playbook-btn">Create New Playbook</button>
                         <label for="uploadPlaybook" class="upload-btn">Upload Playbook</label>
                         <input type="file" id="uploadPlaybook" accept=".md" style="display: none;">
-                        <button id="tutorialsBtn" class="tutorials-btn">Tutorials</button>
                     </div>
                     <div class="search-container">
                         <input type="text" id="searchInput" placeholder="Search local playbooks...">
@@ -183,6 +190,48 @@ echo 'Hello, World!'
             <div class="modal-footer">
                 <button id="cancelVariableBtn" class="modal-btn cancel">Cancel</button>
                 <button id="createVariableSubmitBtn" class="modal-btn submit">Add Variable</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal containers -->
+    <div id="themeModal" class="modal-container">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>Theme Settings</h3>
+                <span class="modal-close">&times;</span>
+            </div>
+            <div class="modal-body">
+                <p>Theme settings will be available in a future update.</p>
+                <div class="coming-soon-badge">COMING SOON</div>
+            </div>
+            <div class="modal-footer">
+                <button class="modal-btn">Close</button>
+            </div>
+        </div>
+    </div>
+    
+    <div id="aboutModal" class="modal-container">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>About CommandWave</h3>
+                <span class="modal-close">&times;</span>
+            </div>
+            <div class="modal-body">
+                <div class="about-logo">CommandWave</div>
+                <p>Terminal Management Interface</p>
+                <p>Version 1.0</p>
+                <p>&copy; 2025 CommandWave Team</p>
+                <div class="about-tech">
+                    <span class="tech-badge">Python</span>
+                    <span class="tech-badge">Flask</span>
+                    <span class="tech-badge">tmux</span>
+                    <span class="tech-badge">ttyd</span>
+                    <span class="tech-badge">JavaScript</span>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button class="modal-btn">Close</button>
             </div>
         </div>
     </div>

@@ -32,8 +32,8 @@ document.addEventListener('DOMContentLoaded', function() {
         originalConsoleError.apply(console, arguments);
     };
 
-    // Global state
-    const state = {
+    // Global state - make it accessible from window object
+    window.state = {
         terminals: {
             // Example: 'terminal-7681': { port: 7681, name: 'Main', variables: {}, playbooks: {} }
         },
@@ -47,16 +47,16 @@ document.addEventListener('DOMContentLoaded', function() {
     const defaultTerminalElement = document.querySelector('.terminal-iframe');
     if (defaultTerminalElement) {
         const defaultPort = defaultTerminalElement.dataset.port;
-        state.terminals[`terminal-${defaultPort}`] = {
+        window.state.terminals[`terminal-${defaultPort}`] = {
             port: defaultPort,
             name: 'Main',
             variables: {},
             playbooks: {}
         };
-        state.activeTerminal = `terminal-${defaultPort}`;
+        window.state.activeTerminal = `terminal-${defaultPort}`;
 
         // Initialize variables for the default terminal
-        initializeVariables(state.activeTerminal);
+        initializeVariables(window.state.activeTerminal);
         
         // Migrate any existing global playbooks to the default terminal for backward compatibility
         setTimeout(() => {
@@ -66,7 +66,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
     // Load initial notes
     loadGlobalNotes();
-    loadTabNotes(state.activeTerminal);
+    loadTabNotes(window.state.activeTerminal);
 
     // Terminal Tab Management
     const addTabBtn = document.getElementById('addTabBtn');
@@ -119,11 +119,8 @@ document.addEventListener('DOMContentLoaded', function() {
     // Setup create playbook functionality
     setupCreatePlaybook();
 
-    // Tutorials button functionality
-    const tutorialsBtn = document.getElementById('tutorialsBtn');
-    if (tutorialsBtn) {
-        tutorialsBtn.addEventListener('click', loadTutorials);
-    }
+    // Settings dropdown functionality
+    setupSettingsDropdown();
 
     /**
      * Terminal Management Functions
@@ -176,7 +173,7 @@ document.addEventListener('DOMContentLoaded', function() {
             const name = newNameInput.value.trim();
             
             if (!name) {
-                alert('Please enter a name for the terminal');
+                showModal('themeModal', 'Please enter a name for the terminal');
                 return;
             }
             
@@ -254,7 +251,7 @@ document.addEventListener('DOMContentLoaded', function() {
                     terminalsContainer.appendChild(iframe);
                     
                     // Update state
-                    state.terminals[`terminal-${newPort}`] = {
+                    window.state.terminals[`terminal-${newPort}`] = {
                         port: newPort,
                         name: tabName,
                         variables: {},
@@ -270,7 +267,7 @@ document.addEventListener('DOMContentLoaded', function() {
             })
             .catch(error => {
                 console.error('Error creating new terminal:', error);
-                alert('Failed to create new terminal');
+                showModal('themeModal', 'Failed to create new terminal');
             });
     }
     
@@ -313,8 +310,8 @@ document.addEventListener('DOMContentLoaded', function() {
             const newName = nameInput.value.trim();
             if (newName && newName !== currentName) {
                 tabElement.querySelector('.tab-btn-content').textContent = newName;
-                state.terminals[`terminal-${port}`].name = newName;
-                if (state.activeTerminal === `terminal-${port}`) {
+                window.state.terminals[`terminal-${port}`].name = newName;
+                if (window.state.activeTerminal === `terminal-${port}`) {
                     const tabNameEl = document.getElementById('currentTabName');
                     if (tabNameEl) tabNameEl.textContent = newName;
                 }
@@ -388,13 +385,13 @@ document.addEventListener('DOMContentLoaded', function() {
                         iframe.remove();
                         
                         // Remove from state
-                        delete state.terminals[`terminal-${port}`];
+                        delete window.state.terminals[`terminal-${port}`];
                     }
                 }
             })
             .catch(error => {
                 console.error('Error closing terminal:', error);
-                alert('Failed to close terminal');
+                showModal('themeModal', 'Failed to close terminal');
             });
         }
     }
@@ -423,20 +420,20 @@ document.addEventListener('DOMContentLoaded', function() {
         const iframe = document.getElementById(`terminal-${port}`);
         if (iframe) {
             iframe.classList.add('active');
-            state.activeTerminal = iframe.id;
+            window.state.activeTerminal = iframe.id;
             
             // Update tab notes title and content
-            const tabName = state.terminals[state.activeTerminal].name;
+            const tabName = window.state.terminals[window.state.activeTerminal].name;
             const tabNameElement = document.getElementById('currentTabName');
             tabNameElement.textContent = tabName;
             tabNameElement.className = 'tab-name neon-pink';
-            loadTabNotes(state.activeTerminal);
+            loadTabNotes(window.state.activeTerminal);
             
             // Refresh variable values
             updateVariableInputsFromState();
             
             // Display playbooks for the active terminal
-            displayTerminalPlaybooks(state.activeTerminal);
+            displayTerminalPlaybooks(window.state.activeTerminal);
         }
     }
 
@@ -445,14 +442,14 @@ document.addEventListener('DOMContentLoaded', function() {
      */
     
     function initializeVariables(terminalId) {
-        if (!state.terminals[terminalId].variables) {
-            state.terminals[terminalId].variables = {};
+        if (!window.state.terminals[terminalId].variables) {
+            window.state.terminals[terminalId].variables = {};
         }
         
         // Initialize with empty values for all variable inputs
         document.querySelectorAll('.variable-input input').forEach(input => {
             const varName = input.id;
-            state.terminals[terminalId].variables[varName] = '';
+            window.state.terminals[terminalId].variables[varName] = '';
         });
     }
 
@@ -467,8 +464,8 @@ document.addEventListener('DOMContentLoaded', function() {
         
         document.querySelectorAll('.variable-input input').forEach(input => {
             input.addEventListener('input', function() {
-                if (state.activeTerminal) {
-                    state.terminals[state.activeTerminal].variables[this.name] = this.value;
+                if (window.state.activeTerminal) {
+                    window.state.terminals[window.state.activeTerminal].variables[this.name] = this.value;
                     updateVariableSubstitutions();
                 }
             });
@@ -478,9 +475,9 @@ document.addEventListener('DOMContentLoaded', function() {
         document.querySelectorAll('.variable-input .remove-variable-btn').forEach(btn => {
             btn.addEventListener('click', function() {
                 const varInput = this.closest('.variable-input');
-                if (varInput && state.activeTerminal) {
+                if (varInput && window.state.activeTerminal) {
                     const varName = varInput.querySelector('input').name;
-                    delete state.terminals[state.activeTerminal].variables[varName];
+                    delete window.state.terminals[window.state.activeTerminal].variables[varName];
                     varInput.remove();
                     updateVariableSubstitutions();
                 }
@@ -489,8 +486,8 @@ document.addEventListener('DOMContentLoaded', function() {
     }
 
     function updateVariableInputsFromState() {
-        if (state.activeTerminal && state.terminals[state.activeTerminal]) {
-            const variables = state.terminals[state.activeTerminal].variables;
+        if (window.state.activeTerminal && window.state.terminals[window.state.activeTerminal]) {
+            const variables = window.state.terminals[window.state.activeTerminal].variables;
             
             document.querySelectorAll('.variable-input input').forEach(input => {
                 const varName = input.name;
@@ -504,9 +501,9 @@ document.addEventListener('DOMContentLoaded', function() {
     }
 
     function updateVariableSubstitutions() {
-        if (!state.activeTerminal) return;
+        if (!window.state.activeTerminal) return;
         
-        const variables = state.terminals[state.activeTerminal].variables;
+        const variables = window.state.terminals[window.state.activeTerminal].variables;
         document.querySelectorAll('.code-container pre code').forEach(codeBlock => {
             // Get the raw code
             let content = codeBlock.dataset.rawCode || codeBlock.textContent;
@@ -531,9 +528,9 @@ document.addEventListener('DOMContentLoaded', function() {
     }
 
     function getSubstitutedCode(codeElement) {
-        if (!state.activeTerminal) return codeElement.textContent;
+        if (!window.state.activeTerminal) return codeElement.textContent;
         
-        const variables = state.terminals[state.activeTerminal].variables;
+        const variables = window.state.terminals[window.state.activeTerminal].variables;
         let content = codeElement.dataset.rawCode || codeElement.textContent;
         
         // Perform variable substitution
@@ -586,7 +583,7 @@ document.addEventListener('DOMContentLoaded', function() {
             const value = valueInput.value.trim();
             
             if (!name) {
-                alert('Please enter a name for the variable');
+                showModal('themeModal', 'Please enter a name for the variable');
                 return;
             }
             
@@ -607,10 +604,10 @@ document.addEventListener('DOMContentLoaded', function() {
     }
     
     function addCustomVariable(name, value = '') {
-        if (!state.activeTerminal || !name) return;
+        if (!window.state.activeTerminal || !name) return;
         
         // Add to state
-        state.terminals[state.activeTerminal].variables[name] = value;
+        window.state.terminals[window.state.activeTerminal].variables[name] = value;
         
         // Create variable input row
         const varContainer = document.querySelector('.variable-inputs');
@@ -637,13 +634,13 @@ document.addEventListener('DOMContentLoaded', function() {
         // Add event listener to remove button
         varInput.querySelector('.remove-variable-btn').addEventListener('click', function() {
             varInput.remove();
-            delete state.terminals[state.activeTerminal].variables[name];
+            delete window.state.terminals[window.state.activeTerminal].variables[name];
             updateVariableSubstitutions();
         });
         
         // Add event listener to input
         varInput.querySelector('input').addEventListener('input', function() {
-            state.terminals[state.activeTerminal].variables[name] = this.value;
+            window.state.terminals[window.state.activeTerminal].variables[name] = this.value;
             updateVariableSubstitutions();
         });
         
@@ -663,7 +660,7 @@ document.addEventListener('DOMContentLoaded', function() {
         if (!file) return;
         
         // Ensure we have an active terminal
-        if (!state.activeTerminal || !state.terminals[state.activeTerminal]) {
+        if (!window.state.activeTerminal || !window.state.terminals[window.state.activeTerminal]) {
             console.error('No active terminal for playbook upload');
             return;
         }
@@ -678,7 +675,7 @@ document.addEventListener('DOMContentLoaded', function() {
             };
             
             // Store in active terminal's playbooks
-            state.terminals[state.activeTerminal].playbooks[file.name] = playbook;
+            window.state.terminals[window.state.activeTerminal].playbooks[file.name] = playbook;
             
             // Display the playbook
             displayPlaybook(playbook);
@@ -690,7 +687,12 @@ document.addEventListener('DOMContentLoaded', function() {
         reader.readAsText(file);
     }
 
-    function parseMarkdown(content) {
+    /**
+     * Parse Markdown content into structured blocks
+     * @param {string} content - Raw Markdown content
+     * @return {Array} - Array of code blocks and text blocks
+     */
+    window.parseMarkdown = function(content) {
         // Use marked.js to parse the Markdown
         const tokens = marked.lexer(content);
         const blocks = [];
@@ -731,7 +733,12 @@ document.addEventListener('DOMContentLoaded', function() {
         return blocks;
     }
 
-    function displayPlaybook(playbook, terminalId = null) {
+    /**
+     * Display a playbook in the interface
+     * @param {Object} playbook - The playbook object
+     * @param {string} terminalId - Optional terminal ID
+     */
+    window.displayPlaybook = function(playbook, terminalId) {
         const playbooksContainer = document.getElementById('playbooks');
         if (!playbooksContainer) return;
         
@@ -741,7 +748,7 @@ document.addEventListener('DOMContentLoaded', function() {
         }
         
         // Use the active terminal if no specific terminal ID provided
-        const targetTerminal = terminalId || state.activeTerminal;
+        const targetTerminal = terminalId || window.state.activeTerminal;
         if (!targetTerminal) return;
         
         // Create a unique ID for the playbook within this terminal context
@@ -829,10 +836,10 @@ document.addEventListener('DOMContentLoaded', function() {
             playbookElement.remove();
             
             // Delete from terminal's playbooks or global playbooks
-            if (playbook.filename in state.terminals[targetTerminal].playbooks) {
-                delete state.terminals[targetTerminal].playbooks[playbook.filename];
-            } else if (playbook.filename in state.globalPlaybooks) {
-                delete state.globalPlaybooks[playbook.filename];
+            if (playbook.filename in window.state.terminals[targetTerminal].playbooks) {
+                delete window.state.terminals[targetTerminal].playbooks[playbook.filename];
+            } else if (playbook.filename in window.state.globalPlaybooks) {
+                delete window.state.globalPlaybooks[playbook.filename];
             }
         });
         
@@ -890,7 +897,7 @@ document.addEventListener('DOMContentLoaded', function() {
         closeButton.addEventListener('click', function(e) {
             e.stopPropagation(); // Prevent triggering header click
             playbookContainer.remove();
-            delete state.globalPlaybooks[name];
+            delete window.state.globalPlaybooks[name];
         });
         
         // Add event listener to header for toggling content
@@ -948,9 +955,9 @@ document.addEventListener('DOMContentLoaded', function() {
     }
 
     function executeCode(code) {
-        if (!state.activeTerminal) return;
+        if (!window.state.activeTerminal) return;
         
-        const port = state.terminals[state.activeTerminal].port;
+        const port = window.state.terminals[window.state.activeTerminal].port;
         
         // Find the button that triggered the execution and show visual feedback
         const activeButton = document.activeElement;
@@ -1025,7 +1032,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
     function editCodeBlock(codeContainer, blockIndex, playbook) {
         // Get the playbook from active terminal's state
-        const activeTerminal = state.activeTerminal;
+        const activeTerminal = window.state.activeTerminal;
         if (!activeTerminal) return;
         
         // Extract the actual playbook filename from the playbook-id (format: terminal-id-playbook-name)
@@ -1051,7 +1058,7 @@ document.addEventListener('DOMContentLoaded', function() {
         }
         
         // Get the playbook data
-        const playbookData = state.terminals[activeTerminal].playbooks[playbookFilename];
+        const playbookData = window.state.terminals[activeTerminal].playbooks[playbookFilename];
         if (!playbookData) {
             console.error(`Playbook ${playbookFilename} not found in terminal ${activeTerminal}`);
             return;
@@ -1163,15 +1170,15 @@ document.addEventListener('DOMContentLoaded', function() {
                 const tutorialPlaybook = {
                     filename: 'Tutorial Index',
                     content: data.content,
-                    blocks: parseMarkdown(data.content)
+                    blocks: window.parseMarkdown(data.content)
                 };
                 
                 // Store in active terminal's playbooks if not already there
-                if (state.activeTerminal && state.terminals[state.activeTerminal]) {
-                    state.terminals[state.activeTerminal].playbooks['tutorial_index'] = tutorialPlaybook;
+                if (window.state.activeTerminal && window.state.terminals[window.state.activeTerminal]) {
+                    window.state.terminals[window.state.activeTerminal].playbooks['tutorial_index'] = tutorialPlaybook;
                 }
                 
-                displayPlaybook(tutorialPlaybook);
+                window.displayPlaybook(tutorialPlaybook);
                 
                 // Enhance tutorial links to load tutorial content when clicked
                 setTimeout(() => {
@@ -1188,7 +1195,7 @@ document.addEventListener('DOMContentLoaded', function() {
             })
             .catch(error => {
                 console.error('Error loading tutorials:', error);
-                alert('Unable to load tutorials. Please check if tutorial files exist in the playbooks/tutorials directory.');
+                showModal('themeModal', 'Unable to load tutorials. Please check if tutorial files exist in the playbooks/tutorials directory.');
             });
     }
 
@@ -1215,19 +1222,19 @@ document.addEventListener('DOMContentLoaded', function() {
                 const tutorialPlaybook = {
                     filename: filename,
                     content: data.content,
-                    blocks: parseMarkdown(data.content)
+                    blocks: window.parseMarkdown(data.content)
                 };
                 
                 // Store in active terminal's playbooks
-                if (state.activeTerminal && state.terminals[state.activeTerminal]) {
-                    state.terminals[state.activeTerminal].playbooks[filename] = tutorialPlaybook;
+                if (window.state.activeTerminal && window.state.terminals[window.state.activeTerminal]) {
+                    window.state.terminals[window.state.activeTerminal].playbooks[filename] = tutorialPlaybook;
                 }
                 
-                displayPlaybook(tutorialPlaybook);
+                window.displayPlaybook(tutorialPlaybook);
             })
             .catch(error => {
                 console.error('Error loading tutorial content:', error);
-                alert(`Unable to load tutorial: ${error.message}`);
+                showModal('themeModal', `Unable to load tutorial: ${error.message}`);
             });
     }
 
@@ -1297,8 +1304,8 @@ document.addEventListener('DOMContentLoaded', function() {
                             let commandToExecute = result.line;
                             
                             // Apply variable substitution if we have an active terminal
-                            if (state.activeTerminal && state.terminals[state.activeTerminal]) {
-                                const variables = state.terminals[state.activeTerminal].variables;
+                            if (window.state.activeTerminal && window.state.terminals[window.state.activeTerminal]) {
+                                const variables = window.state.terminals[window.state.activeTerminal].variables;
                                 
                                 // Perform variable substitution
                                 for (const [key, value] of Object.entries(variables)) {
@@ -1306,7 +1313,7 @@ document.addEventListener('DOMContentLoaded', function() {
                                         // Convert variable name to match the format in the playbooks
                                         const placeholder = '$' + key.charAt(0).toUpperCase() + key.slice(1);
                                         const regex = new RegExp(escapeRegExp(placeholder), 'g');
-                                        commandToExecute = commandToExecute.replace(regex, value);
+                                        commandToExecute = commandToExecute.replace(regex, `<span class="substituted">${value}</span>`);
                                     }
                                 }
                             }
@@ -1373,12 +1380,12 @@ document.addEventListener('DOMContentLoaded', function() {
 
     // Function to execute a command in the current terminal
     function executeInTerminal(command) {
-        if (!state.activeTerminal) {
-            alert('No active terminal found');
+        if (!window.state.activeTerminal) {
+            showModal('themeModal', 'No active terminal found');
             return Promise.reject(new Error('No active terminal'));
         }
         
-        const terminalPort = state.activeTerminal.replace('terminal-', '');
+        const terminalPort = window.state.activeTerminal.replace('terminal-', '');
         
         // Send the command to the terminal
         return fetch('/api/terminals/sendkeys', {
@@ -1407,7 +1414,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
     function importPlaybook(filename) {
         // Ensure we have an active terminal
-        if (!state.activeTerminal || !state.terminals[state.activeTerminal]) {
+        if (!window.state.activeTerminal || !window.state.terminals[window.state.activeTerminal]) {
             console.error('No active terminal for playbook import');
             return;
         }
@@ -1422,14 +1429,14 @@ document.addEventListener('DOMContentLoaded', function() {
                     const playbook = {
                         filename: filename,
                         content: data.content,
-                        blocks: parseMarkdown(data.content)
+                        blocks: window.parseMarkdown(data.content)
                     };
                     
                     // Store in active terminal's playbooks
-                    state.terminals[state.activeTerminal].playbooks[filename] = playbook;
+                    window.state.terminals[window.state.activeTerminal].playbooks[filename] = playbook;
                     
                     // Display the playbook
-                    displayPlaybook(playbook);
+                    window.displayPlaybook(playbook);
                     
                     // Clear the search input and hide results after importing
                     const searchInput = document.getElementById('searchInput');
@@ -1444,7 +1451,7 @@ document.addEventListener('DOMContentLoaded', function() {
             })
             .catch(error => {
                 console.error('Error importing playbook:', error);
-                alert('Failed to import playbook');
+                showModal('themeModal', 'Failed to import playbook');
             });
     }
 
@@ -1518,7 +1525,7 @@ document.addEventListener('DOMContentLoaded', function() {
     function loadTabNotes(terminalId) {
         if (!terminalId) return;
         
-        const port = state.terminals[terminalId].port;
+        const port = window.state.terminals[terminalId].port;
         fetch(`/api/notes/tab/term-${port}`)
             .then(response => response.json())
             .then(data => {
@@ -1549,10 +1556,10 @@ document.addEventListener('DOMContentLoaded', function() {
     }
 
     function saveTabNotes() {
-        if (!state.activeTerminal) return;
+        if (!window.state.activeTerminal) return;
         
         const content = document.getElementById('tabNotesText').value;
-        const port = state.terminals[state.activeTerminal].port;
+        const port = window.state.terminals[window.state.activeTerminal].port;
         
         fetch(`/api/notes/tab/term-${port}`, {
             method: 'POST',
@@ -1595,13 +1602,13 @@ document.addEventListener('DOMContentLoaded', function() {
                 
                 // Validate variable name
                 if (!/^[a-zA-Z][a-zA-Z0-9]*$/.test(variableName)) {
-                    alert('Variable name must start with a letter and contain only letters and numbers');
+                    showModal('themeModal', 'Variable name must start with a letter and contain only letters and numbers');
                     return;
                 }
                 
                 // Check if variable already exists
                 if (document.getElementById(variableName)) {
-                    alert('A variable with this name already exists');
+                    showModal('themeModal', 'A variable with this name already exists');
                     return;
                 }
                 
@@ -1630,8 +1637,8 @@ document.addEventListener('DOMContentLoaded', function() {
                 const input = variableInput.querySelector('input');
                 if (input) {
                     input.addEventListener('input', function() {
-                        if (state.activeTerminal) {
-                            state.terminals[state.activeTerminal].variables[this.id] = this.value;
+                        if (window.state.activeTerminal) {
+                            window.state.terminals[window.state.activeTerminal].variables[this.id] = this.value;
                             updateVariableSubstitutions();
                         }
                     });
@@ -1643,8 +1650,8 @@ document.addEventListener('DOMContentLoaded', function() {
                     removeBtn.addEventListener('click', function() {
                         if (confirm(`Remove ${displayName} variable?`)) {
                             // Remove from state if it exists
-                            if (state.activeTerminal) {
-                                delete state.terminals[state.activeTerminal].variables[variableName];
+                            if (window.state.activeTerminal) {
+                                delete window.state.terminals[window.state.activeTerminal].variables[variableName];
                             }
                             
                             // Remove from DOM
@@ -1657,11 +1664,11 @@ document.addEventListener('DOMContentLoaded', function() {
                 }
                 
                 // Initialize this variable in all terminals
-                Object.keys(state.terminals).forEach(terminalId => {
-                    if (!state.terminals[terminalId].variables) {
-                        state.terminals[terminalId].variables = {};
+                Object.keys(window.state.terminals).forEach(terminalId => {
+                    if (!window.state.terminals[terminalId].variables) {
+                        window.state.terminals[terminalId].variables = {};
                     }
-                    state.terminals[terminalId].variables[variableName] = '';
+                    window.state.terminals[terminalId].variables[variableName] = '';
                 });
             });
         }
@@ -1669,19 +1676,19 @@ document.addEventListener('DOMContentLoaded', function() {
 
     function migrateGlobalPlaybooks() {
         // Check if there are any global playbooks
-        if (Object.keys(state.globalPlaybooks).length > 0) {
+        if (Object.keys(window.state.globalPlaybooks).length > 0) {
             // Get the active terminal
-            const activeTerminal = state.activeTerminal;
+            const activeTerminal = window.state.activeTerminal;
             
             // Migrate each global playbook to the active terminal
-            Object.keys(state.globalPlaybooks).forEach(playbookName => {
-                const playbook = state.globalPlaybooks[playbookName];
+            Object.keys(window.state.globalPlaybooks).forEach(playbookName => {
+                const playbook = window.state.globalPlaybooks[playbookName];
                 
                 // Store in active terminal's playbooks
-                state.terminals[activeTerminal].playbooks[playbookName] = playbook;
+                window.state.terminals[activeTerminal].playbooks[playbookName] = playbook;
                 
                 // Remove from global playbooks
-                delete state.globalPlaybooks[playbookName];
+                delete window.state.globalPlaybooks[playbookName];
             });
         }
     }
@@ -1694,9 +1701,9 @@ document.addEventListener('DOMContentLoaded', function() {
         playbooksContainer.innerHTML = '';
         
         // Display playbooks for the active terminal
-        Object.keys(state.terminals[terminalId].playbooks).forEach(playbookName => {
-            const playbook = state.terminals[terminalId].playbooks[playbookName];
-            displayPlaybook(playbook, terminalId);
+        Object.keys(window.state.terminals[terminalId].playbooks).forEach(playbookName => {
+            const playbook = window.state.terminals[terminalId].playbooks[playbookName];
+            window.displayPlaybook(playbook, terminalId);
         });
     }
 
@@ -1756,12 +1763,12 @@ echo "This is my first step"
             const content = contentInput.value.trim();
             
             if (!name) {
-                alert('Please enter a playbook name');
+                showModal('themeModal', 'Please enter a playbook name');
                 return;
             }
             
             if (!content) {
-                alert('Please add content to your playbook');
+                showModal('themeModal', 'Please add content to your playbook');
                 return;
             }
             
@@ -1783,14 +1790,14 @@ echo "This is my first step"
     
     function createNewPlaybook(filename, content) {
         // Ensure we have an active terminal
-        if (!state.activeTerminal || !state.terminals[state.activeTerminal]) {
+        if (!window.state.activeTerminal || !window.state.terminals[window.state.activeTerminal]) {
             console.error('No active terminal for playbook creation');
             return;
         }
         
         try {
             // Parse the markdown content
-            const blocks = parseMarkdown(content);
+            const blocks = window.parseMarkdown(content);
             
             // Create the playbook object
             const playbook = {
@@ -1800,22 +1807,22 @@ echo "This is my first step"
             };
             
             // Check if filename already exists in this terminal
-            if (state.terminals[state.activeTerminal].playbooks[filename]) {
+            if (window.state.terminals[window.state.activeTerminal].playbooks[filename]) {
                 if (!confirm(`A playbook named "${filename}" already exists in this terminal. Do you want to replace it?`)) {
                     return;
                 }
             }
             
             // Store in active terminal's playbooks
-            state.terminals[state.activeTerminal].playbooks[filename] = playbook;
+            window.state.terminals[window.state.activeTerminal].playbooks[filename] = playbook;
             
             // Display the playbook
-            displayPlaybook(playbook);
+            window.displayPlaybook(playbook);
             
             console.log(`Playbook "${filename}" created successfully`);
         } catch (error) {
             console.error('Error creating playbook:', error);
-            alert(`Failed to create playbook: ${error.message}`);
+            showModal('themeModal', `Failed to create playbook: ${error.message}`);
         }
     }
 });
@@ -1839,4 +1846,217 @@ function setupCollapsibleSections() {
             });
         }
     });
+}
+
+/**
+ * Setup settings dropdown functionality
+ */
+function setupSettingsDropdown() {
+    const settingsBtn = document.getElementById('settingsBtn');
+    const settingsDropdown = document.getElementById('settingsDropdown');
+    
+    // Toggle dropdown when settings button is clicked
+    if (settingsBtn && settingsDropdown) {
+        settingsBtn.addEventListener('click', function(event) {
+            event.stopPropagation();
+            settingsDropdown.classList.toggle('show');
+        });
+        
+        // Close dropdown when clicking elsewhere
+        window.addEventListener('click', function(event) {
+            if (settingsDropdown.classList.contains('show') && !event.target.matches('#settingsBtn')) {
+                settingsDropdown.classList.remove('show');
+            }
+        });
+        
+        // Setup dropdown menu items
+        const tutorialsMenuItem = document.getElementById('tutorialsMenuItem');
+        if (tutorialsMenuItem) {
+            tutorialsMenuItem.addEventListener('click', function(event) {
+                event.preventDefault();
+                settingsDropdown.classList.remove('show');
+                
+                // Use the fetch approach directly instead of calling loadTutorials
+                fetch('/api/playbooks/tutorials/00_Tutorial_Index.md')
+                    .then(response => {
+                        if (!response.ok) {
+                            throw new Error('Failed to load tutorial index');
+                        }
+                        return response.json();
+                    })
+                    .then(data => {
+                        if (!data.success) {
+                            throw new Error(data.error || 'Failed to load tutorial index');
+                        }
+                        
+                        // Get the active terminal
+                        if (!window.state || !window.state.activeTerminal) {
+                            showModal('themeModal', 'No active terminal found');
+                            return;
+                        }
+                        
+                        // Parse and display the tutorial index
+                        const tutorialPlaybook = {
+                            filename: 'Tutorial Index',
+                            content: data.content,
+                            blocks: window.parseMarkdown(data.content)
+                        };
+                        
+                        // Store in active terminal's playbooks if not already there
+                        if (window.state.activeTerminal && window.state.terminals[window.state.activeTerminal]) {
+                            window.state.terminals[window.state.activeTerminal].playbooks['tutorial_index'] = tutorialPlaybook;
+                        }
+                        
+                        // Display the playbook
+                        window.displayPlaybook(tutorialPlaybook);
+                        
+                        // Enhance tutorial links to load tutorial content when clicked
+                        setTimeout(() => {
+                            document.querySelectorAll('.playbook-content a').forEach(link => {
+                                if (link.href.includes('.md')) {
+                                    link.addEventListener('click', function(e) {
+                                        e.preventDefault();
+                                        const tutorialPath = this.getAttribute('href');
+                                        
+                                        // Use the fetch approach directly for loading tutorial content
+                                        fetch(`/api/playbooks/tutorials/${tutorialPath}`)
+                                            .then(response => {
+                                                if (!response.ok) {
+                                                    throw new Error(`Failed to load tutorial from ${tutorialPath}`);
+                                                }
+                                                return response.json();
+                                            })
+                                            .then(data => {
+                                                if (!data.success) {
+                                                    throw new Error(data.error || 'Failed to load tutorial content');
+                                                }
+                                                
+                                                // Extract filename from path
+                                                const filename = tutorialPath.split('/').pop();
+                                                
+                                                // Parse and display the tutorial
+                                                const tutorialPlaybook = {
+                                                    filename: filename,
+                                                    content: data.content,
+                                                    blocks: window.parseMarkdown(data.content)
+                                                };
+                                                
+                                                // Store in active terminal's playbooks
+                                                if (window.state.activeTerminal && window.state.terminals[window.state.activeTerminal]) {
+                                                    window.state.terminals[window.state.activeTerminal].playbooks[filename] = tutorialPlaybook;
+                                                }
+                                                
+                                                window.displayPlaybook(tutorialPlaybook);
+                                            })
+                                            .catch(error => {
+                                                console.error('Error loading tutorial content:', error);
+                                                showModal('themeModal', `Unable to load tutorial: ${error.message}`);
+                                            });
+                                    });
+                                }
+                            });
+                        }, 200);
+                    })
+                    .catch(error => {
+                        console.error('Error loading tutorials:', error);
+                        showModal('themeModal', 'Unable to load tutorials. Please check if tutorial files exist in the playbooks/tutorials directory.');
+                    });
+            });
+        }
+        
+        const themeMenuItem = document.getElementById('themeMenuItem');
+        if (themeMenuItem) {
+            themeMenuItem.addEventListener('click', function(event) {
+                event.preventDefault();
+                settingsDropdown.classList.remove('show');
+                showModal('themeModal');
+            });
+        }
+        
+        const aboutMenuItem = document.getElementById('aboutMenuItem');
+        if (aboutMenuItem) {
+            aboutMenuItem.addEventListener('click', function(event) {
+                event.preventDefault();
+                settingsDropdown.classList.remove('show');
+                showModal('aboutModal');
+            });
+        }
+    }
+    
+    // Setup modal close functionality
+    setupModals();
+}
+
+/**
+ * Setup modal functionality
+ */
+function setupModals() {
+    // Get all modal elements
+    const modals = document.querySelectorAll('.modal-container');
+    
+    // Setup close functionality for each modal
+    modals.forEach(modal => {
+        // Close button in header
+        const closeBtn = modal.querySelector('.modal-close');
+        if (closeBtn) {
+            closeBtn.addEventListener('click', function() {
+                modal.style.display = 'none';
+            });
+        }
+        
+        // Close button in footer
+        const footerBtn = modal.querySelector('.modal-footer .modal-btn');
+        if (footerBtn) {
+            footerBtn.addEventListener('click', function() {
+                modal.style.display = 'none';
+            });
+        }
+        
+        // Close when clicking outside the modal
+        window.addEventListener('click', function(event) {
+            if (event.target === modal) {
+                modal.style.display = 'none';
+            }
+        });
+    });
+}
+
+/**
+ * Show a modal dialog
+ * @param {string} modalId - ID of the modal to show
+ * @param {string} customMessage - Optional custom message to display in the modal body
+ */
+function showModal(modalId, customMessage = null) {
+    const modal = document.getElementById(modalId);
+    if (!modal) return;
+    
+    // Set custom message if provided
+    if (customMessage) {
+        const modalBody = modal.querySelector('.modal-body');
+        if (modalBody) {
+            // Save original content if not already saved
+            if (!modalBody.dataset.originalContent) {
+                modalBody.dataset.originalContent = modalBody.innerHTML;
+            }
+            modalBody.innerHTML = `<p>${customMessage}</p>`;
+        }
+    } else {
+        // Restore original content if it exists
+        const modalBody = modal.querySelector('.modal-body');
+        if (modalBody && modalBody.dataset.originalContent) {
+            modalBody.innerHTML = modalBody.dataset.originalContent;
+        }
+    }
+    
+    // Display the modal
+    modal.style.display = 'block';
+    
+    // Add ESC key to close modal
+    const escHandler = function(e) {
+        if (e.key === 'Escape') {
+            modal.style.display = 'none';
+            document.removeEventListener('keydown', escHandler);
+        }
+    };
+    document.addEventListener('keydown', escHandler);
 }
