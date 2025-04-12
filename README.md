@@ -33,19 +33,18 @@ CommandWave is a web-based interface for managing multiple terminal sessions sid
 
 1. Install the required system tools:
 
-   ```bash
-   # Install ttyd (check your OS documentation for specific instructions)
-   # For example, on Ubuntu:
-   sudo apt-get install ttyd
+   - **ttyd**: Install from the [official ttyd GitHub repository](https://github.com/tsl0922/ttyd)
    
-   # Install tmux
-   sudo apt-get install tmux
-   ```
+   - **tmux**: Install using your system's package manager:
+     ```bash
+     # For example, on Ubuntu:
+     sudo apt-get install tmux
+     ```
 
 2. Clone the repository:
 
    ```bash
-   git clone https://github.com/yourusername/CommandWave.git
+   git clone https://github.com/Journey-West/CommandWave 
    cd CommandWave
    ```
 
