@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CommandWave - Terminal Management Interface</title>
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;700;900&family=Roboto:wght@300;400;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.25.0/themes/prism-tomorrow.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="icon" type="image/x-icon" href="{{ url_for('static', filename='favicon.ico') }}">
+</head>
+<body>
+    <header>
+        <h1 class="main-title">Command<span class="wave-text">Wave</span></h1>
+        <div class="header-controls">
+            <button class="header-notes-btn" id="globalNotesBtn">Global Notes</button>
+            <button class="header-notes-btn" id="tabNotesBtn">Tab Notes</button>
+        </div>
+    </header>
+
+    <main class="container">
+        <div class="content-area">
+            <section class="variable-section">
+                <h2>Variables</h2>
+                <div class="variable-inputs" id="variableInputsContainer">
+                    <div class="variable-input">
+                        <label for="targetIP">Target IP:</label>
+                        <input type="text" id="targetIP" name="targetIP" placeholder="$TargetIP">
+                    </div>
+                    <div class="variable-input">
+                        <label for="port">Port:</label>
+                        <input type="text" id="port" name="port" placeholder="$Port">
+                    </div>
+                    <div class="variable-input">
+                        <label for="dcIP">DC IP:</label>
+                        <input type="text" id="dcIP" name="dcIP" placeholder="$DCIP">
+                    </div>
+                    <div class="variable-input">
+                        <label for="userFile">User File:</label>
+                        <input type="text" id="userFile" name="userFile" placeholder="$UserFile">
+                    </div>
+                    <div class="variable-input">
+                        <label for="passFile">Pass File:</label>
+                        <input type="text" id="passFile" name="passFile" placeholder="$PassFile">
+                    </div>
+                    <div class="variable-input">
+                        <label for="wordlist">Wordlist:</label>
+                        <input type="text" id="wordlist" name="wordlist" placeholder="$Wordlist">
+                    </div>
+                    <div class="variable-input">
+                        <label for="controlSocket">Control Socket:</label>
+                        <input type="text" id="controlSocket" name="controlSocket" placeholder="$ControlSocket">
+                    </div>
+                </div>
+                <div class="variable-controls">
+                    <label for="addVariableInput" class="add-variable-btn">+ Add Variable</label>
+                    <input type="button" id="addVariableInput" style="display: none;">
+                </div>
+            </section>
+
+            <section class="playbook-section">
+                <h2>Playbooks</h2>
+                <div class="playbook-controls">
+                    <div class="action-buttons">
+                        <button id="createPlaybookBtn" class="create-playbook-btn">Create New Playbook</button>
+                        <label for="uploadPlaybook" class="upload-btn">Upload Playbook</label>
+                        <input type="file" id="uploadPlaybook" accept=".md" style="display: none;">
+                    </div>
+                    <div class="search-container">
+                        <input type="text" id="searchInput" placeholder="Search local playbooks...">
+                        <button id="clearSearchBtn" class="clear-search-btn">&times;</button>
+                        <div id="searchResults" class="search-results"></div>
+                    </div>
+                </div>
+                <div id="playbooks" class="playbooks-container">
+                    <!-- Playbooks will be dynamically added here -->
+                </div>
+            </section>
+        </div>
+
+        <div class="terminal-area">
+            <div class="terminal-tabs">
+                <button class="tab-btn active" data-port="{{ default_terminal_port }}">Main</button>
+                <button class="tab-btn add-tab" id="addTabBtn">+</button>
+                <span class="terminal-title">tmux</span>
+            </div>
+            <div class="terminal-container">
+                <iframe src="http://localhost:{{ default_terminal_port }}" class="terminal-iframe active" id="terminal-{{ default_terminal_port }}" data-port="{{ default_terminal_port }}"></iframe>
+                <!-- Additional terminal iframes will be added here -->
+            </div>
+        </div>
+    </main>
+
+    <div class="notes-panel" id="globalNotesPanel">
+        <div class="notes-header">
+            <h3>Global Notes</h3>
+            <button class="close-notes-btn">&times;</button>
+        </div>
+        <textarea id="globalNotesText"></textarea>
+    </div>
+
+    <div class="notes-panel" id="tabNotesPanel">
+        <div class="notes-header">
+            <h3>Tab Notes: <span id="currentTabName">Main</span></h3>
+            <button class="close-notes-btn">&times;</button>
+        </div>
+        <textarea id="tabNotesText"></textarea>
+    </div>
+    
+    <!-- Modal for creating new playbooks -->
+    <div id="createPlaybookModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>Create New Playbook</h3>
+                <button class="close-modal-btn">&times;</button>
+            </div>
+            <div class="modal-body">
+                <div class="form-group">
+                    <label for="newPlaybookName">Playbook Name:</label>
+                    <input type="text" id="newPlaybookName" placeholder="Enter playbook name (e.g., my_playbook.md)" class="modal-input">
+                </div>
+                <div class="form-group">
+                    <label for="newPlaybookContent">Playbook Content:</label>
+                    <textarea id="newPlaybookContent" class="modal-textarea" placeholder="# My Playbook Title
+
+## Step 1: Description
+```bash
+echo 'Hello, World!'
+```
+
+## Step 2: Another task
+```bash
+# Add your commands here
+```"></textarea>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button id="cancelPlaybookBtn" class="modal-btn cancel">Cancel</button>
+                <button id="createPlaybookSubmitBtn" class="modal-btn submit">Create Playbook</button>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Modal for creating new terminal tabs -->
+    <div id="newTerminalModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>Create New Terminal</h3>
+                <button class="close-modal-btn">&times;</button>
+            </div>
+            <div class="modal-body">
+                <div class="form-group">
+                    <label for="newTerminalName">Terminal Name:</label>
+                    <input type="text" id="newTerminalName" placeholder="Enter terminal name (e.g., SSH, Database)" class="modal-input">
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button id="cancelTerminalBtn" class="modal-btn cancel">Cancel</button>
+                <button id="createTerminalSubmitBtn" class="modal-btn submit">Create Terminal</button>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Modal for adding new variables -->
+    <div id="newVariableModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>Add New Variable</h3>
+                <button class="close-modal-btn">&times;</button>
+            </div>
+            <div class="modal-body">
+                <div class="form-group">
+                    <label for="newVariableName">Variable Name:</label>
+                    <input type="text" id="newVariableName" placeholder="Enter variable name (e.g., hostName)" class="modal-input">
+                </div>
+                <div class="form-group">
+                    <label for="newVariableValue">Variable Value:</label>
+                    <input type="text" id="newVariableValue" placeholder="Enter variable value" class="modal-input">
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button id="cancelVariableBtn" class="modal-btn cancel">Cancel</button>
+                <button id="createVariableSubmitBtn" class="modal-btn submit">Add Variable</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Libraries -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/marked/4.0.2/marked.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.25.0/prism.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.25.0/components/prism-bash.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.25.0/components/prism-python.min.js"></script>
+    
+    <!-- Custom JS -->
+    <script src="{{ url_for('static', filename='js/script.js') }}"></script>
+</body>
+</html>
