@@ -3,6 +3,7 @@
 <div align="center">
   <img src="static/img/commandwave-logo.png" alt="CommandWave Logo" width="400">
   <p><em>A cyberpunk terminal management interface with playbook integration</em></p>
+</div>
 
 ## Overview
 
@@ -32,27 +33,27 @@ CommandWave is a web-based interface for managing multiple terminal sessions sid
 
 1. Install the required system tools:
 
-```bash
-# Install ttyd (check your OS documentation for specific instructions)
-# For example, on Ubuntu:
-sudo apt-get install ttyd
-
-# Install tmux
-sudo apt-get install tmux
-```
+   ```bash
+   # Install ttyd (check your OS documentation for specific instructions)
+   # For example, on Ubuntu:
+   sudo apt-get install ttyd
+   
+   # Install tmux
+   sudo apt-get install tmux
+   ```
 
 2. Clone the repository:
 
-```bash
-git clone https://github.com/yourusername/CommandWave.git
-cd CommandWave
-```
+   ```bash
+   git clone https://github.com/yourusername/CommandWave.git
+   cd CommandWave
+   ```
 
 3. Install Python dependencies:
 
-```bash
-pip install -r requirements.txt
-```
+   ```bash
+   pip install -r requirements.txt
+   ```
 
 ## Running CommandWave
 
