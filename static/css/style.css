@@ -459,6 +459,31 @@ header {
     box-shadow: var(--shadow-pink);
 }
 
+.upload-btn:hover {
+    background-color: rgba(15, 255, 80, 0.2);
+    box-shadow: var(--shadow-green);
+}
+
+.tutorials-btn {
+    background-color: rgba(252, 238, 9, 0.1);
+    color: var(--neon-yellow);
+    border: 1px solid var(--neon-yellow);
+    padding: 0.5rem 1rem;
+    border-radius: 4px;
+    font-family: 'Orbitron', sans-serif;
+    font-size: 0.9rem;
+    margin-left: 0.5rem;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    display: inline-flex;
+    align-items: center;
+}
+
+.tutorials-btn:hover {
+    background-color: rgba(252, 238, 9, 0.2);
+    box-shadow: var(--shadow-yellow);
+}
+
 .search-container {
     flex-grow: 1;
     position: relative;

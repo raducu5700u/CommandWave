@@ -1,0 +1,107 @@
+# CommandWave: Variables and Substitution
+
+This tutorial explains how to use variables in CommandWave to make your command playbooks more flexible and reusable.
+
+## Understanding Variables
+
+Variables allow you to create dynamic playbooks that can be reused with different values. In CommandWave, variables are denoted with a `$` symbol.
+
+## Built-in Variables
+
+CommandWave provides several built-in variables based on your terminal session:
+
+```bash
+# Display the built-in variables
+echo "Terminal Port: $TERM_PORT"
+echo "Terminal Name: $TERM_NAME"
+```
+
+## Creating Variables
+
+You can create variables in two ways:
+
+### 1. Using the Variables Panel
+
+```bash
+# No command needed - use the interface:
+# 1. Locate the "Variables" section in the sidebar
+# 2. Click the "Add Variable" button
+# 3. Enter variable name and value
+```
+
+### 2. Defining Variables in the Terminal
+
+```bash
+# Define a variable directly in the terminal
+export MY_VARIABLE="Hello World"
+
+# Verify it exists
+echo $MY_VARIABLE
+```
+
+## Using Variables in Playbooks
+
+Once defined, variables can be used in any command block:
+
+```bash
+# Example with a server address variable
+ping -c 4 $SERVER_ADDRESS
+```
+
+```bash
+# Example with multiple variables
+ssh $USERNAME@$SERVER_ADDRESS -p $SSH_PORT
+```
+
+## Variable Substitution in Action
+
+Let's see how variable substitution makes commands reusable:
+
+```bash
+# Define some directory paths
+# (These would normally be in the Variables panel)
+# TARGET_DIR="/var/log"
+# BACKUP_DIR="/backup"
+
+# Use variables to create a flexible backup command
+mkdir -p $BACKUP_DIR
+cp -r $TARGET_DIR $BACKUP_DIR/logs_$(date +%Y%m%d)
+```
+
+## Best Practices
+
+1. Use descriptive variable names in UPPER_CASE
+2. Group related variables together
+3. Set default values for common scenarios
+
+```bash
+# Example of setting default values if not already defined
+# (This would be in your actual shell script, not executed directly)
+# SERVER_ADDRESS=${SERVER_ADDRESS:-"localhost"}
+# SSH_PORT=${SSH_PORT:-22}
+```
+
+## Advanced Usage: Variable Manipulation
+
+In more complex scenarios, you can manipulate variables:
+
+```bash
+# Extract a substring from a variable
+FILENAME="document.txt"
+echo ${FILENAME%.*}  # Removes extension, outputs "document"
+```
+
+```bash
+# Default values for unset variables
+echo ${UNDEFINED_VAR:-"default value"}
+```
+
+## Try It Yourself
+
+Practice by creating and using variables:
+
+```bash
+# 1. Create TARGET_PATH variable in the Variables panel
+# 2. Run this command to see its value
+ls -la $TARGET_PATH
+```

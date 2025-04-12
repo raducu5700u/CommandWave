@@ -119,6 +119,12 @@ document.addEventListener('DOMContentLoaded', function() {
     // Setup create playbook functionality
     setupCreatePlaybook();
 
+    // Tutorials button functionality
+    const tutorialsBtn = document.getElementById('tutorialsBtn');
+    if (tutorialsBtn) {
+        tutorialsBtn.addEventListener('click', loadTutorials);
+    }
+
     /**
      * Terminal Management Functions
      */
@@ -1135,6 +1141,94 @@ document.addEventListener('DOMContentLoaded', function() {
         
         // Focus the textarea
         textarea.focus();
+    }
+
+    /**
+     * Load and display tutorial playbooks
+     */
+    function loadTutorials() {
+        fetch('/api/playbooks/tutorials/00_Tutorial_Index.md')
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error('Failed to load tutorial index');
+                }
+                return response.json();
+            })
+            .then(data => {
+                if (!data.success) {
+                    throw new Error(data.error || 'Failed to load tutorial index');
+                }
+                
+                // Parse and display the tutorial index
+                const tutorialPlaybook = {
+                    filename: 'Tutorial Index',
+                    content: data.content,
+                    blocks: parseMarkdown(data.content)
+                };
+                
+                // Store in active terminal's playbooks if not already there
+                if (state.activeTerminal && state.terminals[state.activeTerminal]) {
+                    state.terminals[state.activeTerminal].playbooks['tutorial_index'] = tutorialPlaybook;
+                }
+                
+                displayPlaybook(tutorialPlaybook);
+                
+                // Enhance tutorial links to load tutorial content when clicked
+                setTimeout(() => {
+                    document.querySelectorAll('.playbook-content a').forEach(link => {
+                        if (link.href.includes('.md')) {
+                            link.addEventListener('click', function(e) {
+                                e.preventDefault();
+                                const tutorialPath = this.getAttribute('href');
+                                loadTutorialContent(`/api/playbooks/tutorials/${tutorialPath}`);
+                            });
+                        }
+                    });
+                }, 200);
+            })
+            .catch(error => {
+                console.error('Error loading tutorials:', error);
+                alert('Unable to load tutorials. Please check if tutorial files exist in the playbooks/tutorials directory.');
+            });
+    }
+
+    /**
+     * Load specific tutorial content
+     */
+    function loadTutorialContent(tutorialPath) {
+        fetch(tutorialPath)
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error(`Failed to load tutorial from ${tutorialPath}`);
+                }
+                return response.json();
+            })
+            .then(data => {
+                if (!data.success) {
+                    throw new Error(data.error || 'Failed to load tutorial content');
+                }
+                
+                // Extract filename from path
+                const filename = tutorialPath.split('/').pop();
+                
+                // Parse and display the tutorial
+                const tutorialPlaybook = {
+                    filename: filename,
+                    content: data.content,
+                    blocks: parseMarkdown(data.content)
+                };
+                
+                // Store in active terminal's playbooks
+                if (state.activeTerminal && state.terminals[state.activeTerminal]) {
+                    state.terminals[state.activeTerminal].playbooks[filename] = tutorialPlaybook;
+                }
+                
+                displayPlaybook(tutorialPlaybook);
+            })
+            .catch(error => {
+                console.error('Error loading tutorial content:', error);
+                alert(`Unable to load tutorial: ${error.message}`);
+            });
     }
 
     function handlePlaybookSearch() {

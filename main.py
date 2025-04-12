@@ -270,6 +270,49 @@ def healthcheck():
     """Simple health check endpoint."""
     return jsonify({'status': 'ok'})
 
+@app.route('/api/playbooks/<path:filepath>', methods=['GET'])
+def get_playbook_file(filepath):
+    """Get a playbook file from any subdirectory within the playbooks directory."""
+    # Secure the filepath to prevent directory traversal
+    # Ensure the requested file is within the playbooks directory
+    abs_path = os.path.abspath(os.path.join(PLAYBOOKS_DIR, filepath))
+    if not abs_path.startswith(os.path.abspath(PLAYBOOKS_DIR)):
+        return jsonify({
+            'success': False,
+            'error': 'Invalid file path'
+        }), 400
+    
+    # Check if the file exists
+    if not os.path.exists(abs_path) or not os.path.isfile(abs_path):
+        return jsonify({
+            'success': False,
+            'error': f'File not found: {filepath}'
+        }), 404
+    
+    # Check if it's a markdown file
+    if not abs_path.lower().endswith('.md'):
+        return jsonify({
+            'success': False,
+            'error': 'Only .md files are supported'
+        }), 400
+    
+    # Read the file content
+    try:
+        with open(abs_path, 'r', encoding='utf-8') as f:
+            content = f.read()
+        
+        return jsonify({
+            'success': True,
+            'filename': os.path.basename(filepath),
+            'content': content
+        })
+    except Exception as e:
+        logger.error(f"Error loading playbook {abs_path}: {e}")
+        return jsonify({
+            'success': False,
+            'error': str(e)
+        }), 500
+
 # Terminal management endpoints
 @app.route('/api/terminals/new', methods=['GET'])
 def new_terminal():
@@ -470,7 +513,7 @@ def search_playbooks():
         os.makedirs(PLAYBOOKS_DIR, exist_ok=True)
         
         # Get all .md files in the playbooks directory
-        md_files = glob.glob(os.path.join(PLAYBOOKS_DIR, '*.md'))
+        md_files = glob.glob(os.path.join(PLAYBOOKS_DIR, '**/*.md'), recursive=True)
         
         for file_path in md_files:
             filename = os.path.basename(file_path)
