@@ -57,7 +57,7 @@ CommandWave provides a streamlined, web-based environment for managing multiple 
     ```
 2.  **Start the Application**:
     ```bash
-    python main.py 
+    python main.py --use-default-tmux-config
     ```
 3.  **Access the UI**: Open your web browser and go to `http://localhost:5000` (or the port specified if using the `--port` option).
 
