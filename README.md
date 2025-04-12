@@ -41,7 +41,7 @@ CommandWave provides a streamlined, web-based environment for managing multiple 
 1.  **Install System Dependencies**: Ensure `ttyd` and `tmux` are installed and accessible in your system's PATH. Refer to their respective documentation for installation instructions.
 2.  **Clone the Repository**:
     ```bash
-    git clone [https://github.com/Journey-West/CommandWave](https://github.com/Journey-West/CommandWave) # Replace with your repo URL
+    git clone git clone https://github.com/Journey-West/CommandWave # Replace with your repo URL
     cd CommandWave
     ```
 3.  **Install Python Dependencies**:
