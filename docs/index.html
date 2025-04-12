@@ -1,0 +1,479 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CommandWave - Cyberpunk Terminal Management System</title>
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;700;900&family=Roboto:wght@300;400;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        /* CommandWave - Cyberpunk/Neon Aesthetic CSS */
+        :root {
+            /* Cyberpunk color palette */
+            --background-dark: #0b0b17;
+            --background-medium: #121225;
+            --text-primary: #e0e0fc;
+            --text-secondary: #8a8aa5;
+            --neon-blue: #60efff;
+            --neon-purple: #c264fe;
+            --neon-pink: #ff5a8c;
+            --neon-yellow: #fcee09;
+            --neon-green: #0fff50;
+            --accent: #ff5a8c;
+            --border-light: rgba(96, 239, 255, 0.2);
+            --shadow-blue: 0 0 10px rgba(96, 239, 255, 0.5);
+            --shadow-pink: 0 0 10px rgba(255, 90, 140, 0.5);
+            --shadow-purple: 0 0 10px rgba(194, 100, 254, 0.5);
+            --shadow-yellow: 0 0 10px rgba(252, 238, 9, 0.5);
+            --shadow-green: 0 0 10px rgba(15, 255, 80, 0.5);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Roboto', sans-serif;
+            background-color: var(--background-dark);
+            color: var(--text-primary);
+            line-height: 1.6;
+            background-image: 
+                radial-gradient(circle at 10% 20%, rgba(96, 239, 255, 0.05) 0%, transparent 20%),
+                radial-gradient(circle at 90% 80%, rgba(194, 100, 254, 0.05) 0%, transparent 20%),
+                radial-gradient(circle at 50% 50%, rgba(255, 90, 140, 0.05) 0%, transparent 40%);
+            min-height: 100vh;
+        }
+
+        header {
+            padding: 1.5rem 0;
+            text-align: center;
+            border-bottom: 1px solid var(--border-light);
+            background-color: rgba(11, 11, 23, 0.8);
+            backdrop-filter: blur(5px);
+            position: relative;
+        }
+
+        .main-title {
+            font-family: 'Orbitron', sans-serif;
+            font-weight: 900;
+            font-size: 3rem;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            color: var(--text-primary);
+            text-shadow: 0 0 10px rgba(224, 224, 252, 0.3);
+            margin-bottom: 1rem;
+        }
+
+        .wave-text {
+            background: linear-gradient(90deg, var(--neon-blue), var(--neon-purple));
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            text-shadow: var(--shadow-blue);
+        }
+
+        .tagline {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 1.2rem;
+            color: var(--text-secondary);
+            margin-bottom: 1.5rem;
+        }
+
+        .header-buttons {
+            display: flex;
+            justify-content: center;
+            gap: 1rem;
+            margin-top: 1.5rem;
+        }
+
+        .header-btn {
+            background-color: rgba(11, 11, 23, 0.8);
+            border: 1px solid var(--neon-blue);
+            color: var(--neon-blue);
+            padding: 0.8rem 1.5rem;
+            border-radius: 4px;
+            cursor: pointer;
+            font-family: 'Orbitron', sans-serif;
+            font-size: 1rem;
+            transition: all 0.3s ease;
+            box-shadow: var(--shadow-blue);
+            text-decoration: none;
+            display: inline-block;
+        }
+
+        .header-btn:hover {
+            background-color: rgba(96, 239, 255, 0.1);
+            box-shadow: var(--shadow-blue);
+            transform: translateY(-2px);
+        }
+
+        .header-btn.pink {
+            border-color: var(--neon-pink);
+            color: var(--neon-pink);
+            box-shadow: var(--shadow-pink);
+        }
+
+        .header-btn.pink:hover {
+            background-color: rgba(255, 90, 140, 0.1);
+            box-shadow: var(--shadow-pink);
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 2rem;
+        }
+
+        .section {
+            margin-bottom: 3rem;
+            border: 1px solid var(--border-light);
+            border-radius: 8px;
+            background-color: rgba(18, 18, 37, 0.6);
+            padding: 2rem;
+            box-shadow: var(--shadow-blue);
+        }
+
+        .section-title {
+            font-family: 'Orbitron', sans-serif;
+            color: var(--neon-blue);
+            font-size: 1.8rem;
+            margin-bottom: 1.5rem;
+            text-transform: uppercase;
+            text-shadow: var(--shadow-blue);
+            letter-spacing: 1px;
+            border-bottom: 1px solid var(--border-light);
+            padding-bottom: 0.5rem;
+        }
+
+        .features {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 1.5rem;
+            margin-top: 2rem;
+        }
+
+        .feature-card {
+            border: 1px solid var(--border-light);
+            border-radius: 8px;
+            padding: 1.5rem;
+            background-color: rgba(11, 11, 23, 0.5);
+            transition: all 0.3s ease;
+            height: 100%;
+        }
+
+        .feature-card:hover {
+            transform: translateY(-5px);
+            box-shadow: var(--shadow-blue);
+        }
+
+        .feature-icon {
+            font-size: 2rem;
+            margin-bottom: 1rem;
+            color: var(--neon-blue);
+            text-shadow: var(--shadow-blue);
+        }
+
+        .feature-title {
+            font-family: 'Orbitron', sans-serif;
+            color: var(--neon-yellow);
+            font-size: 1.2rem;
+            margin-bottom: 0.8rem;
+            text-shadow: var(--shadow-yellow);
+        }
+
+        .feature-desc {
+            color: var(--text-secondary);
+            font-size: 0.95rem;
+        }
+
+        .screenshot {
+            border: 2px solid var(--neon-pink);
+            border-radius: 8px;
+            max-width: 100%;
+            height: auto;
+            margin: 2rem 0;
+            box-shadow: var(--shadow-pink);
+            transition: all 0.3s ease;
+        }
+
+        .screenshot:hover {
+            transform: scale(1.01);
+            box-shadow: 0 0 20px rgba(255, 90, 140, 0.7);
+        }
+
+        .install-steps {
+            margin-top: 1.5rem;
+        }
+
+        .step {
+            margin-bottom: 1.5rem;
+            padding-left: 1rem;
+            border-left: 2px solid var(--neon-green);
+        }
+
+        .step-number {
+            font-family: 'Orbitron', sans-serif;
+            color: var(--neon-green);
+            font-size: 1.2rem;
+            margin-bottom: 0.5rem;
+            text-shadow: var(--shadow-green);
+        }
+
+        .step-desc {
+            color: var(--text-secondary);
+        }
+
+        code {
+            font-family: 'Roboto Mono', monospace;
+            padding: 0.8rem;
+            margin: 0.5rem 0;
+            background-color: rgba(11, 11, 23, 0.8);
+            border: 1px solid var(--border-light);
+            border-radius: 4px;
+            color: var(--neon-yellow);
+            display: block;
+            overflow-x: auto;
+        }
+
+        .usage-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+            gap: 1rem;
+            margin-top: 1.5rem;
+        }
+
+        .usage-item {
+            background-color: rgba(11, 11, 23, 0.5);
+            padding: 1rem;
+            border-radius: 8px;
+            border: 1px solid var(--border-light);
+        }
+
+        .usage-title {
+            font-family: 'Orbitron', sans-serif;
+            color: var(--neon-pink);
+            font-size: 1.1rem;
+            margin-bottom: 0.8rem;
+            text-shadow: var(--shadow-pink);
+        }
+
+        .usage-desc {
+            color: var(--text-secondary);
+            font-size: 0.9rem;
+        }
+
+        footer {
+            text-align: center;
+            padding: 2rem 0;
+            border-top: 1px solid var(--border-light);
+            background-color: rgba(11, 11, 23, 0.8);
+            backdrop-filter: blur(5px);
+        }
+
+        .footer-links {
+            display: flex;
+            justify-content: center;
+            gap: 1.5rem;
+            margin: 1rem 0;
+        }
+
+        .footer-link {
+            color: var(--text-secondary);
+            text-decoration: none;
+            transition: all 0.3s ease;
+            font-size: 0.9rem;
+        }
+
+        .footer-link:hover {
+            color: var(--neon-blue);
+            text-shadow: var(--shadow-blue);
+        }
+
+        .copyright {
+            color: var(--text-secondary);
+            font-size: 0.9rem;
+            margin-top: 1rem;
+        }
+
+        .social-icon {
+            margin: 0 0.5rem;
+            font-size: 1.5rem;
+            color: var(--neon-purple);
+            transition: all 0.3s ease;
+        }
+
+        .social-icon:hover {
+            color: var(--neon-pink);
+            transform: translateY(-3px);
+            text-shadow: var(--shadow-pink);
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                padding: 1rem;
+            }
+            
+            .features {
+                grid-template-columns: 1fr;
+            }
+            
+            .header-buttons {
+                flex-direction: column;
+                align-items: center;
+            }
+            
+            .main-title {
+                font-size: 2.2rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1 class="main-title">Command<span class="wave-text">Wave</span></h1>
+        <p class="tagline">A cyberpunk-themed web interface for managing terminal sessions alongside executable Markdown playbooks.</p>
+        <div class="header-buttons">
+            <a href="https://github.com/Journey-West/CommandWave" class="header-btn">
+                <i class="fab fa-github"></i> GitHub Repository
+            </a>
+            <a href="https://github.com/Journey-West/CommandWave#installation" class="header-btn pink">
+                <i class="fas fa-download"></i> Installation Guide
+            </a>
+        </div>
+    </header>
+
+    <div class="container">
+        <section class="section">
+            <h2 class="section-title">Overview</h2>
+            <p>CommandWave provides a streamlined, web-based environment for managing multiple terminal sessions powered by <code>tmux</code> and <code>ttyd</code>. It features a distinct cyberpunk/neon aesthetic and allows users to work with Markdown-based "playbooks" containing executable code blocks. Define variables, search through local playbooks, and execute commands directly into your active terminal session, enhancing command-line workflows.</p>
+            <img src="https://raw.githubusercontent.com/Journey-West/CommandWave/main/static/img/screenshot.png" alt="CommandWave Screenshot" class="screenshot">
+        </section>
+
+        <section class="section">
+            <h2 class="section-title">Key Features</h2>
+            <div class="features">
+                <div class="feature-card">
+                    <div class="feature-icon"><i class="fas fa-terminal"></i></div>
+                    <h3 class="feature-title">Terminal Management</h3>
+                    <p class="feature-desc">Create, switch between, rename, and close multiple terminal sessions backed by tmux and ttyd.</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon"><i class="fas fa-book"></i></div>
+                    <h3 class="feature-title">Markdown Playbooks</h3>
+                    <p class="feature-desc">Upload and parse Markdown playbooks with executable code blocks.</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon"><i class="fas fa-code"></i></div>
+                    <h3 class="feature-title">Variable Substitution</h3>
+                    <p class="feature-desc">Define variables and substitute them in code blocks before execution.</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon"><i class="fas fa-play"></i></div>
+                    <h3 class="feature-title">Command Execution</h3>
+                    <p class="feature-desc">Execute commands directly from playbooks to the active terminal.</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon"><i class="fas fa-sticky-note"></i></div>
+                    <h3 class="feature-title">Notes System</h3>
+                    <p class="feature-desc">Global and per-tab notes for keeping track of your work.</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon"><i class="fas fa-search"></i></div>
+                    <h3 class="feature-title">Local Playbook Search</h3>
+                    <p class="feature-desc">Search through your local playbook collection.</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon"><i class="fas fa-palette"></i></div>
+                    <h3 class="feature-title">Cyberpunk UI</h3>
+                    <p class="feature-desc">Beautiful neon-inspired interface with consistent theming.</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon"><i class="fas fa-sliders-h"></i></div>
+                    <h3 class="feature-title">Custom tmux Theming</h3>
+                    <p class="feature-desc">Included configuration for matching terminal aesthetics.</p>
+                </div>
+            </div>
+        </section>
+
+        <section class="section">
+            <h2 class="section-title">Installation</h2>
+            <p>Getting started with CommandWave is quick and straightforward:</p>
+            <div class="install-steps">
+                <div class="step">
+                    <h3 class="step-number">Step 1: Install System Dependencies</h3>
+                    <p class="step-desc">Ensure <code>ttyd</code> and <code>tmux</code> are installed and accessible in your system's PATH.</p>
+                    <p class="step-desc">For <code>ttyd</code>, download binaries or build from source via the <a href="https://github.com/tsl0922/ttyd" style="color: var(--neon-blue); text-decoration: none;">official ttyd GitHub repository</a>.</p>
+                    <p class="step-desc">For <code>tmux</code>, install using your system's package manager:</p>
+                    <code>sudo apt install tmux   # For Debian/Ubuntu<br>brew install tmux       # For macOS</code>
+                </div>
+                <div class="step">
+                    <h3 class="step-number">Step 2: Clone the Repository</h3>
+                    <code>git clone https://github.com/Journey-West/CommandWave.git<br>cd CommandWave</code>
+                </div>
+                <div class="step">
+                    <h3 class="step-number">Step 3: Install Python Dependencies</h3>
+                    <code>pip install -r requirements.txt</code>
+                </div>
+                <div class="step">
+                    <h3 class="step-number">Step 4: Run CommandWave</h3>
+                    <code>python main.py</code>
+                    <p class="step-desc">Open your web browser and navigate to <code>http://localhost:5000</code></p>
+                </div>
+            </div>
+        </section>
+
+        <section class="section">
+            <h2 class="section-title">Usage Guide</h2>
+            <div class="usage-grid">
+                <div class="usage-item">
+                    <h3 class="usage-title">Terminals</h3>
+                    <ul class="usage-desc">
+                        <li>Click the <code>+</code> button to add a new terminal session</li>
+                        <li>Double-click a tab to rename it</li>
+                        <li>Click the <code>x</code> to close a terminal session</li>
+                    </ul>
+                </div>
+                <div class="usage-item">
+                    <h3 class="usage-title">Variables</h3>
+                    <ul class="usage-desc">
+                        <li>Use the "Variables" section to define key-value pairs</li>
+                        <li>Click "+ Add Variable" to create custom variables</li>
+                        <li>Variables will be substituted in playbook code blocks using the <code>$MyVar</code> format</li>
+                    </ul>
+                </div>
+                <div class="usage-item">
+                    <h3 class="usage-title">Playbooks</h3>
+                    <ul class="usage-desc">
+                        <li>Click "Upload Playbook" to load <code>.md</code> files</li>
+                        <li>Click "Create New Playbook" to author a new playbook</li>
+                        <li>Click "Execute" to send code to the active terminal tab</li>
+                    </ul>
+                </div>
+                <div class="usage-item">
+                    <h3 class="usage-title">Search</h3>
+                    <ul class="usage-desc">
+                        <li>Use the search bar to find content within playbooks</li>
+                        <li>Results show filename, line number, and content</li>
+                        <li>Copy, execute, or import commands from search results</li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+    </div>
+
+    <footer>
+        <div class="footer-links">
+            <a href="https://github.com/Journey-West/CommandWave" class="footer-link">GitHub Repository</a>
+            <a href="https://github.com/Journey-West/CommandWave/issues" class="footer-link">Report Issues</a>
+            <a href="https://github.com/Journey-West/CommandWave#contributing" class="footer-link">Contribute</a>
+            <a href="https://github.com/Journey-West/CommandWave/blob/main/LICENSE" class="footer-link">License</a>
+        </div>
+        <div>
+            <a href="https://github.com/Journey-West" class="social-icon"><i class="fab fa-github"></i></a>
+        </div>
+        <p class="copyright">© 2025 CommandWave. Built with the cyberpunk spirit.</p>
+    </footer>
+</body>
+</html>
