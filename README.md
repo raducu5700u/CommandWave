@@ -4,9 +4,6 @@
   <img src="static/img/commandwave-logo.png" alt="CommandWave Logo" width="400">
   <p><em>A cyberpunk terminal management interface with playbook integration</em></p>
 
-  [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
-</div>
-
 ## Overview
 
 CommandWave is a web-based interface for managing multiple terminal sessions side-by-side with Markdown-based playbooks. It features a cyberpunk/neon aesthetic and provides a streamlined interface for executing commands from playbooks with variable substitution.
