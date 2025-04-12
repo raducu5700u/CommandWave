@@ -102,8 +102,6 @@ Contributions are welcome! Please follow standard fork-and-pull-request workflow
 4.  Push to the branch (`git push origin feature/your-feature`).
 5.  Open a Pull Request.
 
-*(Optional: Add more specific contribution guidelines, e.g., code style, testing requirements)*
-
 ## License
 
 This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
