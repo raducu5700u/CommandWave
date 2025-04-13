@@ -133,6 +133,70 @@
             color: #0083b0;
         }
 
+        /* Light theme refinements based on the screenshots */
+        [data-theme="light"] .main-title {
+            color: #2a2a4a;
+            text-shadow: none;
+        }
+
+        [data-theme="light"] .wave-text {
+            background: linear-gradient(90deg, #0083b0, #00a6d8);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            text-shadow: none;
+        }
+
+        [data-theme="light"] .tagline {
+            color: #4a4a6a;
+        }
+
+        /* Screenshot container - make it stand out better in light mode */
+        .demo-terminal {
+            margin-top: 2rem;
+            border: 1px solid var(--neon-blue);
+            border-radius: 8px;
+            overflow: hidden;
+        }
+
+        [data-theme="light"] .demo-terminal {
+            border: 1px solid #0083b0;
+            box-shadow: 0 0 10px rgba(0, 131, 176, 0.3);
+        }
+
+        /* Better code block contrast in light mode */
+        [data-theme="light"] code {
+            background-color: #f0f4f8;
+            border: 1px solid rgba(0, 131, 176, 0.2);
+            color: #2a2a4a;
+        }
+
+        /* Improve feature card styling in light theme */
+        [data-theme="light"] .feature-desc {
+            color: #4a4a6a;
+        }
+
+        /* Step styling improvements for light theme */
+        [data-theme="light"] .step {
+            border: 1px solid rgba(0, 131, 176, 0.2);
+            background-color: #f5f7fa;
+        }
+
+        /* Usage guide items in light theme */
+        [data-theme="light"] .usage-title {
+            color: #a8174a;
+            text-shadow: none;
+        }
+
+        /* Icon colors in light theme */
+        [data-theme="light"] .feature-icon i.fas {
+            color: #0083b0;
+        }
+
+        [data-theme="light"] .theme-toggle {
+            color: #6834a9;
+        }
+
         * {
             margin: 0;
             padding: 0;
