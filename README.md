@@ -19,7 +19,7 @@ CommandWave provides a streamlined, web-based environment for managing multiple 
     * Create new playbooks directly within the application.
     * Playbooks are parsed to separate text blocks from code blocks.
 * **Executable Code Blocks**: Execute shell command blocks from playbooks directly into the active terminal session.
-* **Variable Substitution**: Define key-value pairs (e.g., `$TargetIP`, `$Port`) that are automatically substituted into code blocks before execution.
+* **Variable Substitution**: Define variables with user-friendly titles and reference names that are automatically substituted into code blocks before execution.
 * **Playbook Search**: Quickly search across all loaded playbooks for specific commands or text.
 * **Dark/Light Theme Toggle**:
     * Switch between the default cyberpunk dark theme and a light theme.
@@ -28,6 +28,7 @@ CommandWave provides a streamlined, web-based environment for managing multiple 
 * **Persistent Notes**:
     * A global notes panel for general information.
     * A separate notes panel for each terminal tab. Notes are saved automatically.
+* **Error Handling**: Dedicated error modals with clear messages for various error conditions.
 * **Cyberpunk UI**: A visually distinct interface inspired by neon and cyberpunk aesthetics, including a matching `tmux` theme option.
 * **Custom tmux Theming**: Includes an optional, enhanced `tmux` configuration file (`commandwave_theme.tmux.conf`) for a cohesive visual experience.
 
@@ -69,6 +70,8 @@ CommandWave provides a streamlined, web-based environment for managing multiple 
 
 * `--port PORT`: Specify the port for the web server (default: 5000).
 * `--use-default-tmux-config`: Apply the custom `commandwave_theme.tmux.conf` to the `tmux` sessions managed by CommandWave.
+* `--hostname HOSTNAME`: Specify the hostname to use for terminal connections (default: localhost).
+* `--remote`: Enable remote access by binding to all interfaces (use with caution).
 
 ## Usage Guide
 
@@ -83,23 +86,30 @@ CommandWave provides a streamlined, web-based environment for managing multiple 
     * Choose between "Cyberpunk Dark" (default) and "Neon Light" themes.
     * Your selection is saved in the browser and will persist between sessions.
 3.  **Variables**:
-    * Use the "Variables" section to define key-value pairs. Default variables like `targetIP`, `port`, etc., are provided.
-    * Click "+ Add Variable" to create custom variables. Use camelCase names (e.g., `myVar`).
-    * These variables will be substituted in playbook code blocks using the `$MyVar` format (PascalCase with a leading `$`) when you click "Execute".
+    * Use the "Variables" section to define variables for use in your playbooks.
+    * Click "+ Add Variable" to create custom variables.
+    * Each variable has two parts:
+        * **Variable Title**: A user-friendly display name (can include spaces)
+        * **Variable Reference**: The actual reference name used in code (no spaces allowed, automatically prefixed with $)
+    * Example: Title "Target IP Address" with Reference "targetIp" would be used as `$targetIp` in code blocks.
+    * Variables will be substituted when you click "Execute" on a code block.
 4.  **Playbooks**:
     * Click "Upload Playbook" to load `.md` files.
-    * Click "Create New Playbook" to author a new playbook within the app.
+    * Click "Create Playbook" to author a new playbook within the app.
     * Playbooks appear in the section below the controls. Click the playbook title to expand/collapse its content.
     * Within code blocks (` ``` `), click:
         * **Copy**: Copies the code (with variables substituted) to the clipboard.
         * **Execute**: Sends the code (with variables substituted) to the *currently active* terminal tab for execution.
-        * **Import**: Imports the entire playbook for reference or further editing.
+    * Links within playbooks to other .md files will load those playbooks, while external links open in new tabs.
 5.  **Search**:
     * Use the search bar to find lines within any loaded playbook's content.
-    * Results show the filename, line number, and content. You can copy, execute, or import the full playbook directly from the search results.
+    * Results show the filename, line number, and content. Click on a result to open that playbook.
 6.  **Notes**:
     * Click "Global Notes" or "Tab Notes" in the header to toggle the respective side panels.
     * Content is saved automatically as you type.
+7.  **Error Handling**:
+    * The application displays dedicated error modals with clear messages for various error conditions.
+    * These modals include specific guidance on how to resolve common issues.
 
 ## Contributing
 

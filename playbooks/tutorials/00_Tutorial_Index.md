@@ -22,7 +22,7 @@ Each tutorial is designed to be interactive. You can:
 
 If you need additional assistance:
 
-- Check the [CommandWave GitHub repository](https://github.com/CommandWave/CommandWave)
+- Check the [CommandWave GitHub repository](https://github.com/Journey-West/CommandWave)
 - Use the search feature to find relevant commands
 - Create your own notes in the global or tab-specific notes panels
 

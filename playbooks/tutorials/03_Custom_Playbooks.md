@@ -29,8 +29,9 @@ You can create playbooks in two ways:
 ```bash
 # No command needed - use the interface:
 # 1. Click the "Create Playbook" button in the main interface
-# 2. Enter a name for your playbook
-# 3. Start adding content in the editor
+# 2. Enter a name for your playbook (must end with .md)
+# 3. Add your content in the editor with proper markdown formatting
+# 4. Click "Create Playbook" to save
 ```
 
 ### 2. Uploading an Existing Markdown File
@@ -39,6 +40,7 @@ You can create playbooks in two ways:
 # No command needed - use the interface:
 # 1. Click the "Upload Playbook" button
 # 2. Select your Markdown file (.md)
+# 3. The playbook will appear in your list of available playbooks
 ```
 
 ## Markdown Basics for Playbooks
@@ -73,7 +75,7 @@ For command blocks to be most effective:
 1. Use ```bash for proper syntax highlighting
 2. Include comments to explain complex commands
 3. Keep commands focused on single tasks
-4. Use variables for values that might change
+4. Use variables for values that might change (using the proper $varName format)
 
 ## Example: Creating a System Info Playbook
 
@@ -105,7 +107,7 @@ free -m
 
 ### List Running Processes
 \`\`\`bash
-ps aux | grep \$PROCESS_NAME
+ps aux | grep $PROCESS_NAME
 \`\`\`
 
 ### Process Resource Usage
@@ -118,9 +120,9 @@ top -n 1
 
 After creating a playbook:
 
-1. Test each command to ensure it works
-2. Verify variable substitution is working
-3. Check formatting and readability
+1. Test each command by using the "Execute" button
+2. Verify variable substitution is working correctly
+3. Check formatting and readability 
 4. Consider adding examples of expected output
 
 ## Sharing Playbooks

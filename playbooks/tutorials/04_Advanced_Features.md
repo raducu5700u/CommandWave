@@ -12,7 +12,7 @@ CommandWave allows you to create and manage multiple terminal sessions simultane
 # No command needed - use the interface to:
 # 1. Create terminals with the '+' button
 # 2. Switch between them by clicking on tabs
-# 3. Rename terminals by right-clicking on a tab
+# 3. Rename terminals by double-clicking on a tab name
 ```
 
 ### Terminal History
@@ -33,7 +33,8 @@ CommandWave provides both global notes and tab-specific notes:
 
 ```bash
 # No command needed - click "Global Notes" or "Tab Notes" buttons
-# Notes are markdown-compatible
+# Notes are markdown-compatible and persist between sessions
+# Tab notes are specific to each terminal tab
 ```
 
 ### Playbook Search
@@ -42,7 +43,8 @@ Quickly find commands across all your playbooks:
 
 ```bash
 # No command needed - use the search box at the top
-# Try searching for keywords from your playbooks
+# Results will show matches from all available playbooks
+# Click on a search result to load that playbook
 ```
 
 ## Customization Options
@@ -53,14 +55,15 @@ Create complex workflows with custom variables:
 
 ```bash
 # Define multiple related variables for a workflow
+# Remember to give variables clear titles and reference names
 # Example variables for a deployment scenario:
-# TARGET_SERVER
-# DEPLOY_PATH
-# APP_NAME
-# VERSION
+# Title: Target Server | Reference: $targetServer
+# Title: Deploy Path | Reference: $deployPath 
+# Title: App Name | Reference: $appName
+# Title: Version | Reference: $version
 
 # Then use them together
-ssh $USER@$TARGET_SERVER "mkdir -p $DEPLOY_PATH/$APP_NAME-$VERSION"
+ssh $username@$targetServer "mkdir -p $deployPath/$appName-$version"
 ```
 
 ### Tmux Integration
@@ -84,30 +87,51 @@ tmux split-window -h
 
 ```bash
 # Clone a repository
-git clone $REPO_URL
+git clone $repoUrl
 
 # Create a new branch
-git checkout -b feature/$FEATURE_NAME
+git checkout -b feature/$featureName
 
 # After making changes
 git add .
-git commit -m "Added $FEATURE_NAME functionality"
-git push origin feature/$FEATURE_NAME
+git commit -m "Added $featureName functionality"
+git push origin feature/$featureName
 ```
 
 ### Continuous Integration Example
 
 ```bash
 # Run tests before deployment
-cd $PROJECT_DIR
+cd $projectDir
 npm test
 
-# If tests pass, deploy
-if [ $? -eq 0 ]; then
-  npm run deploy
-else
-  echo "Tests failed, deployment aborted"
-fi
+# Build the application
+npm run build
+
+# Deploy to server
+scp -r ./dist/* $username@$serverAddress:$deployPath
+```
+
+### File Management
+
+```bash
+# Find large files on the system
+find / -type f -size +100M -exec ls -lh {} \; 2>/dev/null | sort -rh | head -n 10
+
+# Perform a backup of important directories
+tar -czvf backup-$(date +%Y%m%d).tar.gz $backupDir
+```
+
+## Error Handling
+
+CommandWave provides clear error messages for common issues:
+
+```bash
+# If you attempt to use an undefined variable, you'll see:
+echo "This will show an undefined variable: $undefinedVariable"
+
+# If a command fails, you'll see the error in the terminal
+ls /nonexistent_directory
 ```
 
 ## Security Features
@@ -169,3 +193,7 @@ ps aux | grep ttyd
 # Check available ports
 netstat -tuln | grep 7681
 ```
+
+## Next Steps
+
+Now that you've completed all the tutorials, you're ready to create your own custom playbooks and workflows. Remember that you can always refer back to these tutorials or check the [CommandWave GitHub repository](https://github.com/Journey-West/CommandWave) for updates.

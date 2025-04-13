@@ -610,7 +610,7 @@
                 <div class="feature-card">
                     <div class="feature-icon"><i class="fas fa-code"></i></div>
                     <h3 class="feature-title">Variable Substitution</h3>
-                    <p class="feature-desc">Define variables and substitute them in code blocks before execution.</p>
+                    <p class="feature-desc">Define variables with user-friendly titles and reference names that are automatically substituted into code blocks before execution.</p>
                 </div>
                 <div class="feature-card">
                     <div class="feature-icon"><i class="fas fa-play"></i></div>
@@ -678,6 +678,8 @@
                     <h3 class="step-number">Step 4: Run CommandWave</h3>
                     <code>python main.py --use-default-tmux-config</code>
                     <p class="step-desc">Open your web browser and navigate to <code>http://localhost:5000</code></p>
+                    <p class="step-desc">Additional command line options:</p>
+                    <code>--hostname HOSTNAME  # Specify hostname for terminal connections (default: localhost)<br>--remote            # Enable remote access by binding to all interfaces<br>--port PORT        # Specify web server port (default: 5000)</code>
                 </div>
             </div>
         </section>
@@ -704,16 +706,24 @@
                 <div class="usage-item">
                     <h3 class="usage-title">Variables</h3>
                     <ul class="usage-desc">
-                        <li>Use the "Variables" section to define key-value pairs</li>
+                        <li>Use the "Variables" section to define variables for your playbooks</li>
                         <li>Click "+ Add Variable" to create custom variables</li>
-                        <li>Variables will be substituted in playbook code blocks using the $MyVar format</li>
+                        <li>Each variable has two parts:
+                            <ul style="margin-top: 0.5rem;">
+                                <li style="margin-bottom: 0.4rem;">Variable Title: User-friendly display name (can include spaces)</li>
+                                <li>Variable Reference: Actual reference used in code (no spaces allowed)</li>
+                            </ul>
+                        </li>
+                        <li>Variables will be substituted when you click "Execute" on a code block</li>
                     </ul>
                 </div>
                 <div class="usage-item">
                     <h3 class="usage-title">Playbooks</h3>
                     <ul class="usage-desc">
                         <li>Click "Upload Playbook" to load .md files</li>
-                        <li>Click "Create New Playbook" to author a new playbook</li>
+                        <li>Click "Create Playbook" to author a new playbook</li>
+                        <li>Links within playbooks to other .md files will load those playbooks</li>
+                        <li>External links open in new tabs with proper security attributes</li>
                         <li>Click "Execute" to send code to the active terminal tab</li>
                     </ul>
                 </div>
@@ -722,7 +732,15 @@
                     <ul class="usage-desc">
                         <li>Use the search bar to find content within playbooks</li>
                         <li>Results show filename, line number, and content</li>
-                        <li>Copy, execute, or import commands from search results</li>
+                        <li>Click on a result to open that playbook</li>
+                    </ul>
+                </div>
+                <div class="usage-item">
+                    <h3 class="usage-title">Error Handling</h3>
+                    <ul class="usage-desc">
+                        <li>The application displays dedicated error modals with clear messages</li>
+                        <li>Error messages include guidance on how to resolve common issues</li>
+                        <li>Validation prevents common errors in variable names and playbook formatting</li>
                     </ul>
                 </div>
             </div>

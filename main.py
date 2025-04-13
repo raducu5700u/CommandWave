@@ -616,25 +616,85 @@ def search_playbooks():
             'error': str(e)
         }), 500
 
+@app.route('/api/playbooks/save', methods=['POST'])
+def save_playbook():
+    """Save a playbook file to the playbooks directory."""
+    try:
+        # Get the JSON data from the request
+        data = request.get_json()
+        if not data or 'filename' not in data or 'content' not in data:
+            return jsonify({
+                'success': False,
+                'error': 'Missing required fields: filename and content'
+            }), 400
+            
+        filename = data['filename']
+        content = data['content']
+        
+        # Sanitize the filename to prevent directory traversal
+        sanitized_filename = os.path.basename(filename)
+        if not sanitized_filename.endswith('.md'):
+            sanitized_filename += '.md'
+            
+        # Create full file path
+        file_path = os.path.join(PLAYBOOKS_DIR, sanitized_filename)
+        
+        # Write the content to the file
+        with open(file_path, 'w', encoding='utf-8') as f:
+            f.write(content)
+            
+        logger.info(f"Saved playbook: {sanitized_filename}")
+        
+        return jsonify({
+            'success': True,
+            'filename': sanitized_filename
+        })
+    except Exception as e:
+        logger.error(f"Error saving playbook: {e}")
+        return jsonify({
+            'success': False,
+            'error': str(e)
+        }), 500
+
 @app.route('/api/playbooks/load/<path:filename>', methods=['GET'])
 def load_playbook(filename):
     """Load a specific playbook file."""
     # Sanitize the filename to prevent directory traversal
     sanitized_filename = os.path.basename(filename)
     if sanitized_filename != filename:
-        return jsonify({
-            'success': False,
-            'error': 'Invalid filename'
-        }), 400
-    
-    file_path = os.path.join(PLAYBOOKS_DIR, sanitized_filename)
+        # Check if it might be in a subdirectory
+        parts = filename.split('/')
+        if len(parts) > 1 and all(p and not p.startswith('..') for p in parts):
+            # It could be a valid subdirectory path, attempt to load
+            file_path = os.path.join(PLAYBOOKS_DIR, *parts)
+        else:
+            return jsonify({
+                'success': False,
+                'error': 'Invalid filename'
+            }), 400
+    else:
+        # Try to find in root playbooks directory first
+        file_path = os.path.join(PLAYBOOKS_DIR, sanitized_filename)
+        
+        # If not found in root, check if it exists in subdirectories
+        if not os.path.exists(file_path) or not os.path.isfile(file_path):
+            # Search in subdirectories
+            for subdir, _, files in os.walk(PLAYBOOKS_DIR):
+                if sanitized_filename in files:
+                    file_path = os.path.join(subdir, sanitized_filename)
+                    break
     
     # Check if the file exists
     if not os.path.exists(file_path) or not os.path.isfile(file_path):
-        return jsonify({
-            'success': False,
-            'error': f'File not found: {sanitized_filename}'
-        }), 404
+        # If still not found, check specifically in tutorials directory as fallback
+        tutorials_path = os.path.join(PLAYBOOKS_DIR, 'tutorials', sanitized_filename)
+        if os.path.exists(tutorials_path) and os.path.isfile(tutorials_path):
+            file_path = tutorials_path
+        else:
+            return jsonify({
+                'success': False,
+                'error': f'File not found: {filename}'
+            }), 404
     
     # Check if the file has .md extension
     if not file_path.endswith('.md'):
@@ -648,9 +708,13 @@ def load_playbook(filename):
         with open(file_path, 'r', encoding='utf-8') as f:
             content = f.read()
         
+        # Use the relative path from PLAYBOOKS_DIR for the returned filename
+        relative_path = os.path.relpath(file_path, PLAYBOOKS_DIR)
+        
         return jsonify({
             'success': True,
             'filename': sanitized_filename,
+            'path': relative_path,
             'content': content
         })
     except Exception as e:

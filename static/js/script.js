@@ -406,7 +406,7 @@ document.addEventListener('DOMContentLoaded', function() {
         })
         .catch(error => {
             console.error(`Error closing terminal on port ${port}:`, error);
-            showErrorModal('Failed to communicate with server');
+            showModal('themeModal', 'Failed to communicate with server');
         });
     }
 
@@ -463,7 +463,11 @@ document.addEventListener('DOMContentLoaded', function() {
         // Initialize with empty values for all variable inputs
         document.querySelectorAll('.variable-input input').forEach(input => {
             const varName = input.id;
-            window.state.terminals[terminalId].variables[varName] = '';
+            window.state.terminals[terminalId].variables[varName] = {
+                title: input.placeholder,
+                name: varName,
+                value: ''
+            };
         });
     }
 
@@ -479,7 +483,7 @@ document.addEventListener('DOMContentLoaded', function() {
         document.querySelectorAll('.variable-input input').forEach(input => {
             input.addEventListener('input', function() {
                 if (window.state.activeTerminal) {
-                    window.state.terminals[window.state.activeTerminal].variables[this.name] = this.value;
+                    window.state.terminals[window.state.activeTerminal].variables[this.name].value = this.value;
                     updateVariableSubstitutions();
                 }
             });
@@ -505,8 +509,8 @@ document.addEventListener('DOMContentLoaded', function() {
             
             document.querySelectorAll('.variable-input input').forEach(input => {
                 const varName = input.name;
-                if (variables[varName] !== undefined) {
-                    input.value = variables[varName];
+                if (variables[varName]) {
+                    input.value = variables[varName].value;
                 } else {
                     input.value = '';
                 }
@@ -524,12 +528,12 @@ document.addEventListener('DOMContentLoaded', function() {
             
             // Perform variable substitution
             for (const [key, value] of Object.entries(variables)) {
-                if (value) {
+                if (value.value) {
                     // Convert variable name to match the format in the playbooks
                     // For example, 'targetIP' becomes '$TargetIP'
                     const placeholder = '$' + key.charAt(0).toUpperCase() + key.slice(1);
                     const regex = new RegExp(escapeRegExp(placeholder), 'g');
-                    content = content.replace(regex, `<span class="substituted">${value}</span>`);
+                    content = content.replace(regex, `<span class="substituted">${value.value}</span>`);
                 }
             }
             
@@ -549,11 +553,11 @@ document.addEventListener('DOMContentLoaded', function() {
         
         // Perform variable substitution
         for (const [key, value] of Object.entries(variables)) {
-            if (value) {
+            if (value.value) {
                 // Convert variable name to match the format in the playbooks
                 const placeholder = '$' + key.charAt(0).toUpperCase() + key.slice(1);
                 const regex = new RegExp(escapeRegExp(placeholder), 'g');
-                content = content.replace(regex, value);
+                content = content.replace(regex, value.value);
             }
         }
         
@@ -566,43 +570,80 @@ document.addEventListener('DOMContentLoaded', function() {
         const closeBtn = modal.querySelector('.close-modal-btn');
         const cancelBtn = document.getElementById('cancelVariableBtn');
         const submitBtn = document.getElementById('createVariableSubmitBtn');
+        const titleInput = document.getElementById('newVariableTitle');
         const nameInput = document.getElementById('newVariableName');
         const valueInput = document.getElementById('newVariableValue');
         
         // Show modal
         modal.style.display = 'block';
-        nameInput.focus();
+        titleInput.focus();
+        
+        // Clear any previous event listeners by cloning and replacing elements
+        const newSubmitBtn = submitBtn.cloneNode(true);
+        submitBtn.parentNode.replaceChild(newSubmitBtn, submitBtn);
+        
+        const newCloseBtn = closeBtn.cloneNode(true);
+        closeBtn.parentNode.replaceChild(newCloseBtn, closeBtn);
+        
+        const newCancelBtn = cancelBtn.cloneNode(true);
+        cancelBtn.parentNode.replaceChild(newCancelBtn, cancelBtn);
+        
+        // Use the new references for all event listeners
+        const modalCloseBtn = document.querySelector('#newVariableModal .close-modal-btn');
+        const modalCancelBtn = document.getElementById('cancelVariableBtn');
+        const modalSubmitBtn = document.getElementById('createVariableSubmitBtn');
         
         // Close modal functions
         function closeModal() {
             modal.style.display = 'none';
+            titleInput.value = '';
             nameInput.value = '';
             valueInput.value = '';
+            // Remove outside click handler when modal is closed
+            window.removeEventListener('click', windowClickHandler);
         }
         
-        // Setup event listeners
-        closeBtn.addEventListener('click', closeModal);
-        cancelBtn.addEventListener('click', closeModal);
-        
         // Close when clicking outside of the modal content
-        window.addEventListener('click', function(event) {
+        function windowClickHandler(event) {
             if (event.target === modal) {
                 closeModal();
             }
-        });
+        }
+        
+        // Setup event listeners
+        modalCloseBtn.addEventListener('click', closeModal);
+        modalCancelBtn.addEventListener('click', closeModal);
+        window.addEventListener('click', windowClickHandler);
         
         // Handle form submission
-        submitBtn.addEventListener('click', function() {
-            const name = nameInput.value.trim();
+        modalSubmitBtn.addEventListener('click', function() {
+            const title = titleInput.value.trim();
+            let varName = nameInput.value.trim();
             const value = valueInput.value.trim();
             
-            if (!name) {
-                showModal('themeModal', 'Please enter a name for the variable');
+            if (!title) {
+                showErrorModal('Please enter a title for the variable');
                 return;
             }
             
+            if (!varName) {
+                showErrorModal('Please enter a variable reference');
+                return;
+            }
+            
+            // Check for spaces in the variable name
+            if (varName.includes(' ')) {
+                showErrorModal('Variable reference cannot contain spaces. Use camelCase or snake_case instead.');
+                return;
+            }
+            
+            // Add $ prefix if it's not already there
+            if (!varName.startsWith('$')) {
+                varName = '$' + varName;
+            }
+            
             // Create the variable
-            addCustomVariable(name, value);
+            addCustomVariable(title, varName, value);
             
             // Close modal
             closeModal();
@@ -612,22 +653,27 @@ document.addEventListener('DOMContentLoaded', function() {
         valueInput.addEventListener('keydown', function(e) {
             if (e.key === 'Enter') {
                 e.preventDefault();
-                submitBtn.click();
+                modalSubmitBtn.click();
             }
         });
     }
     
-    function addCustomVariable(name, value = '') {
+    function addCustomVariable(title, name, value = '') {
         if (!window.state.activeTerminal || !name) return;
         
-        // Add to state
-        window.state.terminals[window.state.activeTerminal].variables[name] = value;
+        // Add to state - store both title and name
+        const varKey = name.replace(/^\$/, ''); // Strip $ for state storage
+        window.state.terminals[window.state.activeTerminal].variables[varKey] = {
+            title: title,
+            name: name,
+            value: value
+        };
         
         // Create variable input row
         const varContainer = document.querySelector('.variable-inputs');
         
         // Check if variable already exists
-        const existingVar = document.getElementById(`var-${name}`);
+        const existingVar = document.getElementById(`var-${varKey}`);
         if (existingVar) {
             // Update the value
             existingVar.querySelector('input').value = value;
@@ -637,24 +683,24 @@ document.addEventListener('DOMContentLoaded', function() {
         // Create new variable input
         const varInput = document.createElement('div');
         varInput.className = 'variable-input custom-variable';
-        varInput.id = `var-${name}`;
+        varInput.id = `var-${varKey}`;
         
         varInput.innerHTML = `
-            <label for="var-input-${name}">${name}:</label>
-            <input type="text" id="var-input-${name}" name="${name}" placeholder="$${name.charAt(0).toUpperCase() + name.slice(1)}" value="${value || ''}">
+            <label for="var-input-${varKey}">${title}:</label>
+            <input type="text" id="var-input-${varKey}" name="${varKey}" placeholder="${name}" value="${value || ''}">
             <button class="remove-variable-btn" title="Remove variable">&times;</button>
         `;
         
         // Add event listener to remove button
         varInput.querySelector('.remove-variable-btn').addEventListener('click', function() {
             varInput.remove();
-            delete window.state.terminals[window.state.activeTerminal].variables[name];
+            delete window.state.terminals[window.state.activeTerminal].variables[varKey];
             updateVariableSubstitutions();
         });
         
         // Add event listener to input
         varInput.querySelector('input').addEventListener('input', function() {
-            window.state.terminals[window.state.activeTerminal].variables[name] = this.value;
+            window.state.terminals[window.state.activeTerminal].variables[varKey].value = this.value;
             updateVariableSubstitutions();
         });
         
@@ -878,6 +924,25 @@ document.addEventListener('DOMContentLoaded', function() {
      * @return {Array} - Array of code blocks and text blocks
      */
     window.parseMarkdown = function(content) {
+        // Configure marked.js to open all links in new tabs and prevent navigation away
+        marked.setOptions({
+            renderer: (function() {
+                const renderer = new marked.Renderer();
+                // Override link renderer to add target="_blank" and rel attributes
+                renderer.link = function(href, title, text) {
+                    // Check if it's an internal markdown link (no http/https)
+                    if (!href.startsWith('http') && href.endsWith('.md')) {
+                        // It's an internal markdown file link - handle with importPlaybook
+                        return `<a href="javascript:void(0)" onclick="window.importPlaybook('${href}')" title="${title || 'Open playbook'}">${text}</a>`;
+                    } else {
+                        // External link - open in new tab
+                        return `<a href="${href}" target="_blank" rel="noopener noreferrer" title="${title || ''}">${text}</a>`;
+                    }
+                };
+                return renderer;
+            })()
+        });
+        
         // Use marked.js to parse the Markdown
         const tokens = marked.lexer(content);
         const blocks = [];
@@ -926,11 +991,6 @@ document.addEventListener('DOMContentLoaded', function() {
     window.displayPlaybook = function(playbook, terminalId) {
         const playbooksContainer = document.getElementById('playbooks');
         if (!playbooksContainer) return;
-        
-        // Clear the playbooks container first if we're switching tabs
-        if (terminalId) {
-            playbooksContainer.innerHTML = '';
-        }
         
         // Use the active terminal if no specific terminal ID provided
         const targetTerminal = terminalId || window.state.activeTerminal;
@@ -1494,11 +1554,11 @@ document.addEventListener('DOMContentLoaded', function() {
                                 
                                 // Perform variable substitution
                                 for (const [key, value] of Object.entries(variables)) {
-                                    if (value) {
+                                    if (value.value) {
                                         // Convert variable name to match the format in the playbooks
                                         const placeholder = '$' + key.charAt(0).toUpperCase() + key.slice(1);
                                         const regex = new RegExp(escapeRegExp(placeholder), 'g');
-                                        commandToExecute = commandToExecute.replace(regex, `<span class="substituted">${value}</span>`);
+                                        commandToExecute = commandToExecute.replace(regex, `<span class="substituted">${value.value}</span>`);
                                     }
                                 }
                             }
@@ -1597,7 +1657,11 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     }
 
-    function importPlaybook(filename) {
+    /**
+     * Import a playbook from the server
+     * @param {string} filename - Filename of the playbook to import
+     */
+    window.importPlaybook = function(filename) {
         // Ensure we have an active terminal
         if (!window.state.activeTerminal || !window.state.terminals[window.state.activeTerminal]) {
             console.error('No active terminal for playbook import');
@@ -1632,11 +1696,14 @@ document.addEventListener('DOMContentLoaded', function() {
                     if (resultsContainer) {
                         resultsContainer.style.display = 'none';
                     }
+                } else if (!data.success) {
+                    console.error('Error importing playbook:', data.error);
+                    showErrorModal(`Failed to import playbook: ${data.error}`);
                 }
             })
             .catch(error => {
                 console.error('Error importing playbook:', error);
-                showModal('themeModal', 'Failed to import playbook');
+                showErrorModal('Failed to import playbook. Check the console for details.');
             });
     }
 
@@ -1823,7 +1890,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 if (input) {
                     input.addEventListener('input', function() {
                         if (window.state.activeTerminal) {
-                            window.state.terminals[window.state.activeTerminal].variables[this.id] = this.value;
+                            window.state.terminals[window.state.activeTerminal].variables[this.id].value = this.value;
                             updateVariableSubstitutions();
                         }
                     });
@@ -1853,7 +1920,11 @@ document.addEventListener('DOMContentLoaded', function() {
                     if (!window.state.terminals[terminalId].variables) {
                         window.state.terminals[terminalId].variables = {};
                     }
-                    window.state.terminals[terminalId].variables[variableName] = '';
+                    window.state.terminals[terminalId].variables[variableName] = {
+                        title: displayName,
+                        name: placeholderName,
+                        value: ''
+                    };
                 });
             });
         }
@@ -1929,6 +2000,9 @@ echo "This is my first step"
         // Close modal functions
         function closeModal() {
             modal.style.display = 'none';
+            // Reset inputs for next time
+            nameInput.value = '';
+            contentInput.value = '';
         }
         
         closeBtn.addEventListener('click', closeModal);
@@ -1942,45 +2016,70 @@ echo "This is my first step"
         });
         
         // Handle form submission
-        submitBtn.addEventListener('click', createPlaybook);
-        
-        function createPlaybook() {
+        submitBtn.addEventListener('click', function() {
             try {
-                // Get the editor content
-                const editor = document.getElementById('playbook-editor');
-                if (editor && editor.value.trim()) {
-                    const content = editor.value;
-                    const filename = document.getElementById('playbook-name').value || 'new_playbook.md';
-                    
-                    // Validate filename
-                    const validatedFilename = filename.endsWith('.md') ? filename : `${filename}.md`;
-                    
-                    // Create playbook object
-                    const playbook = {
-                        filename: validatedFilename,
-                        content: content,
-                        blocks: parseMarkdown(content)
-                    };
-                    
-                    // Store in active terminal's playbooks
-                    if (window.state.activeTerminal && window.state.terminals[window.state.activeTerminal]) {
-                        window.state.terminals[window.state.activeTerminal].playbooks[validatedFilename] = playbook;
-                    }
-                    
-                    // Display the playbook
-                    displayPlaybook(playbook);
-                    
-                    // Close the modal
-                    const modal = document.getElementById('createPlaybookModal');
-                    if (modal) {
-                        modal.style.display = 'none';
-                    }
+                // Get the form values from the correct inputs
+                const content = contentInput.value.trim();
+                let filename = nameInput.value.trim();
+                
+                if (!filename) {
+                    showErrorModal('Please enter a playbook name');
+                    return;
                 }
+                
+                if (!content) {
+                    showErrorModal('Please enter playbook content');
+                    return;
+                }
+                
+                // Validate filename
+                const validatedFilename = filename.endsWith('.md') ? filename : `${filename}.md`;
+                
+                // Create playbook object
+                const playbook = {
+                    filename: validatedFilename,
+                    content: content,
+                    blocks: parseMarkdown(content)
+                };
+                
+                // Store in active terminal's playbooks
+                if (window.state.activeTerminal && window.state.terminals[window.state.activeTerminal]) {
+                    window.state.terminals[window.state.activeTerminal].playbooks[validatedFilename] = playbook;
+                }
+                
+                // Display the playbook
+                displayPlaybook(playbook);
+                
+                // Save the playbook to the server
+                fetch('/api/playbooks/save', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({ 
+                        filename: validatedFilename, 
+                        content: content 
+                    }),
+                })
+                .then(response => response.json())
+                .then(data => {
+                    if (!data.success) {
+                        console.error('Error saving playbook:', data.error);
+                        showErrorModal(`Failed to save playbook: ${data.error}`);
+                    }
+                })
+                .catch(error => {
+                    console.error('Error saving playbook:', error);
+                    showErrorModal(`Failed to save playbook: ${error.message}`);
+                });
+                
+                // Close the modal
+                closeModal();
             } catch (error) {
                 console.error('Error creating playbook:', error);
-                showModal('themeModal', `Failed to create playbook: ${error.message}`);
+                showErrorModal(`Failed to create playbook: ${error.message}`);
             }
-        }
+        });
     }
     
     /**
@@ -2085,66 +2184,27 @@ echo "This is my first step"
      * @param {string} message - The error message to display
      */
     function showErrorModal(message) {
-        // Check if error modal already exists
-        let errorModal = document.getElementById('errorModal');
-        
-        // Create modal if it doesn't exist
-        if (!errorModal) {
-            errorModal = document.createElement('div');
-            errorModal.id = 'errorModal';
-            errorModal.className = 'modal';
-            
-            errorModal.innerHTML = `
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <h2>Error</h2>
-                        <span class="close-modal-btn">&times;</span>
-                    </div>
-                    <div class="modal-body">
-                        <p id="errorMessage"></p>
-                    </div>
-                    <div class="modal-footer">
-                        <button class="modal-btn" id="errorCloseBtn">CLOSE</button>
-                    </div>
-                </div>
-            `;
-            
-            document.body.appendChild(errorModal);
-            
-            // Set up close button functionality
-            const closeBtn = errorModal.querySelector('.close-modal-btn');
-            const confirmBtn = errorModal.querySelector('#errorCloseBtn');
-            
-            const closeModal = function() {
-                errorModal.style.display = 'none';
-            };
-            
-            closeBtn.addEventListener('click', closeModal);
-            confirmBtn.addEventListener('click', closeModal);
-            
-            // Close when clicking outside the modal
-            window.addEventListener('click', function(event) {
-                if (event.target === errorModal) {
-                    closeModal();
-                }
-            });
-            
-            // Close on ESC key
-            document.addEventListener('keyup', function(e) {
-                if (e.key === 'Escape' && errorModal.style.display === 'flex') {
-                    closeModal();
-                }
-            });
-        }
+        const modal = document.getElementById('errorModal');
+        if (!modal) return;
         
         // Set the error message
-        const errorMessage = errorModal.querySelector('#errorMessage');
+        const errorMessage = document.getElementById('errorMessage');
         if (errorMessage) {
             errorMessage.textContent = message;
         }
         
-        // Show the modal
-        errorModal.style.display = 'flex';
+        // Display the modal
+        modal.style.display = 'block';
+        
+        // Add ESC key to close modal
+        const escHandler = function(e) {
+            if (e.key === 'Escape') {
+                modal.style.display = 'none';
+                window.removeEventListener('keydown', escHandler);
+            }
+        };
+        
+        window.addEventListener('keydown', escHandler);
     }
 
     /**

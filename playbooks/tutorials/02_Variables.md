@@ -26,7 +26,9 @@ You can create variables in two ways:
 # No command needed - use the interface:
 # 1. Locate the "Variables" section in the sidebar
 # 2. Click the "Add Variable" button
-# 3. Enter variable name and value
+# 3. Enter a Variable Title (user-friendly display name)
+# 4. Enter a Variable reference (no spaces allowed, automatically prefixed with $)
+# 5. Optionally provide an initial value
 ```
 
 ### 2. Defining Variables in the Terminal
@@ -70,9 +72,10 @@ cp -r $TARGET_DIR $BACKUP_DIR/logs_$(date +%Y%m%d)
 
 ## Best Practices
 
-1. Use descriptive variable names in UPPER_CASE
-2. Group related variables together
-3. Set default values for common scenarios
+1. Use clear, descriptive titles for your variables
+2. Avoid spaces in variable references (use camelCase or snake_case)
+3. Group related variables together
+4. Set default values for common scenarios
 
 ```bash
 # Example of setting default values if not already defined
@@ -104,4 +107,3 @@ Practice by creating and using variables:
 # 1. Create TARGET_PATH variable in the Variables panel
 # 2. Run this command to see its value
 ls -la $TARGET_PATH
-```
