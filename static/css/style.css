@@ -1395,9 +1395,10 @@ header {
     color: var(--neon-pink);
 }
 
-.notes-textarea {
+.notes-textarea, #globalNotesText, #tabNotesText {
     flex: 1;
     width: 100%;
+    height: 100%;
     background-color: var(--notes-panel-bg);
     border: none;
     color: var(--text-primary);
@@ -1406,6 +1407,9 @@ header {
     resize: none;
     outline: none;
     padding: 0.5rem;
+    box-sizing: border-box;
+    min-height: calc(100% - 80px); /* Account for header */
+    overflow-y: auto;
 }
 
 /* Responsive Design */
