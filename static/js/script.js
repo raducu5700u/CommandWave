@@ -141,6 +141,9 @@ document.addEventListener('DOMContentLoaded', function() {
     // Setup toggle functionality for the variables section
     setupVariablesToggle();
 
+    // Setup terminal resize functionality
+    setupTerminalResize();
+
     /**
      * Terminal Management Functions
      */
@@ -2452,5 +2455,40 @@ echo "This is my first step"
                 }
             });
         }
+    }
+
+    /**
+     * Terminal Resize Handler
+     * Ensures terminal fills available space and handles window resize events
+     */
+    function setupTerminalResize() {
+        const terminalContainer = document.querySelector('.terminal-container');
+        const terminalIframes = document.querySelectorAll('.terminal-iframe');
+        
+        // Function to set proper iframe dimensions
+        function resizeTerminals() {
+            terminalIframes.forEach(iframe => {
+                // Force a resize by sending a command to ttyd
+                try {
+                    if (iframe.contentWindow && iframe.contentWindow.document) {
+                        const resizeEvent = new Event('resize');
+                        iframe.contentWindow.dispatchEvent(resizeEvent);
+                    }
+                } catch (e) {
+                    // Cross-origin frame access might be restricted
+                    // This is expected and can be ignored
+                }
+            });
+        }
+        
+        // Resize on window resize
+        window.addEventListener('resize', resizeTerminals);
+        
+        // Initial resize
+        resizeTerminals();
+        
+        // Additional resize attempts after iframe content might have loaded
+        setTimeout(resizeTerminals, 1000);  // 1 second
+        setTimeout(resizeTerminals, 3000);  // 3 seconds
     }
 });
