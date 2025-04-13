@@ -100,6 +100,55 @@
     --header-border: rgba(0, 131, 176, 0.3);
 }
 
+/* Witch Hazel Theme Variables */
+[data-theme="witchhazel"] {
+    --background-dark: #282634;
+    --background-medium: #332e41;
+    --text-primary: #f8f8f2;
+    --text-secondary: #c5b5e0;
+    --neon-blue: #81ffff;
+    --neon-purple: #b45bcf;
+    --neon-pink: #ff79c6;
+    --neon-yellow: #f4d554;
+    --neon-green: #8bff80;
+    --accent: #ff79c6;
+    --border-light: rgba(129, 255, 255, 0.2);
+    --shadow-blue: 0 0 10px rgba(129, 255, 255, 0.5);
+    --shadow-pink: 0 0 10px rgba(255, 121, 198, 0.5);
+    --shadow-purple: 0 0 10px rgba(180, 91, 207, 0.5);
+    --shadow-yellow: 0 0 10px rgba(244, 213, 84, 0.5);
+    --shadow-green: 0 0 10px rgba(139, 255, 128, 0.5);
+    
+    /* Terminal Area */
+    --terminal-background: rgba(40, 38, 52, 0.9);
+    --terminal-border: rgba(129, 255, 255, 0.3);
+    --terminal-shadow: var(--shadow-purple);
+    
+    /* Modal styling */
+    --modal-background: #282634;
+    --modal-border: rgba(180, 91, 207, 0.5);
+    --modal-header-bg: linear-gradient(90deg, #332e41, #282634);
+    --modal-footer-bg: linear-gradient(90deg, #282634, #332e41);
+    
+    /* Code blocks */
+    --code-background: #282634;
+    --code-border: rgba(129, 255, 255, 0.3);
+    --code-text: #f8f8f2;
+    
+    /* Input fields */
+    --input-bg: #1e1d2a;
+    --input-border: rgba(180, 91, 207, 0.3);
+    --input-text: var(--text-primary);
+    
+    /* Notes panels */
+    --notes-panel-bg: var(--background-medium);
+    --notes-panel-border: rgba(180, 91, 207, 0.3);
+    
+    /* Header */
+    --header-background: rgba(40, 38, 52, 0.8);
+    --header-border: rgba(180, 91, 207, 0.3);
+}
+
 * {
     margin: 0;
     padding: 0;
@@ -124,6 +173,13 @@ body {
         radial-gradient(circle at 10% 20%, rgba(0, 131, 176, 0.05) 0%, transparent 20%),
         radial-gradient(circle at 90% 80%, rgba(130, 69, 191, 0.05) 0%, transparent 20%),
         radial-gradient(circle at 50% 50%, rgba(209, 39, 101, 0.05) 0%, transparent 40%);
+}
+
+[data-theme="witchhazel"] body {
+    background-image: 
+        radial-gradient(circle at 10% 20%, rgba(129, 255, 255, 0.05) 0%, transparent 20%),
+        radial-gradient(circle at 90% 80%, rgba(180, 91, 207, 0.05) 0%, transparent 20%),
+        radial-gradient(circle at 50% 50%, rgba(255, 121, 198, 0.05) 0%, transparent 40%);
 }
 
 header {
@@ -2147,6 +2203,32 @@ button[data-action="execute"]:hover {
     box-shadow: 0 0 5px #d12765;
 }
 
+.theme-preview.witchhazel {
+    background: linear-gradient(135deg, #282634 0%, #332e41 100%);
+}
+
+.theme-preview.witchhazel:before {
+    content: '';
+    position: absolute;
+    width: 60%;
+    height: 1px;
+    background: var(--neon-blue);
+    top: 30%;
+    left: 10%;
+    box-shadow: 0 0 10px #81ffff;
+}
+
+.theme-preview.witchhazel:after {
+    content: '';
+    position: absolute;
+    width: 40%;
+    height: 1px;
+    background: #ff79c6;
+    top: 60%;
+    left: 30%;
+    box-shadow: 0 0 10px #ff79c6;
+}
+
 .theme-option.active .theme-preview {
     border-color: var(--neon-purple);
     box-shadow: 0 0 15px var(--neon-purple);
@@ -2300,9 +2382,9 @@ button[data-action="execute"]:hover {
 /* Substituted variables in code */
 .substituted {
     background-color: rgba(15, 255, 80, 0.1);
-    color: var(--neon-green);
-    border-radius: 3px;
-    padding: 0 4px;
+    color: var(--neon-green) !important;
+    padding: 0 2px;
+    border-radius: 2px;
     font-weight: bold;
 }
 
@@ -3042,4 +3124,97 @@ button[data-action="execute"]:hover {
 
 [data-theme="light"] .usage-desc li::before {
     color: #0083b0;
+}
+
+/* Witch Hazel specific button styling for Copy and Execute */
+[data-theme="witchhazel"] .copy-btn {
+    background-color: rgba(180, 91, 207, 0.1);
+    color: #b45bcf;
+    border: 1px solid #b45bcf;
+    box-shadow: 0 0 5px rgba(180, 91, 207, 0.3);
+}
+
+[data-theme="witchhazel"] .copy-btn:hover {
+    background-color: rgba(180, 91, 207, 0.2);
+    box-shadow: 0 0 10px rgba(180, 91, 207, 0.4);
+}
+
+[data-theme="witchhazel"] .execute-btn {
+    background-color: rgba(255, 121, 198, 0.1);
+    color: #ff79c6;
+    border: 1px solid #ff79c6;
+    box-shadow: 0 0 5px rgba(255, 121, 198, 0.3);
+}
+
+[data-theme="witchhazel"] .execute-btn:hover {
+    background-color: rgba(255, 121, 198, 0.2);
+    box-shadow: 0 0 10px rgba(255, 121, 198, 0.4);
+}
+
+[data-theme="witchhazel"] .result-action-btn.copy {
+    background-color: rgba(180, 91, 207, 0.15);
+    border: 1px solid #b45bcf;
+    color: #b45bcf;
+    text-shadow: 0 0 5px rgba(180, 91, 207, 0.7);
+}
+
+[data-theme="witchhazel"] .result-action-btn.copy:hover {
+    background-color: rgba(180, 91, 207, 0.3);
+    box-shadow: 0 0 8px rgba(180, 91, 207, 0.5);
+}
+
+[data-theme="witchhazel"] .result-action-btn.execute {
+    background-color: rgba(255, 121, 198, 0.15);
+    border: 1px solid #ff79c6;
+    color: #ff79c6;
+    text-shadow: 0 0 5px rgba(255, 121, 198, 0.7);
+}
+
+[data-theme="witchhazel"] .result-action-btn.execute:hover {
+    background-color: rgba(255, 121, 198, 0.3);
+    box-shadow: 0 0 8px rgba(255, 121, 198, 0.5);
+}
+
+/* Additional Witch Hazel button styling for the code block buttons in playbooks */
+[data-theme="witchhazel"] .code-action-btn.copy,
+[data-theme="witchhazel"] .code-block .copy {
+    background-color: rgba(180, 91, 207, 0.1);
+    color: #b45bcf !important;
+    border: 1px solid #b45bcf;
+    box-shadow: 0 0 5px rgba(180, 91, 207, 0.3);
+}
+
+[data-theme="witchhazel"] .code-action-btn.copy:hover,
+[data-theme="witchhazel"] .code-block .copy:hover {
+    background-color: rgba(180, 91, 207, 0.2);
+    box-shadow: 0 0 10px rgba(180, 91, 207, 0.4);
+}
+
+[data-theme="witchhazel"] .code-action-btn.execute,
+[data-theme="witchhazel"] .code-block .execute {
+    background-color: rgba(255, 121, 198, 0.1);
+    color: #ff79c6 !important;
+    border: 1px solid #ff79c6;
+    box-shadow: 0 0 5px rgba(255, 121, 198, 0.3);
+}
+
+[data-theme="witchhazel"] .code-action-btn.execute:hover,
+[data-theme="witchhazel"] .code-block .execute:hover {
+    background-color: rgba(255, 121, 198, 0.2);
+    box-shadow: 0 0 10px rgba(255, 121, 198, 0.4);
+}
+
+/* Also updating the Import button for consistency */
+[data-theme="witchhazel"] .import-btn,
+[data-theme="witchhazel"] .code-action-btn.import {
+    background-color: rgba(139, 255, 128, 0.1);
+    color: #8bff80 !important;
+    border: 1px solid #8bff80;
+    box-shadow: 0 0 5px rgba(139, 255, 128, 0.3);
+}
+
+[data-theme="witchhazel"] .import-btn:hover,
+[data-theme="witchhazel"] .code-action-btn.import:hover {
+    background-color: rgba(139, 255, 128, 0.2);
+    box-shadow: 0 0 10px rgba(139, 255, 128, 0.4);
 }

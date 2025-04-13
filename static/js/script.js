@@ -2386,13 +2386,15 @@ echo "This is my first step"
 
     /**
      * Apply the specified theme to the application
-     * @param {string} theme - The theme to apply ('dark' or 'light')
+     * @param {string} theme - The theme to apply ('dark', 'light', or 'witchhazel')
      */
     function applyTheme(theme) {
-        if (theme === 'light') {
-            document.documentElement.setAttribute('data-theme', 'light');
-        } else {
-            document.documentElement.removeAttribute('data-theme');
+        // Remove any existing theme attributes first
+        document.documentElement.removeAttribute('data-theme');
+        
+        // Apply the selected theme if not dark (dark is default)
+        if (theme === 'light' || theme === 'witchhazel') {
+            document.documentElement.setAttribute('data-theme', theme);
         }
         
         // Save preference to localStorage

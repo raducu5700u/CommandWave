@@ -132,7 +132,7 @@ def start_ttyd_process(port, tmux_session_name, use_tmux_config=False):
             'ttyd', 
             '-W',  # Add writable flag to enable terminal input
             '--port', str(port),
-            '--client-option', 'fontSize=16',
+            '--client-option', 'fontSize=12',
             '--client-option', 'disableLeaveAlert=true',
             '--client-option', 'fontFamily=monospace',
             '--client-option', 'rendererType=canvas',
