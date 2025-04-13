@@ -21,6 +21,10 @@ CommandWave provides a streamlined, web-based environment for managing multiple 
 * **Executable Code Blocks**: Execute shell command blocks from playbooks directly into the active terminal session.
 * **Variable Substitution**: Define key-value pairs (e.g., `$TargetIP`, `$Port`) that are automatically substituted into code blocks before execution.
 * **Playbook Search**: Quickly search across all loaded playbooks for specific commands or text.
+* **Dark/Light Theme Toggle**:
+    * Switch between the default cyberpunk dark theme and a light theme.
+    * Theme preference is saved between sessions.
+    * Terminal areas remain dark in both themes for optimal readability.
 * **Persistent Notes**:
     * A global notes panel for general information.
     * A separate notes panel for each terminal tab. Notes are saved automatically.
@@ -74,21 +78,26 @@ CommandWave provides a streamlined, web-based environment for managing multiple 
     * Click on a tab to switch to that terminal.
     * Double-click a tab name (not the 'x') to rename it.
     * Click the `x` on a tab to close that terminal session.
-2.  **Variables**:
+2.  **Theme Settings**:
+    * Click the gear icon in the top right corner and select "Theme Settings" to open the theme modal.
+    * Choose between "Cyberpunk Dark" (default) and "Neon Light" themes.
+    * Your selection is saved in the browser and will persist between sessions.
+3.  **Variables**:
     * Use the "Variables" section to define key-value pairs. Default variables like `targetIP`, `port`, etc., are provided.
     * Click "+ Add Variable" to create custom variables. Use camelCase names (e.g., `myVar`).
     * These variables will be substituted in playbook code blocks using the `$MyVar` format (PascalCase with a leading `$`) when you click "Execute".
-3.  **Playbooks**:
+4.  **Playbooks**:
     * Click "Upload Playbook" to load `.md` files.
     * Click "Create New Playbook" to author a new playbook within the app.
     * Playbooks appear in the section below the controls. Click the playbook title to expand/collapse its content.
     * Within code blocks (` ``` `), click:
         * **Copy**: Copies the code (with variables substituted) to the clipboard.
         * **Execute**: Sends the code (with variables substituted) to the *currently active* terminal tab for execution.
-4.  **Search**:
+        * **Import**: Imports the entire playbook for reference or further editing.
+5.  **Search**:
     * Use the search bar to find lines within any loaded playbook's content.
     * Results show the filename, line number, and content. You can copy, execute, or import the full playbook directly from the search results.
-5.  **Notes**:
+6.  **Notes**:
     * Click "Global Notes" or "Tab Notes" in the header to toggle the respective side panels.
     * Content is saved automatically as you type.
 

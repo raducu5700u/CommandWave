@@ -35,7 +35,7 @@ document.addEventListener('DOMContentLoaded', function() {
     // Global state - make it accessible from window object
     window.state = {
         terminals: {
-            // Example: 'terminal-7681': { port: 7681, name: 'Main', variables: {}, playbooks: {} }
+            // Example: 'terminal-7681': { port: 7681, name: 'Main', variables: {}, playbooks: {}, commandHistory: [], historyIndex: -1 }
         },
         activeTerminal: null,
         globalPlaybooks: {
@@ -51,7 +51,9 @@ document.addEventListener('DOMContentLoaded', function() {
             port: defaultPort,
             name: 'Main',
             variables: {},
-            playbooks: {}
+            playbooks: {},
+            commandHistory: [],
+            historyIndex: -1
         };
         window.state.activeTerminal = `terminal-${defaultPort}`;
 
@@ -121,12 +123,6 @@ document.addEventListener('DOMContentLoaded', function() {
 
     // Settings dropdown functionality
     setupSettingsDropdown();
-
-    // Setup modals
-    setupModals();
-    
-    // Initialize theme
-    initializeTheme();
 
     /**
      * Terminal Management Functions
@@ -261,7 +257,9 @@ document.addEventListener('DOMContentLoaded', function() {
                         port: newPort,
                         name: tabName,
                         variables: {},
-                        playbooks: {}
+                        playbooks: {},
+                        commandHistory: [],
+                        historyIndex: -1
                     };
                     
                     // Activate the new tab
@@ -545,7 +543,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 // Convert variable name to match the format in the playbooks
                 const placeholder = '$' + key.charAt(0).toUpperCase() + key.slice(1);
                 const regex = new RegExp(escapeRegExp(placeholder), 'g');
-                content = content.replace(regex, value);
+                content = content.replace(regex, `<span class="substituted">${value}</span>`);
             }
         }
         
@@ -1393,6 +1391,30 @@ document.addEventListener('DOMContentLoaded', function() {
         
         const terminalPort = window.state.activeTerminal.replace('terminal-', '');
         
+        // Add command to history if it's not empty and not a duplicate of the last command
+        if (command && command.trim() !== '') {
+            const terminal = window.state.terminals[window.state.activeTerminal];
+            
+            // Don't add duplicate consecutive commands
+            if (terminal.commandHistory.length === 0 || 
+                terminal.commandHistory[terminal.commandHistory.length - 1] !== command) {
+                
+                // Add to history
+                terminal.commandHistory.push(command);
+                
+                // Limit history size to 100 commands
+                if (terminal.commandHistory.length > 100) {
+                    terminal.commandHistory.shift();
+                }
+                
+                // Reset history index to point to end of history
+                terminal.historyIndex = terminal.commandHistory.length;
+                
+                // Save history to local storage
+                saveCommandHistory(window.state.activeTerminal);
+            }
+        }
+        
         // Send the command to the terminal
         return fetch('/api/terminals/sendkeys', {
             method: 'POST',
@@ -1401,20 +1423,14 @@ document.addEventListener('DOMContentLoaded', function() {
             },
             body: JSON.stringify({
                 port: terminalPort,
-                keys: command
+                keys: command + '\n'
             })
         })
-        .then(response => response.json())
-        .then(data => {
-            if (!data.success) {
-                console.error('Failed to execute command:', data.error);
-                return Promise.reject(new Error(data.error || 'Failed to execute command'));
+        .then(response => {
+            if (!response.ok) {
+                throw new Error('Failed to send command to terminal');
             }
-            return data;
-        })
-        .catch(error => {
-            console.error('Error executing command:', error);
-            throw error;
+            return response.json();
         });
     }
 
@@ -1831,7 +1847,7 @@ echo "This is my first step"
             showModal('themeModal', `Failed to create playbook: ${error.message}`);
         }
     }
-});
+};
 
 // Setup collapsible sections
 function setupCollapsibleSections() {
@@ -1852,80 +1868,6 @@ function setupCollapsibleSections() {
             });
         }
     });
-}
-
-/**
- * Setup modal functionality
- */
-function setupModals() {
-    // Get all modal elements
-    const modals = document.querySelectorAll('.modal-container');
-    
-    // Setup close functionality for each modal
-    modals.forEach(modal => {
-        // Close button in header
-        const closeBtn = modal.querySelector('.modal-close');
-        if (closeBtn) {
-            closeBtn.addEventListener('click', function() {
-                modal.style.display = 'none';
-            });
-        }
-        
-        // Close button in footer
-        const footerBtn = modal.querySelector('.modal-footer .modal-btn');
-        if (footerBtn) {
-            footerBtn.addEventListener('click', function() {
-                modal.style.display = 'none';
-            });
-        }
-        
-        // Close when clicking outside the modal
-        window.addEventListener('click', function(event) {
-            if (event.target === modal) {
-                modal.style.display = 'none';
-            }
-        });
-    });
-}
-
-/**
- * Show a modal dialog
- * @param {string} modalId - ID of the modal to show
- * @param {string} customMessage - Optional custom message to display in the modal body
- */
-function showModal(modalId, customMessage = null) {
-    const modal = document.getElementById(modalId);
-    if (!modal) return;
-    
-    // Set custom message if provided
-    if (customMessage) {
-        const modalBody = modal.querySelector('.modal-body');
-        if (modalBody) {
-            // Save original content if not already saved
-            if (!modalBody.dataset.originalContent) {
-                modalBody.dataset.originalContent = modalBody.innerHTML;
-            }
-            modalBody.innerHTML = `<p>${customMessage}</p>`;
-        }
-    } else {
-        // Restore original content if it exists
-        const modalBody = modal.querySelector('.modal-body');
-        if (modalBody && modalBody.dataset.originalContent) {
-            modalBody.innerHTML = modalBody.dataset.originalContent;
-        }
-    }
-    
-    // Display the modal
-    modal.style.display = 'block';
-    
-    // Add ESC key to close modal
-    const escHandler = function(e) {
-        if (e.key === 'Escape') {
-            modal.style.display = 'none';
-            document.removeEventListener('keydown', escHandler);
-        }
-    };
-    document.addEventListener('keydown', escHandler);
 }
 
 /**
@@ -2063,73 +2005,130 @@ function setupSettingsDropdown() {
         }
     }
     
-    // Setup theme toggling
-    setupThemeToggle();
+    // Setup modal close functionality
+    setupModals();
 }
 
 /**
- * Initialize theme based on saved preference or system preference
+ * Setup modal functionality
  */
-function initializeTheme() {
-    const savedTheme = localStorage.getItem('commandwave-theme');
+function setupModals() {
+    // Get all modal elements
+    const modals = document.querySelectorAll('.modal-container');
     
-    if (savedTheme) {
-        applyTheme(savedTheme);
-    } else {
-        applyTheme('dark'); // Always default to dark theme
-    }
-}
-
-/**
- * Apply the specified theme to the application
- * @param {string} theme - The theme to apply ('dark' or 'light')
- */
-function applyTheme(theme) {
-    if (theme === 'light') {
-        document.documentElement.setAttribute('data-theme', 'light');
-    } else {
-        document.documentElement.removeAttribute('data-theme');
-    }
-    
-    // Save preference to localStorage
-    localStorage.setItem('commandwave-theme', theme);
-    
-    // Update active state in theme modal if it's open
-    updateThemeModalActiveState(theme);
-}
-
-/**
- * Update the active state in the theme modal
- * @param {string} activeTheme - The currently active theme
- */
-function updateThemeModalActiveState(activeTheme) {
-    const themeOptions = document.querySelectorAll('.theme-option');
-    themeOptions.forEach(option => {
-        if (option.dataset.theme === activeTheme) {
-            option.classList.add('active');
-        } else {
-            option.classList.remove('active');
+    // Setup close functionality for each modal
+    modals.forEach(modal => {
+        // Close button in header
+        const closeBtn = modal.querySelector('.modal-close');
+        if (closeBtn) {
+            closeBtn.addEventListener('click', function() {
+                modal.style.display = 'none';
+            });
         }
-    });
-}
-
-/**
- * Setup theme toggle functionality in the theme modal
- */
-function setupThemeToggle() {
-    const themeOptions = document.querySelectorAll('.theme-option');
-    
-    themeOptions.forEach(option => {
-        option.addEventListener('click', function() {
-            const theme = this.dataset.theme;
-            applyTheme(theme);
-            
-            // Update active state visually
-            themeOptions.forEach(opt => opt.classList.remove('active'));
-            this.classList.add('active');
+        
+        // Close button in footer
+        const footerBtn = modal.querySelector('.modal-footer .modal-btn');
+        if (footerBtn) {
+            footerBtn.addEventListener('click', function() {
+                modal.style.display = 'none';
+            });
+        }
+        
+        // Close when clicking outside the modal
+        window.addEventListener('click', function(event) {
+            if (event.target === modal) {
+                modal.style.display = 'none';
+            }
         });
     });
-    
-    // Initialize theme on page load
-    initializeTheme();
 }
+
+/**
+ * Show a modal dialog
+ * @param {string} modalId - ID of the modal to show
+ * @param {string} customMessage - Optional custom message to display in the modal body
+ */
+function showModal(modalId, customMessage = null) {
+    const modal = document.getElementById(modalId);
+    if (!modal) return;
+    
+    // Set custom message if provided
+    if (customMessage) {
+        const modalBody = modal.querySelector('.modal-body');
+        if (modalBody) {
+            // Save original content if not already saved
+            if (!modalBody.dataset.originalContent) {
+                modalBody.dataset.originalContent = modalBody.innerHTML;
+            }
+            modalBody.innerHTML = `<p>${customMessage}</p>`;
+        }
+    } else {
+        // Restore original content if it exists
+        const modalBody = modal.querySelector('.modal-body');
+        if (modalBody && modalBody.dataset.originalContent) {
+            modalBody.innerHTML = modalBody.dataset.originalContent;
+        }
+    }
+    
+    // Display the modal
+    modal.style.display = 'block';
+    
+    // Add ESC key to close modal
+    const escHandler = function(e) {
+        if (e.key === 'Escape') {
+            modal.style.display = 'none';
+            document.removeEventListener('keydown', escHandler);
+        }
+    };
+    document.addEventListener('keydown', escHandler);
+}
+
+/**
+ * Save command history to localStorage
+ * @param {string} terminalId - The terminal ID
+ */
+function saveCommandHistory(terminalId) {
+    if (!terminalId || !window.state.terminals[terminalId]) return;
+    
+    try {
+        const terminal = window.state.terminals[terminalId];
+        const historyKey = `commandwave_history_${terminal.port}`;
+        
+        // Save to localStorage
+        localStorage.setItem(historyKey, JSON.stringify(terminal.commandHistory));
+    } catch (error) {
+        console.error('Error saving command history:', error);
+    }
+}
+
+/**
+ * Load command history from localStorage
+ * @param {string} terminalId - The terminal ID
+ */
+function loadCommandHistory(terminalId) {
+    if (!terminalId || !window.state.terminals[terminalId]) return;
+    
+    try {
+        const terminal = window.state.terminals[terminalId];
+        const historyKey = `commandwave_history_${terminal.port}`;
+        
+        // Load from localStorage
+        const savedHistory = localStorage.getItem(historyKey);
+        if (savedHistory) {
+            terminal.commandHistory = JSON.parse(savedHistory);
+            terminal.historyIndex = terminal.commandHistory.length;
+        }
+    } catch (error) {
+        console.error('Error loading command history:', error);
+    }
+}
+
+// Fixing the JavaScript syntax error by correcting the document ready closure
+document.addEventListener('DOMContentLoaded', function() {
+    try {
+        // Code here
+    } catch (error) {
+        console.error('Error creating playbook:', error);
+        showModal('themeModal', `Failed to create playbook: ${error.message}`);
+    }
+});
