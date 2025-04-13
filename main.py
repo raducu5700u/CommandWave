@@ -38,6 +38,7 @@ PLAYBOOKS_DIR = os.path.join(BASE_DIR, 'playbooks')
 STATIC_DIR = os.path.join(BASE_DIR, 'static')
 TEMPLATES_DIR = os.path.join(BASE_DIR, 'templates')
 TMUX_CONFIG_PATH = os.path.join(BASE_DIR, 'commandwave_theme.tmux.conf')
+HOSTNAME = 'localhost'  # Default hostname, will be updated from args
 
 # Create necessary directories if they don't exist
 os.makedirs(NOTES_DIR, exist_ok=True)
@@ -61,12 +62,16 @@ def parse_arguments():
                         help=f'Port to run the web server on (default: {DEFAULT_PORT})')
     parser.add_argument('--use-default-tmux-config', action='store_true',
                         help='Use the default CommandWave tmux configuration')
+    parser.add_argument('--hostname', type=str, default='localhost',
+                        help='Hostname to use for terminal connections (default: localhost)')
+    parser.add_argument('--remote', action='store_true',
+                        help='Enable remote access by binding to all interfaces')
     return parser.parse_args()
 
 def is_port_available(port):
     """Check if a port is available to use."""
     with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s:
-        return s.connect_ex(('localhost', port)) != 0
+        return s.connect_ex((HOSTNAME, port)) != 0
 
 def find_available_port(start_port, end_port):
     """Find an available port in the specified range."""
@@ -263,7 +268,9 @@ signal.signal(signal.SIGTERM, signal_handler)
 @app.route('/')
 def index():
     """Render the main application page."""
-    return render_template('index.html', default_terminal_port=app.config.get('DEFAULT_TERMINAL_PORT', DEFAULT_TERMINAL_PORT))
+    return render_template('index.html', 
+                          default_terminal_port=app.config.get('DEFAULT_TERMINAL_PORT', DEFAULT_TERMINAL_PORT),
+                          hostname=app.config.get('HOSTNAME', HOSTNAME))
 
 @app.route('/healthcheck')
 def healthcheck():
@@ -314,44 +321,69 @@ def get_playbook_file(filepath):
         }), 500
 
 # Terminal management endpoints
-@app.route('/api/terminals/new', methods=['GET'])
+@app.route('/api/terminals/list', methods=['GET'])
+def list_terminals():
+    """Get a list of all active terminals."""
+    terminal_list = []
+    with process_lock:
+        for port, terminal in terminals.items():
+            terminal_list.append({
+                'port': port,
+                'name': terminal.get('name', f'Terminal {port}'),
+                'tmux_session': terminal.get('tmux_session', ''),
+                'created_at': terminal.get('created_at', 0)
+            })
+    
+    return jsonify({
+        'success': True,
+        'terminals': terminal_list
+    })
+
+@app.route('/api/terminals/new', methods=['POST'])
 def new_terminal():
     """Create a new terminal session and return its port."""
     try:
+        # Get terminal name from request
+        data = request.get_json()
+        tab_name = data.get('name', 'Terminal')
+        
         # Find an available port
         port = find_available_port(TERMINAL_PORT_RANGE[0], TERMINAL_PORT_RANGE[1])
-        
         if not port:
+            logger.error("Could not find available port for new terminal")
             return jsonify({
                 'success': False,
                 'error': 'No available ports'
-            }), 503
+            }), 500
+            
+        # Create the terminal
+        tmux_session = f"commandwave-{port}"
+        ttyd_process = start_ttyd_process(
+            port, 
+            tmux_session,
+            app.config.get('USE_TMUX_CONFIG', False)
+        )
         
-        # Generate a unique session name
-        session_name = f'commandwave-{port}'
-        
-        # Start ttyd process
-        process = start_ttyd_process(port, session_name, parse_arguments().use_default_tmux_config)
-        
-        if not process:
+        if ttyd_process:
+            with process_lock:
+                terminals[port] = {
+                    'process': ttyd_process,
+                    'tmux_session': tmux_session,
+                    'created_at': time.time(),
+                    'name': tab_name
+                }
+                
+            logger.info(f"Created new terminal on port {port} with name '{tab_name}'")
+            return jsonify({
+                'success': True,
+                'port': port,
+                'name': tab_name
+            })
+        else:
             return jsonify({
                 'success': False,
-                'error': 'Failed to start terminal process'
+                'error': 'Failed to create terminal process'
             }), 500
-        
-        # Store process info
-        with process_lock:
-            terminals[port] = {
-                'process': process,
-                'tmux_session': session_name,
-                'created_at': time.time()
-            }
-        
-        return jsonify({
-            'success': True,
-            'port': port
-        })
-        
     except Exception as e:
         logger.error(f"Error creating new terminal: {e}")
         return jsonify({
@@ -393,26 +425,69 @@ def send_keys():
 @app.route('/api/terminals/<int:port>', methods=['DELETE'])
 def delete_terminal(port):
     """Terminate a terminal session."""
-    # Don't allow deleting the default terminal
-    if port == app.config.get('DEFAULT_TERMINAL_PORT', DEFAULT_TERMINAL_PORT):
+    try:
+        # Check if the terminal exists
+        if port not in terminals:
+            return jsonify({
+                'success': False,
+                'error': 'Terminal not found'
+            }), 404
+            
+        # Kill the terminal
+        if kill_terminal(port):
+            with process_lock:
+                if port in terminals:
+                    del terminals[port]
+                    
+            logger.info(f"Deleted terminal on port {port}")
+            return jsonify({
+                'success': True
+            })
+        else:
+            return jsonify({
+                'success': False,
+                'error': f'Failed to delete terminal on port {port}'
+            }), 500
+    except Exception as e:
+        logger.error(f"Error deleting terminal on port {port}: {e}")
         return jsonify({
             'success': False,
-            'error': 'Cannot delete the main terminal'
-        }), 403
-    
-    if port not in terminals:
+            'error': str(e)
+        }), 500
+
+@app.route('/api/terminals/delete/<int:port>', methods=['POST'])
+def delete_terminal_post(port):
+    """Terminate a terminal session (POST endpoint)."""
+    return delete_terminal(port)
+
+@app.route('/api/terminals/rename/<int:port>', methods=['POST'])
+def rename_terminal(port):
+    """Rename a terminal session."""
+    try:
+        # Check if the terminal exists
+        if port not in terminals:
+            return jsonify({
+                'success': False,
+                'error': 'Terminal not found'
+            }), 404
+        
+        # Get the new name from the request
+        data = request.get_json()
+        new_name = data.get('name', f'Terminal {port}')
+        
+        # Update the terminal name
+        with process_lock:
+            terminals[port]['name'] = new_name
+            
+        logger.info(f"Renamed terminal on port {port} to '{new_name}'")
+        return jsonify({
+            'success': True
+        })
+    except Exception as e:
+        logger.error(f"Error renaming terminal: {e}")
         return jsonify({
             'success': False,
-            'error': f'Terminal on port {port} not found'
-        }), 404
-    
-    # Kill the terminal
-    if kill_terminal(port):
-        return jsonify({'success': True})
-    else:
-        return jsonify({
-            'success': False,
-            'error': f'Failed to delete terminal on port {port}'
+            'error': str(e)
         }), 500
 
 # Notes persistence endpoints
@@ -593,6 +668,13 @@ if __name__ == '__main__':
         args = parse_arguments()
         logger.info(f"Starting CommandWave on port {args.port}")
         
+        # Update hostname from command-line arguments
+        HOSTNAME = args.hostname
+        logger.info(f"Using hostname: {HOSTNAME}")
+        
+        # Set the hostname in Flask app config for template access
+        app.config['HOSTNAME'] = HOSTNAME
+        
         # Check if default terminal port is available, try alternative if needed
         initial_port = DEFAULT_TERMINAL_PORT
         if not is_port_available(initial_port):
@@ -619,14 +701,16 @@ if __name__ == '__main__':
                 terminals[initial_port] = {
                     'process': main_terminal_process,
                     'tmux_session': main_tmux_session,
-                    'created_at': time.time()
+                    'created_at': time.time(),
+                    'name': 'Main Terminal'
                 }
             
             # Set the default terminal port for the template
             app.config['DEFAULT_TERMINAL_PORT'] = initial_port
             
             # Start Flask app
-            app.run(host='0.0.0.0', port=args.port, debug=False, use_reloader=False)
+            host = '0.0.0.0' if args.remote else '127.0.0.1'
+            app.run(host=host, port=args.port, debug=False, use_reloader=False)
         else:
             logger.error("Failed to start initial terminal. Check if ttyd and tmux are installed.")
             sys.exit(1)

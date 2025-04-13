@@ -11,6 +11,7 @@
     <link rel="icon" type="image/x-icon" href="{{ url_for('static', filename='favicon.ico') }}">
 </head>
 <body>
+    <input type="hidden" id="hostname" value="{{ hostname }}">
     <header>
         <h1 class="main-title">Command<span class="wave-text">Wave</span></h1>
         <div class="header-controls">
@@ -94,7 +95,7 @@
                 <span class="terminal-title">tmux</span>
             </div>
             <div class="terminal-container">
-                <iframe src="http://localhost:{{ default_terminal_port }}" class="terminal-iframe active" id="terminal-{{ default_terminal_port }}" data-port="{{ default_terminal_port }}"></iframe>
+                <iframe src="http://{{ hostname }}:{{ default_terminal_port }}" class="terminal-iframe active" id="terminal-{{ default_terminal_port }}" data-port="{{ default_terminal_port }}"></iframe>
                 <!-- Additional terminal iframes will be added here -->
             </div>
         </div>
