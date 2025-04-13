@@ -28,6 +28,111 @@
             --shadow-green: 0 0 10px rgba(15, 255, 80, 0.5);
         }
 
+        [data-theme="light"] {
+            --background-dark: #f0f4f8;
+            --background-medium: #dbe4f0;
+            --text-primary: #2a2a4a;
+            --text-secondary: #4a4a6a;
+            --border-light: rgba(0, 131, 176, 0.2);
+            /* Keep neon colors the same for brand consistency */
+        }
+
+        [data-theme="light"] body {
+            background-color: var(--background-dark);
+            color: var(--text-primary);
+            background-image: 
+                radial-gradient(circle at 10% 20%, rgba(0, 131, 176, 0.03) 0%, transparent 20%),
+                radial-gradient(circle at 90% 80%, rgba(104, 52, 169, 0.03) 0%, transparent 20%),
+                radial-gradient(circle at 50% 50%, rgba(209, 39, 101, 0.03) 0%, transparent 40%);
+        }
+
+        [data-theme="light"] header {
+            background-color: rgba(219, 228, 240, 0.9);
+            border-bottom: 1px solid rgba(0, 131, 176, 0.2);
+        }
+
+        [data-theme="light"] .section {
+            background-color: rgba(240, 244, 248, 0.8);
+            border: 1px solid rgba(0, 131, 176, 0.2);
+        }
+
+        [data-theme="light"] .section-title {
+            color: #005b7a;
+            text-shadow: none;
+        }
+
+        [data-theme="light"] .header-btn {
+            background-color: rgba(240, 244, 248, 0.8);
+            border: 1px solid #0083b0;
+            color: #0083b0;
+            box-shadow: 0 0 10px rgba(0, 131, 176, 0.3);
+        }
+
+        [data-theme="light"] .header-btn:hover {
+            background-color: rgba(0, 131, 176, 0.1);
+            box-shadow: 0 0 10px rgba(0, 131, 176, 0.5);
+        }
+
+        [data-theme="light"] .header-btn.pink {
+            border-color: #a8174a;
+            color: #a8174a;
+            box-shadow: 0 0 10px rgba(209, 39, 101, 0.3);
+        }
+
+        [data-theme="light"] .header-btn.pink:hover {
+            background-color: rgba(209, 39, 101, 0.1);
+            box-shadow: 0 0 10px rgba(209, 39, 101, 0.5);
+        }
+
+        [data-theme="light"] .feature-card {
+            background-color: rgba(240, 244, 248, 0.7);
+            border: 1px solid rgba(0, 131, 176, 0.2);
+        }
+
+        [data-theme="light"] .feature-title {
+            color: #806600;
+            text-shadow: none;
+        }
+
+        [data-theme="light"] .feature-icon {
+            color: #0083b0;
+            text-shadow: none;
+        }
+
+        [data-theme="light"] .step-number {
+            color: #00754a;
+            text-shadow: none;
+        }
+
+        [data-theme="light"] code {
+            background-color: #f5f7fa;
+            border: 1px solid rgba(0, 131, 176, 0.2);
+            color: #2a2a4a;
+        }
+
+        [data-theme="light"] .highlight {
+            color: #00754a;
+            font-weight: bold;
+        }
+
+        [data-theme="light"] .usage-item {
+            background-color: #f5f7fa;
+            border: 1px solid rgba(0, 131, 176, 0.2);
+        }
+
+        [data-theme="light"] footer {
+            background-color: rgba(219, 228, 240, 0.8);
+            border-top: 1px solid rgba(0, 131, 176, 0.2);
+        }
+
+        [data-theme="light"] .footer-link {
+            color: #0083b0;
+        }
+
+        [data-theme="light"] .social-icon {
+            color: #0083b0;
+        }
+
         * {
             margin: 0;
             padding: 0;
@@ -392,6 +497,38 @@
             margin-bottom: 1rem;
         }
 
+        /* Theme toggle button */
+        .theme-toggle {
+            position: absolute;
+            top: 1rem;
+            right: 1rem;
+            background-color: rgba(10, 10, 26, 0.8);
+            border: 1px solid var(--neon-purple);
+            color: var(--neon-purple);
+            padding: 0.5rem;
+            border-radius: 50%;
+            cursor: pointer;
+            width: 40px;
+            height: 40px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.2rem;
+            transition: all 0.3s ease;
+            box-shadow: var(--shadow-purple);
+        }
+
+        .theme-toggle:hover {
+            background-color: rgba(194, 100, 254, 0.1);
+            transform: translateY(-2px);
+        }
+
+        [data-theme="light"] .theme-toggle {
+            background-color: rgba(219, 228, 240, 0.8);
+            border: 1px solid #6834a9;
+            box-shadow: 0 0 10px rgba(104, 52, 169, 0.3);
+        }
+
         @media (max-width: 768px) {
             .container {
                 padding: 1rem;
@@ -424,6 +561,7 @@
                 <i class="fas fa-download"></i> Installation Guide
             </a>
         </div>
+        <button class="theme-toggle"><i class="fas fa-moon"></i></button>
     </header>
 
     <div class="container">
@@ -603,5 +741,55 @@
         </div>
         <p class="copyright"> 2025 CommandWave. Built with the cyberpunk spirit.</p>
     </footer>
+
+    <script>
+        // Theme Toggle Functionality
+        document.addEventListener('DOMContentLoaded', function() {
+            // Theme toggle button
+            const themeToggle = document.querySelector('.theme-toggle');
+            const themeIcon = themeToggle.querySelector('i');
+            
+            // Initialize theme
+            initializeTheme();
+            
+            // Toggle theme when button is clicked
+            themeToggle.addEventListener('click', function() {
+                toggleTheme();
+            });
+            
+            // Initialize theme based on saved preference or system preference
+            function initializeTheme() {
+                const savedTheme = localStorage.getItem('commandwave-docs-theme');
+                
+                if (savedTheme) {
+                    applyTheme(savedTheme);
+                } else {
+                    // Default to dark theme for consistency with main app
+                    applyTheme('dark');
+                }
+            }
+            
+            // Apply theme to document
+            function applyTheme(theme) {
+                if (theme === 'light') {
+                    document.documentElement.setAttribute('data-theme', 'light');
+                    themeIcon.classList.remove('fa-sun');
+                    themeIcon.classList.add('fa-moon');
+                } else {
+                    document.documentElement.removeAttribute('data-theme');
+                    themeIcon.classList.remove('fa-moon');
+                    themeIcon.classList.add('fa-sun');
+                }
+                localStorage.setItem('commandwave-docs-theme', theme);
+            }
+            
+            // Toggle between light and dark themes
+            function toggleTheme() {
+                const currentTheme = localStorage.getItem('commandwave-docs-theme') || 'dark';
+                const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
+                applyTheme(newTheme);
+            }
+        });
+    </script>
 </body>
 </html>
