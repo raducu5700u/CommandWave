@@ -2430,8 +2430,8 @@ echo "This is my first step"
             // Set initial state
             if (isCollapsed) {
                 variableContent.classList.add('collapsed');
-                collapseIcon.classList.remove('fa-chevron-up');
-                collapseIcon.classList.add('fa-chevron-down');
+                collapseIcon.classList.remove('fa-angle-down');
+                collapseIcon.classList.add('fa-angle-up');
             }
             
             // Add click handler for toggle button
@@ -2441,13 +2441,13 @@ echo "This is my first step"
                 // Toggle collapsed state
                 if (isCurrentlyCollapsed) {
                     variableContent.classList.remove('collapsed');
-                    collapseIcon.classList.remove('fa-chevron-down');
-                    collapseIcon.classList.add('fa-chevron-up');
+                    collapseIcon.classList.remove('fa-angle-up');
+                    collapseIcon.classList.add('fa-angle-down');
                     localStorage.setItem('commandwave-variables-collapsed', 'false');
                 } else {
                     variableContent.classList.add('collapsed');
-                    collapseIcon.classList.remove('fa-chevron-up');
-                    collapseIcon.classList.add('fa-chevron-down');
+                    collapseIcon.classList.remove('fa-angle-down');
+                    collapseIcon.classList.add('fa-angle-up');
                     localStorage.setItem('commandwave-variables-collapsed', 'true');
                 }
             });

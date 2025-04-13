@@ -398,21 +398,52 @@ header {
 
 .toggle-variables-btn {
     background-color: transparent;
-    border: 1px solid var(--neon-yellow);
+    border: none;
     color: var(--neon-yellow);
-    width: 30px;
-    height: 30px;
-    border-radius: 50%;
+    padding: 4px 8px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    font-family: 'Orbitron', sans-serif;
+    font-size: 0.9rem;
     display: flex;
     align-items: center;
     justify-content: center;
-    cursor: pointer;
-    transition: all 0.3s ease;
+    line-height: 1;
 }
 
 .toggle-variables-btn:hover {
-    background-color: rgba(252, 238, 9, 0.1);
+    text-shadow: var(--shadow-yellow);
+    transform: translateY(-1px);
+}
+
+.toggle-variables-btn .toggle-text {
+    display: inline-block;
+    background: linear-gradient(90deg, rgba(252, 238, 9, 0.05), rgba(252, 238, 9, 0.15), rgba(252, 238, 9, 0.05));
+    border: 1px solid rgba(252, 238, 9, 0.3);
+    border-radius: 3px;
+    padding: 3px 8px;
+    letter-spacing: 1px;
+}
+
+.toggle-variables-btn:hover .toggle-text {
+    background: linear-gradient(90deg, rgba(252, 238, 9, 0.1), rgba(252, 238, 9, 0.2), rgba(252, 238, 9, 0.1));
     box-shadow: var(--shadow-yellow);
+}
+
+.toggle-variables-btn i {
+    font-size: 1rem;
+    transition: transform 0.3s ease;
+}
+
+.toggle-arrow {
+    display: inline-block;
+    width: 14px;
+    text-align: center;
+}
+
+.variable-content.collapsed ~ .variable-header .toggle-variables-btn i,
+#variableContent.collapsed + .toggle-variables-btn i {
+    transform: rotate(180deg);
 }
 
 .variable-content {
@@ -2456,7 +2487,6 @@ button[data-action="execute"]:hover {
     margin-top: 0.5rem;
     font-family: 'Roboto Mono', monospace;
     white-space: pre-wrap;
-    overflow-x: auto;
 }
 
 [data-theme="light"] .search-result-snippet {
