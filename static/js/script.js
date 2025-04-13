@@ -138,6 +138,9 @@ document.addEventListener('DOMContentLoaded', function() {
     // Initialize theme
     initializeTheme();
 
+    // Setup toggle functionality for the variables section
+    setupVariablesToggle();
+
     /**
      * Terminal Management Functions
      */
@@ -2410,5 +2413,44 @@ echo "This is my first step"
                 option.classList.remove('active');
             }
         });
+    }
+
+    /**
+     * Setup toggle functionality for the variables section
+     */
+    function setupVariablesToggle() {
+        const toggleBtn = document.getElementById('toggleVariablesBtn');
+        const variableContent = document.getElementById('variableContent');
+        const collapseIcon = document.getElementById('variablesCollapseIcon');
+        
+        if (toggleBtn && variableContent) {
+            // Check if we have a saved state
+            const isCollapsed = localStorage.getItem('commandwave-variables-collapsed') === 'true';
+            
+            // Set initial state
+            if (isCollapsed) {
+                variableContent.classList.add('collapsed');
+                collapseIcon.classList.remove('fa-chevron-up');
+                collapseIcon.classList.add('fa-chevron-down');
+            }
+            
+            // Add click handler for toggle button
+            toggleBtn.addEventListener('click', function() {
+                const isCurrentlyCollapsed = variableContent.classList.contains('collapsed');
+                
+                // Toggle collapsed state
+                if (isCurrentlyCollapsed) {
+                    variableContent.classList.remove('collapsed');
+                    collapseIcon.classList.remove('fa-chevron-down');
+                    collapseIcon.classList.add('fa-chevron-up');
+                    localStorage.setItem('commandwave-variables-collapsed', 'false');
+                } else {
+                    variableContent.classList.add('collapsed');
+                    collapseIcon.classList.remove('fa-chevron-up');
+                    collapseIcon.classList.add('fa-chevron-down');
+                    localStorage.setItem('commandwave-variables-collapsed', 'true');
+                }
+            });
+        }
     }
 });

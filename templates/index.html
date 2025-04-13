@@ -31,40 +31,47 @@
     <main class="container">
         <div class="content-area">
             <section class="variable-section">
-                <h2>Variables</h2>
-                <div class="variable-inputs" id="variableInputsContainer">
-                    <div class="variable-input">
-                        <label for="targetIP">Target IP:</label>
-                        <input type="text" id="targetIP" name="targetIP" placeholder="$TargetIP">
-                    </div>
-                    <div class="variable-input">
-                        <label for="port">Port:</label>
-                        <input type="text" id="port" name="port" placeholder="$Port">
-                    </div>
-                    <div class="variable-input">
-                        <label for="dcIP">DC IP:</label>
-                        <input type="text" id="dcIP" name="dcIP" placeholder="$DCIP">
-                    </div>
-                    <div class="variable-input">
-                        <label for="userFile">User File:</label>
-                        <input type="text" id="userFile" name="userFile" placeholder="$UserFile">
-                    </div>
-                    <div class="variable-input">
-                        <label for="passFile">Pass File:</label>
-                        <input type="text" id="passFile" name="passFile" placeholder="$PassFile">
-                    </div>
-                    <div class="variable-input">
-                        <label for="wordlist">Wordlist:</label>
-                        <input type="text" id="wordlist" name="wordlist" placeholder="$Wordlist">
-                    </div>
-                    <div class="variable-input">
-                        <label for="controlSocket">Control Socket:</label>
-                        <input type="text" id="controlSocket" name="controlSocket" placeholder="$ControlSocket">
-                    </div>
+                <div class="variable-header">
+                    <h2>Variables</h2>
+                    <button class="toggle-variables-btn" id="toggleVariablesBtn">
+                        <i class="fas fa-chevron-up" id="variablesCollapseIcon"></i>
+                    </button>
                 </div>
-                <div class="variable-controls">
-                    <label for="addVariableInput" class="add-variable-btn">+ Add Variable</label>
-                    <input type="button" id="addVariableInput" style="display: none;">
+                <div class="variable-content" id="variableContent">
+                    <div class="variable-inputs" id="variableInputsContainer">
+                        <div class="variable-input">
+                            <label for="targetIP">Target IP:</label>
+                            <input type="text" id="targetIP" name="targetIP" placeholder="$TargetIP">
+                        </div>
+                        <div class="variable-input">
+                            <label for="port">Port:</label>
+                            <input type="text" id="port" name="port" placeholder="$Port">
+                        </div>
+                        <div class="variable-input">
+                            <label for="dcIP">DC IP:</label>
+                            <input type="text" id="dcIP" name="dcIP" placeholder="$DCIP">
+                        </div>
+                        <div class="variable-input">
+                            <label for="userFile">User File:</label>
+                            <input type="text" id="userFile" name="userFile" placeholder="$UserFile">
+                        </div>
+                        <div class="variable-input">
+                            <label for="passFile">Pass File:</label>
+                            <input type="text" id="passFile" name="passFile" placeholder="$PassFile">
+                        </div>
+                        <div class="variable-input">
+                            <label for="wordlist">Wordlist:</label>
+                            <input type="text" id="wordlist" name="wordlist" placeholder="$Wordlist">
+                        </div>
+                        <div class="variable-input">
+                            <label for="controlSocket">Control Socket:</label>
+                            <input type="text" id="controlSocket" name="controlSocket" placeholder="$ControlSocket">
+                        </div>
+                    </div>
+                    <div class="variable-controls">
+                        <label for="addVariableInput" class="add-variable-btn">+ Add Variable</label>
+                        <input type="button" id="addVariableInput" style="display: none;">
+                    </div>
                 </div>
             </section>
 
