@@ -1,0 +1,6 @@
+2025-04-13 19:27:58,185 - commandwave - INFO - Starting CommandWave on port 5000
+2025-04-13 19:27:58,185 - commandwave - INFO - Using hostname: localhost
+2025-04-13 19:28:02,257 - commandwave - ERROR - Error starting ttyd process: [WinError 2] The system cannot find the file specified
+2025-04-13 19:28:02,257 - commandwave - ERROR - Failed to start initial terminal. Check if ttyd and tmux are installed.
+2025-04-13 19:28:02,257 - commandwave - INFO - Cleaning up all terminal processes...
+2025-04-13 19:28:02,257 - commandwave - INFO - Cleanup complete

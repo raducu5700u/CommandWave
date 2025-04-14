@@ -55,6 +55,10 @@ app = Flask(__name__,
 terminals = {}
 process_lock = threading.Lock()
 
+# Store information about shared playbooks
+playbooks = {}
+playbook_lock = threading.Lock()
+
 def parse_arguments():
     """Parse command-line arguments."""
     parser = argparse.ArgumentParser(description='CommandWave - Terminal Management Web Application')
@@ -626,31 +630,37 @@ def search_playbooks():
 def save_playbook():
     """Save a playbook file to the playbooks directory."""
     try:
-        # Get the JSON data from the request
         data = request.get_json()
-        if not data or 'filename' not in data or 'content' not in data:
+        if not data or not data.get('filename') or not data.get('content'):
             return jsonify({
                 'success': False,
-                'error': 'Missing required fields: filename and content'
+                'error': 'Missing filename or content'
             }), 400
             
-        filename = data['filename']
-        content = data['content']
-        
         # Sanitize the filename to prevent directory traversal
+        filename = data['filename']
         sanitized_filename = os.path.basename(filename)
+        
+        # If no .md extension, add it
         if not sanitized_filename.endswith('.md'):
             sanitized_filename += '.md'
             
-        # Create full file path
+        # Create the file path
         file_path = os.path.join(PLAYBOOKS_DIR, sanitized_filename)
         
-        # Write the content to the file
+        # Write the file
         with open(file_path, 'w', encoding='utf-8') as f:
-            f.write(content)
+            f.write(data['content'])
             
-        logger.info(f"Saved playbook: {sanitized_filename}")
-        
+        # Also update the shared playbook state for synchronized access
+        with playbook_lock:
+            playbooks[sanitized_filename] = {
+                'filename': sanitized_filename,
+                'content': data['content'],
+                'last_modified': time.time(),
+                'editor': data.get('editor', 'unknown')
+            }
+            
         return jsonify({
             'success': True,
             'filename': sanitized_filename
@@ -725,6 +735,83 @@ def load_playbook(filename):
         })
     except Exception as e:
         logger.error(f"Error loading playbook {file_path}: {e}")
+        return jsonify({
+            'success': False,
+            'error': str(e)
+        }), 500
+
+@app.route('/api/playbooks/list/all', methods=['GET'])
+def list_all_playbooks():
+    """Get a list of all shared playbooks."""
+    try:
+        with playbook_lock:
+            return jsonify({
+                'success': True,
+                'playbooks': playbooks
+            })
+    except Exception as e:
+        logger.error(f"Error listing all playbooks: {e}")
+        return jsonify({
+            'success': False,
+            'error': str(e)
+        }), 500
+
+@app.route('/api/playbooks/sync/<filename>', methods=['POST'])
+def sync_playbook(filename):
+    """Update a shared playbook's content and notify all clients."""
+    try:
+        data = request.get_json()
+        if not data or 'content' not in data:
+            return jsonify({
+                'success': False,
+                'error': 'Missing content in request'
+            }), 400
+            
+        sanitized_filename = os.path.basename(filename)
+        
+        # Get terminal ID from the request data (if provided)
+        terminal_id = data.get('terminal_id', 'unknown')
+        
+        with playbook_lock:
+            # Update or create the playbook entry
+            playbooks[sanitized_filename] = {
+                'filename': sanitized_filename,
+                'content': data['content'],
+                'last_modified': time.time(),
+                'editor': data.get('editor', 'unknown'),
+                'terminal_id': terminal_id  # Store the terminal ID
+            }
+            
+        return jsonify({
+            'success': True,
+            'filename': sanitized_filename
+        })
+    except Exception as e:
+        logger.error(f"Error syncing playbook {filename}: {e}")
+        return jsonify({
+            'success': False,
+            'error': str(e)
+        }), 500
+
+@app.route('/api/playbooks/state/<filename>', methods=['GET'])
+def get_playbook_state(filename):
+    """Get the current state of a shared playbook."""
+    try:
+        sanitized_filename = os.path.basename(filename)
+        
+        with playbook_lock:
+            if sanitized_filename in playbooks:
+                return jsonify({
+                    'success': True,
+                    'playbook': playbooks[sanitized_filename]
+                })
+            else:
+                return jsonify({
+                    'success': False,
+                    'error': f'Playbook {sanitized_filename} not found'
+                }), 404
+    except Exception as e:
+        logger.error(f"Error getting playbook state for {filename}: {e}")
         return jsonify({
             'success': False,
             'error': str(e)

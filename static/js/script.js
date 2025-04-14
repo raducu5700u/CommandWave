@@ -93,6 +93,9 @@ document.addEventListener('DOMContentLoaded', function() {
     // Setup terminal synchronization
     setupTerminalSync();
 
+    // Setup playbook synchronization
+    setupPlaybookSync();
+
     // Playbook upload
     const uploadPlaybookInput = document.getElementById('uploadPlaybook');
     if (uploadPlaybookInput) {
@@ -501,9 +504,12 @@ document.addEventListener('DOMContentLoaded', function() {
                 const varInput = this.closest('.variable-input');
                 if (varInput && window.state.activeTerminal) {
                     const varName = varInput.querySelector('input').name;
-                    delete window.state.terminals[window.state.activeTerminal].variables[varName];
-                    varInput.remove();
-                    updateVariableSubstitutions();
+                    const displayName = varInput.querySelector('label').textContent;
+                    if (confirm(`Remove ${displayName} variable?`)) {
+                        delete window.state.terminals[window.state.activeTerminal].variables[varName];
+                        varInput.remove();
+                        updateVariableSubstitutions();
+                    }
                 }
             });
         });
@@ -699,14 +705,18 @@ document.addEventListener('DOMContentLoaded', function() {
         
         // Add event listener to remove button
         varInput.querySelector('.remove-variable-btn').addEventListener('click', function() {
-            varInput.remove();
-            delete window.state.terminals[window.state.activeTerminal].variables[varKey];
-            updateVariableSubstitutions();
+            const varName = varInput.querySelector('input').name;
+            const displayName = varInput.querySelector('label').textContent;
+            if (confirm(`Remove ${displayName} variable?`)) {
+                varInput.remove();
+                delete window.state.terminals[window.state.activeTerminal].variables[varName];
+                updateVariableSubstitutions();
+            }
         });
         
         // Add event listener to input
         varInput.querySelector('input').addEventListener('input', function() {
-            window.state.terminals[window.state.activeTerminal].variables[varKey].value = this.value;
+            window.state.terminals[window.state.activeTerminal].variables[this.id].value = this.value;
             updateVariableSubstitutions();
         });
         
@@ -889,6 +899,121 @@ document.addEventListener('DOMContentLoaded', function() {
     }
 
     /**
+     * Playbook synchronization functionality
+     */
+    
+    function setupPlaybookSync() {
+        // Start polling for playbook updates
+        pollPlaybookUpdates();
+        
+        // Set up interval to poll for updates every 5 seconds
+        setInterval(pollPlaybookUpdates, 5000);
+    }
+    
+    function pollPlaybookUpdates() {
+        fetch('/api/playbooks/list/all')
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    updatePlaybooks(data.playbooks);
+                }
+            })
+            .catch(error => {
+                console.error('Error polling playbook updates:', error);
+            });
+    }
+    
+    function updatePlaybooks(serverPlaybooks) {
+        // If we have no active terminal, there's nothing to update
+        if (!window.state.activeTerminal || !window.state.terminals[window.state.activeTerminal]) {
+            return;
+        }
+        
+        const activeTerminalId = window.state.activeTerminal;
+        const activeTerminalPlaybooks = window.state.terminals[activeTerminalId].playbooks;
+        const terminalPort = window.state.terminals[activeTerminalId].port;
+        const currentTerminalId = `term-${terminalPort}`;
+        
+        // Process each server playbook
+        Object.keys(serverPlaybooks).forEach(filename => {
+            const serverPlaybook = serverPlaybooks[filename];
+            const sanitizedFilename = sanitizeForCssClass(filename);
+            
+            // Check if this playbook belongs to this terminal
+            const playbookTerminalId = serverPlaybook.terminal_id || 'unknown';
+            
+            // Only process playbooks that belong to this terminal or have no terminal association
+            if (playbookTerminalId === currentTerminalId || playbookTerminalId === 'unknown') {
+                // If playbook exists locally but content differs, update the local copy
+                if (activeTerminalPlaybooks[filename]) {
+                    // Skip if this client is currently editing the playbook
+                    if (document.querySelector(`.playbook-editing-${sanitizedFilename}`)) {
+                        return;
+                    }
+                    
+                    // Compare last_modified timestamps to detect newer content
+                    const clientLastModified = activeTerminalPlaybooks[filename].last_modified || 0;
+                    const serverLastModified = serverPlaybook.last_modified || 0;
+                    
+                    // Only update if server version is newer
+                    if (serverLastModified > clientLastModified) {
+                        console.log(`Updating playbook: ${filename} from server`);
+                        
+                        // Update the state
+                        activeTerminalPlaybooks[filename] = {
+                            filename: filename,
+                            content: serverPlaybook.content,
+                            blocks: parseMarkdown(serverPlaybook.content),
+                            last_modified: serverPlaybook.last_modified,
+                            editor: serverPlaybook.editor,
+                            terminal_id: playbookTerminalId
+                        };
+                        
+                        // Update the UI if the playbook is currently displayed
+                        const playbackContainer = document.getElementById(`playbook-${sanitizedFilename}`);
+                        if (playbackContainer) {
+                            // Temporarily show sync indicator
+                            const header = playbackContainer.querySelector('.playbook-header');
+                            if (header) {
+                                const syncIndicator = document.createElement('span');
+                                syncIndicator.className = 'sync-indicator';
+                                syncIndicator.textContent = '(Syncing...)';
+                                header.appendChild(syncIndicator);
+                                
+                                // Remove the indicator after 2 seconds
+                                setTimeout(() => {
+                                    syncIndicator.remove();
+                                }, 2000);
+                            }
+                            
+                            // Update the content
+                            displayPlaybook(activeTerminalPlaybooks[filename], activeTerminalId);
+                        }
+                    }
+                } else {
+                    // New playbook from server, add it locally
+                    console.log(`New playbook from server: ${filename}`);
+                    
+                    // Add to state
+                    activeTerminalPlaybooks[filename] = {
+                        filename: filename,
+                        content: serverPlaybook.content,
+                        blocks: parseMarkdown(serverPlaybook.content),
+                        last_modified: serverPlaybook.last_modified,
+                        editor: serverPlaybook.editor,
+                        terminal_id: playbookTerminalId
+                    };
+                    
+                    // Display it if current playbooks section is visible
+                    if (document.getElementById('playbooks').children.length > 0) {
+                        displayPlaybook(activeTerminalPlaybooks[filename], activeTerminalId);
+                    }
+                }
+            }
+        });
+    }
+
+    /**
      * Playbook Management Functions
      */
     
@@ -905,14 +1030,35 @@ document.addEventListener('DOMContentLoaded', function() {
         const reader = new FileReader();
         reader.onload = function(e) {
             const content = e.target.result;
+            const activeTerminalId = window.state.activeTerminal;
+            const terminalPort = window.state.terminals[activeTerminalId].port;
+            
             const playbook = {
                 filename: file.name,
                 content: content,
-                blocks: parseMarkdown(content)
+                blocks: parseMarkdown(content),
+                last_modified: Date.now() / 1000, // Add timestamp for synchronization
+                editor: 'client',  // Add editor information
+                terminal_id: `term-${terminalPort}` // Associate with current terminal
             };
             
             // Store in active terminal's playbooks
-            window.state.terminals[window.state.activeTerminal].playbooks[file.name] = playbook;
+            window.state.terminals[activeTerminalId].playbooks[file.name] = playbook;
+            
+            // Sync to server with terminal ID
+            fetch(`/api/playbooks/sync/${encodeURIComponent(file.name)}`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({
+                    content: content,
+                    editor: 'client',
+                    terminal_id: `term-${terminalPort}` // Include terminal ID
+                })
+            }).catch(error => {
+                console.error('Error syncing uploaded playbook:', error);
+            });
             
             // Display the playbook
             displayPlaybook(playbook);
@@ -1045,9 +1191,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 copyBtn.addEventListener('click', function() {
                     copyToClipboard(getSubstitutedCode(codeElement));
                     this.innerHTML = '<i class="fas fa-check"></i> Copied!';
-                    setTimeout(() => {
-                        this.innerHTML = '<i class="fas fa-copy"></i> Copy';
-                    }, 2000);
+                    setTimeout(() => { this.innerHTML = '<i class="fas fa-copy"></i> Copy'; }, 2000);
                 });
                 
                 // Set up execute button
@@ -1104,7 +1248,9 @@ document.addEventListener('DOMContentLoaded', function() {
     function createPlaybookContainer(name, title) {
         const playbookContainer = document.createElement('div');
         playbookContainer.className = 'playbook-container';
-        playbookContainer.id = `playbook-${name}`;
+        // Sanitize the name for use as an ID
+        const sanitizedName = sanitizeForCssClass(name);
+        playbookContainer.id = `playbook-${sanitizedName}`;
         
         // Create header
         const header = document.createElement('div');
@@ -1293,14 +1439,11 @@ document.addEventListener('DOMContentLoaded', function() {
             playbookFilename = playbook.filename;
         } else if (typeof playbook === 'string') {
             // If it's a string, it could be either a filename or a playbook-id
-            if (playbook.startsWith(activeTerminal)) {
-                // It's a playbook-id from the DOM
-                const parts = playbook.split('-');
-                // Remove terminal part from the ID
-                parts.shift();
-                playbookFilename = parts.join('-').replace(/-/g, '.'); // Convert hyphens back to dots for filename
+            if (playbook.includes('-')) {
+                // It's probably a playbook-id, extract the filename
+                playbookFilename = playbook.split('-').slice(1).join('-');
             } else {
-                // It's a direct filename
+                // It's just a filename
                 playbookFilename = playbook;
             }
         } else {
@@ -1308,27 +1451,36 @@ document.addEventListener('DOMContentLoaded', function() {
             return;
         }
         
-        // Get the playbook data
+        // Get the playbook data from state
         const playbookData = window.state.terminals[activeTerminal].playbooks[playbookFilename];
         if (!playbookData) {
-            console.error(`Playbook ${playbookFilename} not found in terminal ${activeTerminal}`);
+            console.error(`Playbook ${playbookFilename} not found in state`);
             return;
         }
         
-        // Get the pre and code elements
-        const pre = codeContainer.querySelector('pre');
-        const codeElement = pre.querySelector('code');
+        // Get the code element to edit
+        const codeBlock = codeContainer.querySelector('pre');
+        if (!codeBlock) return;
         
-        // Get the raw code content
-        const rawCode = playbookData.blocks[blockIndex].content;
+        const codeElement = codeBlock.querySelector('code');
+        if (!codeElement) return;
         
-        // Create a textarea to edit the code
+        // Create a textarea to replace the code
         const textarea = document.createElement('textarea');
-        textarea.className = 'code-textarea';
-        textarea.value = rawCode;
+        textarea.className = 'code-editor';
+        textarea.value = playbookData.blocks[blockIndex].content;
         
-        // Replace the pre element with textarea
-        codeContainer.replaceChild(textarea, pre);
+        // Sanitize the filename for use as a CSS class
+        const sanitizedFilename = sanitizeForCssClass(playbookFilename);
+        
+        // Add class to the playbook container to indicate it's being edited
+        const playbookContainer = codeContainer.closest('.playbook-container');
+        if (playbookContainer) {
+            playbookContainer.classList.add(`playbook-editing-${sanitizedFilename}`);
+        }
+        
+        // Replace the code with the textarea
+        codeContainer.replaceChild(textarea, codeBlock);
         
         // Function to save the edited code
         function saveEdit() {
@@ -1349,16 +1501,50 @@ document.addEventListener('DOMContentLoaded', function() {
             // Replace the textarea with the pre element
             codeContainer.replaceChild(newPre, textarea);
             
-            // Apply syntax highlighting
+            // Update the raw content of the playbook by reconstructing from blocks
+            const updatedContent = playbookData.blocks.map(block => {
+                if (block.type === 'code') {
+                    return '```' + (block.language || '') + '\n' + block.content + '\n```';
+                } else {
+                    return block.content;
+                }
+            }).join('\n\n');
+            
+            // Update playbook content and add timestamp for synchronization
+            playbookData.content = updatedContent;
+            playbookData.last_modified = Date.now() / 1000; // Use seconds for consistency with server
+            playbookData.editor = 'client'; // Mark as edited by this client
+            
+            // Extract terminal ID without the "terminal-" prefix
+            const terminalPort = window.state.terminals[activeTerminal].port;
+            
+            // Sync to server
+            fetch(`/api/playbooks/sync/${encodeURIComponent(playbookFilename)}`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({
+                    content: updatedContent,
+                    editor: 'client',
+                    terminal_id: `term-${terminalPort}` // Include terminal ID
+                })
+            }).catch(error => {
+                console.error('Error syncing playbook edit:', error);
+            });
+            
+            // Remove editing class from container
+            if (playbookContainer) {
+                playbookContainer.classList.remove(`playbook-editing-${sanitizedFilename}`);
+            }
+            
+            // Re-apply syntax highlighting
             Prism.highlightElement(newCodeElement);
             
-            // Apply variable substitutions
-            updateVariableSubstitutions();
-            
-            // Re-bind execute and copy buttons to the new code element
-            const codeBlock = codeContainer.closest('.code-block');
+            // Update code action buttons
+            const codeBlock = codeContainer.querySelector('pre');
             if (codeBlock) {
-                // Completely replace the copy button with a new one
+                // Copy button
                 const oldCopyBtn = codeBlock.querySelector('.copy');
                 if (oldCopyBtn) {
                     const newCopyBtn = document.createElement('button');
@@ -1366,13 +1552,15 @@ document.addEventListener('DOMContentLoaded', function() {
                     newCopyBtn.textContent = 'Copy';
                     newCopyBtn.addEventListener('click', function() {
                         copyToClipboard(getSubstitutedCode(newCodeElement));
+                        this.textContent = 'Copied!';
+                        setTimeout(() => { this.textContent = 'Copy'; }, 2000);
                     });
                     
                     // Replace the old button
                     oldCopyBtn.parentNode.replaceChild(newCopyBtn, oldCopyBtn);
                 }
                 
-                // Completely replace the execute button with a new one
+                // Execute button
                 const oldExecuteBtn = codeBlock.querySelector('.execute');
                 if (oldExecuteBtn) {
                     const newExecuteBtn = document.createElement('button');
@@ -1473,7 +1661,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 const tutorialPlaybook = {
                     filename: filename,
                     content: data.content,
-                    blocks: window.parseMarkdown(data.content)
+                    blocks: parseMarkdown(data.content)
                 };
                 
                 // Store in active terminal's playbooks
@@ -1602,44 +1790,67 @@ document.addEventListener('DOMContentLoaded', function() {
 
     // Helper function to copy text to clipboard
     function copyToClipboard(text) {
-        // Create a temporary textarea element
-        const textarea = document.createElement('textarea');
-        textarea.value = text;
-        textarea.setAttribute('readonly', '');
-        textarea.style.position = 'absolute';
-        textarea.style.left = '-9999px';
-        document.body.appendChild(textarea);
-        
-        // Select and copy the text
-        textarea.select();
-        document.execCommand('copy');
-        
-        // Remove the temporary element
-        document.body.removeChild(textarea);
-        
-        // Show a brief notification
-        const notification = document.createElement('div');
-        notification.className = 'copy-notification';
-        notification.innerHTML = '<i class="fas fa-clipboard-check"></i> Copied to clipboard!';
-        document.body.appendChild(notification);
-        
-        // Remove the notification after a short time
-        setTimeout(() => {
-            document.body.removeChild(notification);
-        }, 2000);
+        navigator.clipboard.writeText(text)
+            .then(() => {
+                // Find the button that triggered the copy and show visual feedback
+                const activeButton = document.activeElement;
+                if (activeButton && activeButton.classList.contains('code-action-btn')) {
+                    const originalText = activeButton.textContent;
+                    const originalClass = activeButton.className;
+                    
+                    // Change button text and add success class
+                    activeButton.textContent = 'Copied!';
+                    activeButton.className = 'code-action-btn copy-success';
+                    
+                    // Reset button after 1.5 seconds
+                    setTimeout(() => {
+                        activeButton.textContent = originalText;
+                        activeButton.className = originalClass;
+                    }, 1500);
+                }
+            })
+            .catch(err => {
+                console.error('Failed to copy text: ', err);
+                
+                // Visual indication of failure
+                const activeButton = document.activeElement;
+                if (activeButton && activeButton.classList.contains('code-action-btn')) {
+                    const originalText = activeButton.textContent;
+                    const originalClass = activeButton.className;
+                    
+                    // Change button text and add failure class
+                    activeButton.textContent = 'Failed!';
+                    activeButton.className = 'code-action-btn copy-fail';
+                    
+                    // Reset button after 1.5 seconds
+                    setTimeout(() => {
+                        activeButton.textContent = originalText;
+                        activeButton.className = originalClass;
+                    }, 1500);
+                }
+            });
     }
 
-    // Function to execute a command in the current terminal
     function executeInTerminal(command) {
         if (!window.state.activeTerminal) {
             showModal('themeModal', 'No active terminal found');
             return Promise.reject(new Error('No active terminal'));
         }
         
-        const terminalPort = window.state.activeTerminal.replace('terminal-', '');
+        const terminalPort = window.state.terminals[window.state.activeTerminal].port;
         
-        // Send the command to the terminal
-        return fetch('/api/terminals/sendkeys', {
+        // Find the button that triggered the execution and show visual feedback
+        const activeButton = document.activeElement;
+        if (activeButton && activeButton.classList.contains('code-action-btn')) {
+            const originalText = activeButton.textContent;
+            const originalClass = activeButton.className;
+            
+            // Change button text and add progress class
+            activeButton.textContent = 'Executing...';
+            activeButton.className = 'code-action-btn execute-progress';
+        }
+        
+        fetch('/api/terminals/sendkeys', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'
@@ -1653,21 +1864,53 @@ document.addEventListener('DOMContentLoaded', function() {
         .then(data => {
             if (!data.success) {
                 console.error('Failed to execute command:', data.error);
-                return Promise.reject(new Error(data.error || 'Failed to execute command'));
+                
+                // Show failure feedback if we have the active button
+                const activeButton = document.activeElement;
+                if (activeButton && activeButton.classList.contains('code-action-btn')) {
+                    activeButton.textContent = 'Failed!';
+                    activeButton.className = 'code-action-btn execute-fail';
+                    
+                    // Reset button after 1.5 seconds
+                    setTimeout(() => {
+                        activeButton.textContent = 'Execute';
+                        activeButton.className = 'code-action-btn execute';
+                    }, 1500);
+                }
+            } else {
+                // Show success feedback if we have the active button
+                const activeButton = document.activeElement;
+                if (activeButton && activeButton.classList.contains('code-action-btn')) {
+                    activeButton.textContent = 'Executed!';
+                    activeButton.className = 'code-action-btn execute-success';
+                    
+                    // Reset button after 1.5 seconds
+                    setTimeout(() => {
+                        activeButton.textContent = 'Execute';
+                        activeButton.className = 'code-action-btn execute';
+                    }, 1500);
+                }
             }
-            return data;
         })
         .catch(error => {
             console.error('Error executing command:', error);
-            throw error;
+            
+            // Show failure feedback if we have the active button
+            const activeButton = document.activeElement;
+            if (activeButton && activeButton.classList.contains('code-action-btn')) {
+                activeButton.textContent = 'Failed!';
+                activeButton.className = 'code-action-btn execute-fail';
+                
+                // Reset button after 1.5 seconds
+                setTimeout(() => {
+                    activeButton.textContent = 'Execute';
+                    activeButton.className = 'code-action-btn execute';
+                }, 1500);
+            }
         });
     }
 
-    /**
-     * Import a playbook from the server
-     * @param {string} filename - Filename of the playbook to import
-     */
-    window.importPlaybook = function(filename) {
+    function importPlaybook(filename) {
         // Ensure we have an active terminal
         if (!window.state.activeTerminal || !window.state.terminals[window.state.activeTerminal]) {
             console.error('No active terminal for playbook import');
@@ -1680,22 +1923,42 @@ document.addEventListener('DOMContentLoaded', function() {
         fetch(`/api/playbooks/load/${encodedFilename}`)
             .then(response => response.json())
             .then(data => {
-                if (data.success && data.content) {
+                if (data.success) {
+                    // Create the playbook object
                     const playbook = {
-                        filename: filename,
+                        filename: data.filename,
                         content: data.content,
-                        blocks: parseMarkdown(data.content)
+                        blocks: parseMarkdown(data.content),
+                        last_modified: Date.now() / 1000, // Add timestamp for synchronization
+                        editor: 'client',  // Add editor information
+                        terminal_id: `term-${window.state.terminals[window.state.activeTerminal].port}` // Associate with current terminal
                     };
                     
                     // Store in active terminal's playbooks
-                    window.state.terminals[window.state.activeTerminal].playbooks[filename] = playbook;
+                    window.state.terminals[window.state.activeTerminal].playbooks[data.filename] = playbook;
                     
                     // Display the playbook
                     displayPlaybook(playbook);
                     
-                    // Clear the search input and hide results after importing
+                    // Sync to server for other clients
+                    fetch(`/api/playbooks/sync/${encodedFilename}`, {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json'
+                        },
+                        body: JSON.stringify({
+                            content: data.content,
+                            editor: 'client',
+                            terminal_id: `term-${window.state.terminals[window.state.activeTerminal].port}` // Include terminal ID
+                        })
+                    }).catch(error => {
+                        console.error('Error syncing imported playbook:', error);
+                    });
+                    
+                    // Clear search if this was called from search results
                     const searchInput = document.getElementById('searchInput');
                     const resultsContainer = document.getElementById('searchResults');
+                    
                     if (searchInput) {
                         searchInput.value = '';
                     }
@@ -1849,6 +2112,12 @@ document.addEventListener('DOMContentLoaded', function() {
         return string.replace(/[.*+?^${}()|[\]\\]/g, '\\$&'); // $& means the whole matched string
     }
 
+    function sanitizeForCssClass(filename) {
+        if (!filename) return '';
+        // Replace spaces, periods, parentheses and other invalid CSS characters with hyphens
+        return filename.replace(/[ .()[\]{}:;,#&]/g, '-');
+    }
+
     // Setup custom variable management
     function setupCustomVariables() {
         const addVariableBtn = document.getElementById('addVariableBtn');
@@ -1891,35 +2160,22 @@ document.addEventListener('DOMContentLoaded', function() {
                     container.appendChild(variableInput);
                 }
                 
-                // Add event listener for input
-                const input = variableInput.querySelector('input');
-                if (input) {
-                    input.addEventListener('input', function() {
-                        if (window.state.activeTerminal) {
-                            window.state.terminals[window.state.activeTerminal].variables[this.id].value = this.value;
-                            updateVariableSubstitutions();
-                        }
-                    });
-                }
+                // Add event listener to remove button
+                variableInput.querySelector('.remove-variable-btn').addEventListener('click', function() {
+                    const varName = variableInput.querySelector('input').name;
+                    const displayName = variableInput.querySelector('label').textContent;
+                    if (confirm(`Remove ${displayName} variable?`)) {
+                        variableInput.remove();
+                        delete window.state.terminals[window.state.activeTerminal].variables[varName];
+                        updateVariableSubstitutions();
+                    }
+                });
                 
-                // Add event listener for remove button
-                const removeBtn = variableInput.querySelector('.remove-variable-btn');
-                if (removeBtn) {
-                    removeBtn.addEventListener('click', function() {
-                        if (confirm(`Remove ${displayName} variable?`)) {
-                            // Remove from state if it exists
-                            if (window.state.activeTerminal) {
-                                delete window.state.terminals[window.state.activeTerminal].variables[variableName];
-                            }
-                            
-                            // Remove from DOM
-                            variableInput.remove();
-                            
-                            // Update displays
-                            updateVariableSubstitutions();
-                        }
-                    });
-                }
+                // Add event listener to input
+                variableInput.querySelector('input').addEventListener('input', function() {
+                    window.state.terminals[window.state.activeTerminal].variables[this.id].value = this.value;
+                    updateVariableSubstitutions();
+                });
                 
                 // Initialize this variable in all terminals
                 Object.keys(window.state.terminals).forEach(terminalId => {
@@ -1985,87 +2241,88 @@ document.addEventListener('DOMContentLoaded', function() {
         
         // Open modal when create button is clicked
         createBtn.addEventListener('click', function() {
-            // Default content with template
-            if (!contentInput.value) {
-                contentInput.value = `# New Playbook
-
-## Step 1: Getting Started
-\`\`\`bash
-echo "This is my first step"
-\`\`\`
-
-## Step 2: Next Action
-\`\`\`bash
-# Add your commands here
-\`\`\``;
-            }
-            
             modal.style.display = 'block';
+            nameInput.focus();
         });
         
-        // Close modal functions
-        function closeModal() {
-            modal.style.display = 'none';
-            // Reset inputs for next time
-            nameInput.value = '';
-            contentInput.value = '';
-        }
-        
+        // Close modal when close button is clicked
         closeBtn.addEventListener('click', closeModal);
+        
+        // Close modal when cancel button is clicked
         cancelBtn.addEventListener('click', closeModal);
         
-        // Close when clicking outside of the modal content
+        // Close modal when escape key is pressed
+        document.addEventListener('keydown', function(e) {
+            if (e.key === 'Escape' && modal.style.display === 'block') {
+                closeModal();
+            }
+        });
+        
+        // Close when clicking outside the modal
         window.addEventListener('click', function(event) {
             if (event.target === modal) {
                 closeModal();
             }
         });
         
-        // Handle form submission
+        // Close modal function
+        function closeModal() {
+            modal.style.display = 'none';
+        }
+        
+        // Submit button handler
         submitBtn.addEventListener('click', function() {
             try {
-                // Get the form values from the correct inputs
-                const content = contentInput.value.trim();
-                let filename = nameInput.value.trim();
-                
-                if (!filename) {
+                const name = nameInput.value.trim();
+                if (!name) {
                     showErrorModal('Please enter a playbook name');
                     return;
                 }
                 
+                const content = contentInput.value.trim();
                 if (!content) {
                     showErrorModal('Please enter playbook content');
                     return;
                 }
                 
-                // Validate filename
-                const validatedFilename = filename.endsWith('.md') ? filename : `${filename}.md`;
+                // Ensure filename has .md extension
+                let filename = name;
+                if (!filename.endsWith('.md')) {
+                    filename += '.md';
+                }
+                
+                // Create timestamp for synchronization
+                const timestamp = Date.now() / 1000;
                 
                 // Create playbook object
                 const playbook = {
-                    filename: validatedFilename,
+                    filename: filename,
                     content: content,
-                    blocks: parseMarkdown(content)
+                    blocks: parseMarkdown(content),
+                    last_modified: timestamp,
+                    editor: 'client'
                 };
                 
-                // Store in active terminal's playbooks
+                // Store playbook in active terminal state
                 if (window.state.activeTerminal && window.state.terminals[window.state.activeTerminal]) {
-                    window.state.terminals[window.state.activeTerminal].playbooks[validatedFilename] = playbook;
+                    window.state.terminals[window.state.activeTerminal].playbooks[filename] = playbook;
+                    
+                    // Display the playbook
+                    displayPlaybook(playbook);
                 }
                 
-                // Display the playbook
-                displayPlaybook(playbook);
-                
-                // Save the playbook to the server
+                // Save to server
                 fetch('/api/playbooks/save', {
                     method: 'POST',
                     headers: {
-                        'Content-Type': 'application/json',
+                        'Content-Type': 'application/json'
                     },
-                    body: JSON.stringify({ 
-                        filename: validatedFilename, 
-                        content: content 
-                    }),
+                    body: JSON.stringify({
+                        filename: filename,
+                        content: content,
+                        editor: 'client',
+                        timestamp: timestamp
+                    })
                 })
                 .then(response => response.json())
                 .then(data => {
@@ -2303,7 +2560,7 @@ echo "This is my first step"
                                                     const tutorialPlaybook = {
                                                         filename: filename,
                                                         content: data.content,
-                                                        blocks: window.parseMarkdown(data.content)
+                                                        blocks: parseMarkdown(data.content)
                                                     };
                                                     
                                                     // Store in active terminal's playbooks
@@ -2311,6 +2568,7 @@ echo "This is my first step"
                                                         window.state.terminals[window.state.activeTerminal].playbooks[filename] = tutorialPlaybook;
                                                     }
                                                     
+                                                    // Display the playbook
                                                     window.displayPlaybook(tutorialPlaybook);
                                                 })
                                                 .catch(error => {

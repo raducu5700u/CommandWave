@@ -1274,10 +1274,13 @@ header {
     line-height: 1.7;
 }
 
-.markdown-text h1, .markdown-text h2, .markdown-text h3 {
+.markdown-text h1,
+.markdown-text h2,
+.markdown-text h3 {
     font-family: 'Orbitron', sans-serif;
     color: var(--neon-blue);
-    margin: 1rem 0;
+    margin-top: 1.5rem;
+    margin-bottom: 1rem;
 }
 
 .markdown-text a {
@@ -1289,7 +1292,8 @@ header {
     text-decoration: underline;
 }
 
-.markdown-text ul, .markdown-text ol {
+.markdown-text ul,
+.markdown-text ol {
     margin-left: 1.5rem;
 }
 
@@ -2130,6 +2134,7 @@ button[data-action="execute"]:hover {
     justify-content: center;
     gap: 20px;
     margin: 20px 0;
+    flex-wrap: wrap;
 }
 
 .theme-option {
@@ -2152,7 +2157,7 @@ button[data-action="execute"]:hover {
 }
 
 .theme-preview.dark {
-    background: linear-gradient(135deg, #0b0b17 0%, #121225 100%);
+    background-color: #0b0b17;
 }
 
 .theme-preview.dark:before {
@@ -2178,7 +2183,7 @@ button[data-action="execute"]:hover {
 }
 
 .theme-preview.light {
-    background: linear-gradient(135deg, #f0f4f8 0%, #dbe4f0 100%);
+    background-color: #f0f4f8;
 }
 
 .theme-preview.light:before {
@@ -2204,7 +2209,7 @@ button[data-action="execute"]:hover {
 }
 
 .theme-preview.witchhazel {
-    background: linear-gradient(135deg, #282634 0%, #332e41 100%);
+    background-color: #282634;
 }
 
 .theme-preview.witchhazel:before {
@@ -2244,6 +2249,26 @@ button[data-action="execute"]:hover {
 .theme-option.active .theme-name {
     color: var(--neon-purple);
     text-shadow: 0 0 5px rgba(194, 100, 254, 0.5);
+}
+
+.theme-option[data-theme="light"] .theme-name {
+    color: #0066a6;  /* Darker blue for better contrast on light backgrounds */
+    text-shadow: none;
+}
+
+.theme-option[data-theme="witchhazel"] .theme-name {
+    color: #6a3ea1;  /* Dark purple for better contrast on light backgrounds */
+    text-shadow: none;
+}
+
+.theme-option:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+}
+
+.theme-option.active {
+    border: 2px solid var(--neon-blue);
+    box-shadow: 0 0 10px var(--neon-blue);
 }
 
 .execute-btn {
@@ -2389,8 +2414,8 @@ button[data-action="execute"]:hover {
 }
 
 [data-theme="light"] .substituted {
-    background-color: rgba(0, 168, 107, 0.1);
-    color: var(--neon-green);
+    background-color: rgba(0, 117, 74, 0.1);
+    color: #00754a;
 }
 
 /* Fix create new terminal modal for light theme */
@@ -2721,7 +2746,7 @@ button[data-action="execute"]:hover {
     color: #4a4a6a;
 }
 
-/* Fix search modal results (search box from image 6) */
+/* Search Modal Styling */
 .search-modal {
     position: fixed;
     z-index: 1000;
@@ -2954,7 +2979,6 @@ button[data-action="execute"]:hover {
     font-size: 0.9rem;
     color: var(--code-text);
     white-space: pre-wrap;
-    line-height: 1.5;
 }
 
 [data-theme="light"] .search-modal-code {
@@ -3217,4 +3241,672 @@ button[data-action="execute"]:hover {
 [data-theme="witchhazel"] .code-action-btn.import:hover {
     background-color: rgba(139, 255, 128, 0.2);
     box-shadow: 0 0 10px rgba(139, 255, 128, 0.4);
+}
+
+/* Playbook sync indicators */
+.sync-indicator {
+    display: inline-block;
+    margin-left: 10px;
+    font-size: 0.8em;
+    padding: 2px 5px;
+    border-radius: 4px;
+    background: rgba(255, 215, 0, 0.2);
+    color: #ffd700;
+    animation: pulse 1s infinite;
+}
+
+[data-theme="light"] .sync-indicator {
+    background: rgba(138, 43, 226, 0.2);
+    color: #8a2be2;
+}
+
+[data-theme="witchhazel"] .sync-indicator {
+    background: rgba(255, 105, 180, 0.2);
+    color: #ff69b4;
+}
+
+@keyframes pulse {
+    0% { opacity: 0.7; }
+    50% { opacity: 1; }
+    100% { opacity: 0.7; }
+}
+
+.playbook-container.playbook-editing {
+    border: 2px solid #00ffff;
+    box-shadow: 0 0 10px rgba(0, 255, 255, 0.5);
+}
+
+[data-theme="light"] .playbook-container.playbook-editing {
+    border: 2px solid #8a2be2;
+    box-shadow: 0 0 10px rgba(138, 43, 226, 0.5);
+}
+
+[data-theme="witchhazel"] .playbook-container.playbook-editing {
+    border: 2px solid #ff69b4;
+    box-shadow: 0 0 10px rgba(255, 105, 180, 0.5);
+}
+
+/* Code editor styles */
+.code-editor {
+    display: block;
+    width: 100%;
+    min-height: 150px;
+    border: none;
+    background-color: #1e1e1e;
+    color: #f8f8f2;
+    font-family: monospace;
+    padding: 15px;
+    margin: 0;
+    resize: vertical;
+    font-size: 14px;
+    line-height: 1.5;
+    box-sizing: border-box;
+    border-radius: 4px;
+}
+
+[data-theme="light"] .code-editor {
+    background-color: #f5f5f5;
+    color: #333;
+    border: 1px solid #ccc;
+}
+
+[data-theme="witchhazel"] .code-editor {
+    background-color: #2d2a55;
+    color: #f8f8f2;
+    border: 1px solid #7a51d5;
+}
+
+/* Theme Modal Styles */
+.theme-options {
+    display: flex;
+    justify-content: space-around;
+    margin: 20px 0;
+    flex-wrap: wrap;
+    gap: 15px;
+}
+
+.theme-option {
+    text-align: center;
+    cursor: pointer;
+    padding: 10px;
+    border-radius: 8px;
+    transition: all 0.3s ease;
+    width: 120px;
+}
+
+.theme-preview {
+    width: 100%;
+    height: 80px;
+    border-radius: 5px;
+    margin-bottom: 10px;
+    border: 1px solid var(--border-light);
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 10px;
+}
+
+.theme-preview::before, 
+.theme-preview::after {
+    content: '';
+    display: block;
+    height: 2px;
+    width: 60%;
+}
+
+.theme-preview.dark {
+    background-color: #0b0b17;
+}
+
+.theme-preview.dark::before {
+    background-color: #60efff;
+}
+
+.theme-preview.dark::after {
+    background-color: #ff5a8c;
+}
+
+.theme-preview.light {
+    background-color: #f0f4f8;
+}
+
+.theme-preview.light::before {
+    background-color: #0083b0;
+}
+
+.theme-preview.light::after {
+    background-color: #d12765;
+}
+
+.theme-preview.witchhazel {
+    background-color: #282634;
+}
+
+.theme-preview.witchhazel::before {
+    background-color: #81ffff;
+}
+
+.theme-preview.witchhazel::after {
+    background-color: #ff79c6;
+}
+
+.theme-name {
+    font-size: 14px;
+    font-weight: 500;
+    color: var(--text-primary);
+}
+
+/* Theme-specific contrast fixes */
+.theme-option[data-theme="light"] .theme-name {
+    color: #0066a6;  /* Darker blue for better contrast on light backgrounds */
+    text-shadow: none;
+}
+
+.theme-option[data-theme="witchhazel"] .theme-name {
+    color: #6a3ea1;  /* Dark purple for better contrast on light backgrounds */
+    text-shadow: none;
+}
+
+.theme-option:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+}
+
+.theme-option.active {
+    border: 2px solid var(--neon-blue);
+    box-shadow: 0 0 10px var(--neon-blue);
+}
+
+body[data-theme="light"] .theme-option[data-theme="witchhazel"] .theme-name {
+    color: #6a3ea1;  /* Dark purple for better contrast on light backgrounds */
+    text-shadow: none;
+}
+
+body[data-theme="light"] .theme-option[data-theme="light"] .theme-name {
+    color: #0066a6;  /* Darker blue for better contrast on light backgrounds */
+    text-shadow: none;
+}
+
+/* Witch Hazel Theme - Code Syntax Highlighting Overrides */
+[data-theme="witchhazel"] .playbook-content pre,
+[data-theme="witchhazel"] .code-block {
+    background-color: #282634;
+    border: 1px solid #433e56;
+    box-shadow: 0 0 10px rgba(149, 128, 255, 0.2);
+}
+
+/* Set text color for code blocks in Witch Hazel theme */
+[data-theme="witchhazel"] .playbook-content pre code,
+[data-theme="witchhazel"] code[class*="language-"],
+[data-theme="witchhazel"] pre[class*="language-"] {
+    color: #f8f8f2;
+    text-shadow: none;
+    font-family: 'Fira Code', monospace;
+}
+
+/* Comments */
+[data-theme="witchhazel"] .token.comment,
+[data-theme="witchhazel"] .token.prolog,
+[data-theme="witchhazel"] .token.doctype,
+[data-theme="witchhazel"] .token.cdata {
+    color: #9e9e9e;
+    font-style: italic;
+}
+
+/* Keywords */
+[data-theme="witchhazel"] .token.keyword,
+[data-theme="witchhazel"] .token.important {
+    color: #ae81ff;
+    font-weight: bold;
+}
+
+/* Strings */
+[data-theme="witchhazel"] .token.string,
+[data-theme="witchhazel"] .token.attr-value,
+[data-theme="witchhazel"] .token.char {
+    color: #abe9b3;
+}
+
+/* Numbers and Booleans */
+[data-theme="witchhazel"] .token.number,
+[data-theme="witchhazel"] .token.boolean {
+    color: #f8c275;
+}
+
+/* Functions and Classes */
+[data-theme="witchhazel"] .token.function,
+[data-theme="witchhazel"] .token.class-name {
+    color: #81ffff;
+}
+
+/* Variables and Parameters */
+[data-theme="witchhazel"] .token.variable,
+[data-theme="witchhazel"] .token.parameter {
+    color: #ff79c6;
+}
+
+/* Operators */
+[data-theme="witchhazel"] .token.operator,
+[data-theme="witchhazel"] .token.entity,
+[data-theme="witchhazel"] .token.url {
+    color: #f92aad;
+}
+
+/* Punctuation */
+[data-theme="witchhazel"] .token.punctuation {
+    color: #d4d4d4;
+}
+
+/* Tags and Attributes */
+[data-theme="witchhazel"] .token.tag,
+[data-theme="witchhazel"] .token.attr-name,
+[data-theme="witchhazel"] .token.namespace,
+[data-theme="witchhazel"] .token.deleted {
+    color: #ff9580;
+}
+
+/* Command highlighting (bash) */
+[data-theme="witchhazel"] .token.command,
+[data-theme="witchhazel"] .token.selector,
+[data-theme="witchhazel"] .token.property {
+    color: #c4a7e7;
+}
+
+/* Command output text */
+[data-theme="witchhazel"] .playbook-content pre:not(.command) {
+    color: #e0def4;
+}
+
+/* For variables like $TargetIP */
+[data-theme="witchhazel"] .token.variable.special,
+[data-theme="witchhazel"] .bash-variable {
+    color: #fab387;
+}
+
+/* Bash specific */
+[data-theme="witchhazel"] .language-bash .token.function {
+    color: #81ffff;
+}
+
+/* Bash comments */
+[data-theme="witchhazel"] .language-bash .token.comment {
+    color: #9e9e9e;
+    font-style: italic;
+}
+
+/* Improve code block buttons in Witch Hazel theme */
+[data-theme="witchhazel"] .code-block-buttons {
+    background-color: #282634;
+    border-top: 1px solid #433e56;
+}
+
+[data-theme="witchhazel"] .copy-btn,
+[data-theme="witchhazel"] .execute-btn {
+    background-color: rgba(149, 128, 255, 0.1);
+    color: #c4a7e7;
+    border: 1px solid #433e56;
+}
+
+[data-theme="witchhazel"] .copy-btn:hover,
+[data-theme="witchhazel"] .execute-btn:hover {
+    background-color: rgba(149, 128, 255, 0.3);
+    color: #f8f8f2;
+}
+
+/* Add word wrap to code blocks */
+.playbook-content pre,
+.playbook-content pre code {
+    white-space: pre-wrap !important;
+    word-wrap: break-word !important;
+    overflow-wrap: break-word !important;
+    word-break: break-word !important;
+}
+
+/* Additional word wrap for Prism.js elements */
+code[class*="language-"],
+pre[class*="language-"] {
+    white-space: pre-wrap !important;
+    word-wrap: break-word !important;
+    overflow-wrap: break-word !important;
+    word-break: break-word !important;
+}
+
+/* Ensure code blocks have proper padding */
+.playbook-content pre {
+    padding: 1em !important;
+}
+
+/* Neon Light Theme - Code Syntax Highlighting Overrides */
+[data-theme="light"] .playbook-content pre,
+[data-theme="light"] .code-block {
+    background-color: #f8f9fc;
+    border: 1px solid rgba(0, 131, 176, 0.3);
+    box-shadow: 0 0 10px rgba(0, 131, 176, 0.1);
+}
+
+/* Set text color for code blocks in Neon Light theme */
+[data-theme="light"] .playbook-content pre code,
+[data-theme="light"] code[class*="language-"],
+[data-theme="light"] pre[class*="language-"] {
+    color: #2c3e50;
+    text-shadow: none;
+    font-family: 'Fira Code', monospace;
+}
+
+/* Comments */
+[data-theme="light"] .token.comment,
+[data-theme="light"] .token.prolog,
+[data-theme="light"] .token.doctype,
+[data-theme="light"] .token.cdata {
+    color: #7f8c8d;
+    font-style: italic;
+}
+
+/* Keywords */
+[data-theme="light"] .token.keyword,
+[data-theme="light"] .token.important {
+    color: #0083b0;
+    font-weight: bold;
+}
+
+/* Strings */
+[data-theme="light"] .token.string,
+[data-theme="light"] .token.attr-value,
+[data-theme="light"] .token.char {
+    color: #16a085;
+}
+
+/* Numbers and Booleans */
+[data-theme="light"] .token.number,
+[data-theme="light"] .token.boolean {
+    color: #e67e22;
+}
+
+/* Functions and Classes */
+[data-theme="light"] .token.function,
+[data-theme="light"] .token.class-name {
+    color: #0083b0;
+}
+
+/* Variables and Parameters */
+[data-theme="light"] .token.variable,
+[data-theme="light"] .token.parameter {
+    color: #d12765;
+}
+
+/* Operators */
+[data-theme="light"] .token.operator,
+[data-theme="light"] .token.entity,
+[data-theme="light"] .token.url {
+    color: #e74c3c;
+}
+
+/* Punctuation */
+[data-theme="light"] .token.punctuation {
+    color: #7f8c8d;
+}
+
+/* Tags and Attributes */
+[data-theme="light"] .token.tag,
+[data-theme="light"] .token.attr-name,
+[data-theme="light"] .token.namespace,
+[data-theme="light"] .token.deleted {
+    color: #c0392b;
+}
+
+/* Command highlighting (bash) */
+[data-theme="light"] .token.command,
+[data-theme="light"] .token.selector,
+[data-theme="light"] .token.property {
+    color: #005b7a;
+}
+
+/* Command output text */
+[data-theme="light"] .playbook-content pre:not(.command) {
+    color: #2a2a4a;
+}
+
+/* For variables like $TargetIP */
+[data-theme="light"] .token.variable.special,
+[data-theme="light"] .bash-variable {
+    color: #d12765;
+}
+
+/* Bash specific */
+[data-theme="light"] .language-bash .token.function {
+    color: #0083b0;
+}
+
+/* Bash comments */
+[data-theme="light"] .language-bash .token.comment {
+    color: #7f8c8d;
+    font-style: italic;
+}
+
+/* Improve code block buttons in Neon Light theme */
+[data-theme="light"] .code-block-buttons {
+    background-color: #f0f4f8;
+    border-top: 1px solid rgba(0, 131, 176, 0.3);
+}
+
+[data-theme="light"] .copy-btn {
+    background-color: rgba(241, 196, 15, 0.1);
+    color: #d0a30c;
+    border: 1px solid #f1c40f;
+}
+
+[data-theme="light"] .execute-btn {
+    background-color: rgba(231, 76, 60, 0.1);
+    color: #c0392b;
+    border: 1px solid #e74c3c;
+}
+
+[data-theme="light"] .copy-btn:hover {
+    background-color: rgba(241, 196, 15, 0.2);
+    box-shadow: 0 0 10px rgba(241, 196, 15, 0.5);
+}
+
+[data-theme="light"] .execute-btn:hover {
+    background-color: rgba(231, 76, 60, 0.2);
+    box-shadow: 0 0 10px rgba(231, 76, 60, 0.5);
+}
+
+/* Cyberpunk Dark Theme - Code Syntax Highlighting Overrides */
+body[data-theme="dark"] .playbook-content pre,
+body[data-theme="dark"] .code-block {
+    background-color: #0a0b16 !important;
+    border: 1px solid #1f2035 !important;
+    box-shadow: 0 0 10px rgba(96, 239, 255, 0.2) !important;
+}
+
+/* Set text color for code blocks in Cyberpunk Dark theme */
+body[data-theme="dark"] .playbook-content pre code,
+body[data-theme="dark"] code[class*="language-"],
+body[data-theme="dark"] pre[class*="language-"] {
+    color: #e0e0e0 !important;
+    text-shadow: 0 0 2px rgba(255, 255, 255, 0.1) !important;
+    font-family: 'Fira Code', monospace !important;
+    background: transparent !important;
+}
+
+/* Comments */
+body[data-theme="dark"] .token.comment,
+body[data-theme="dark"] .token.prolog,
+body[data-theme="dark"] .token.doctype,
+body[data-theme="dark"] .token.cdata {
+    color: #6b7280 !important;
+    font-style: italic !important;
+}
+
+/* Keywords */
+body[data-theme="dark"] .token.keyword,
+body[data-theme="dark"] .token.important {
+    color: #60efff !important;
+    text-shadow: 0 0 5px rgba(96, 239, 255, 0.5) !important;
+    font-weight: bold !important;
+}
+
+/* Strings */
+body[data-theme="dark"] .token.string,
+body[data-theme="dark"] .token.attr-value,
+body[data-theme="dark"] .token.char {
+    color: #7bffb5 !important;
+    text-shadow: 0 0 5px rgba(123, 255, 181, 0.5) !important;
+}
+
+/* Numbers and Booleans */
+body[data-theme="dark"] .token.number,
+body[data-theme="dark"] .token.boolean {
+    color: #ffca85 !important;
+    text-shadow: 0 0 5px rgba(255, 202, 133, 0.5) !important;
+}
+
+/* Functions and Classes */
+body[data-theme="dark"] .token.function,
+body[data-theme="dark"] .token.class-name {
+    color: #60efff !important;
+    text-shadow: 0 0 5px rgba(96, 239, 255, 0.5) !important;
+}
+
+/* Variables and Parameters */
+body[data-theme="dark"] .token.variable,
+body[data-theme="dark"] .token.parameter {
+    color: #ff5a8c !important;
+    text-shadow: 0 0 5px rgba(255, 90, 140, 0.5) !important;
+}
+
+/* Bash variables like $TargetIP */
+body[data-theme="dark"] span.token.variable {
+    color: #ff5a8c !important;
+    text-shadow: 0 0 5px rgba(255, 90, 140, 0.5) !important;
+}
+
+/* Operators */
+body[data-theme="dark"] .token.operator,
+body[data-theme="dark"] .token.entity,
+body[data-theme="dark"] .token.url {
+    color: #ff5a8c !important;
+    text-shadow: 0 0 5px rgba(255, 90, 140, 0.5) !important;
+    background: transparent !important;
+}
+
+/* Punctuation */
+body[data-theme="dark"] .token.punctuation {
+    color: #8892b0 !important;
+}
+
+/* Tags and Attributes */
+body[data-theme="dark"] .token.tag,
+body[data-theme="dark"] .token.attr-name,
+body[data-theme="dark"] .token.namespace,
+body[data-theme="dark"] .token.deleted {
+    color: #ff5a8c !important;
+    text-shadow: 0 0 5px rgba(255, 90, 140, 0.5) !important;
+}
+
+/* Command highlighting (bash) */
+body[data-theme="dark"] .token.command,
+body[data-theme="dark"] .token.selector,
+body[data-theme="dark"] .token.property {
+    color: #60efff !important;
+    text-shadow: 0 0 5px rgba(96, 239, 255, 0.5) !important;
+}
+
+/* Command output text */
+body[data-theme="dark"] .playbook-content pre:not(.command) {
+    color: #e0e0e0 !important;
+}
+
+/* For variables like $TargetIP in Dark theme */
+body[data-theme="dark"] .bash-variable,
+body[data-theme="dark"] .token.variable.special {
+    color: #ff5a8c !important;
+    text-shadow: 0 0 5px rgba(255, 90, 140, 0.5) !important;
+}
+
+/* Bash specific */
+body[data-theme="dark"] .language-bash .token.function {
+    color: #60efff !important;
+    text-shadow: 0 0 5px rgba(96, 239, 255, 0.5) !important;
+}
+
+/* Bash comments */
+body[data-theme="dark"] .language-bash .token.comment {
+    color: #6b7280 !important;
+    font-style: italic !important;
+}
+
+/* Improve code block buttons in Dark theme */
+body[data-theme="dark"] .code-block-buttons {
+    background-color: #0a0b16 !important;
+    border-top: 1px solid #1f2035 !important;
+}
+
+body[data-theme="dark"] .copy-btn {
+    background-color: rgba(96, 239, 255, 0.1) !important;
+    color: #60efff !important;
+    border: 1px solid rgba(96, 239, 255, 0.3) !important;
+    text-shadow: 0 0 5px rgba(96, 239, 255, 0.5) !important;
+}
+
+body[data-theme="dark"] .execute-btn {
+    background-color: rgba(255, 90, 140, 0.1) !important;
+    color: #ff5a8c !important;
+    border: 1px solid rgba(255, 90, 140, 0.3) !important;
+    text-shadow: 0 0 5px rgba(255, 90, 140, 0.5) !important;
+}
+
+body[data-theme="dark"] .copy-btn:hover {
+    background-color: rgba(96, 239, 255, 0.2) !important;
+    box-shadow: 0 0 10px rgba(96, 239, 255, 0.5) !important;
+}
+
+body[data-theme="dark"] .execute-btn:hover {
+    background-color: rgba(255, 90, 140, 0.2) !important;
+    box-shadow: 0 0 10px rgba(255, 90, 140, 0.5) !important;
+}
+
+/* Fix for extra empty sections at the bottom of code blocks */
+.playbook-content pre::after,
+.code-block::after {
+    content: none !important;
+    display: none !important;
+}
+
+.playbook-content pre input,
+.code-block input,
+.playbook-content pre textarea,
+.code-block textarea {
+    display: none !important;
+}
+
+/* Hide any empty elements with borders in code blocks */
+.playbook-content pre > *:empty,
+.code-block > *:empty {
+    display: none !important;
+}
+
+/* Remove any bottom borders that might be causing the green line */
+.playbook-content pre,
+.code-block {
+    border-bottom: none !important;
+}
+
+/* Ensure code block container properly closes */
+.playbook-content pre,
+.code-block {
+    padding-bottom: 0 !important;
+    margin-bottom: 0 !important;
+}
+
+.playbook-content pre + *,
+.code-block + * {
+    margin-top: 1em !important;
+}
+
+/* Remove excess padding that might be causing the empty space */
+.playbook-content pre code,
+.code-block code {
+    padding-bottom: 0 !important;
 }
