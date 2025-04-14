@@ -8,6 +8,7 @@ Welcome to the CommandWave tutorial series! These guides will help you learn how
 2. [Variables and Substitution](02_Variables.md) - Learn how to use variables to create flexible playbooks
 3. [Creating Custom Playbooks](03_Custom_Playbooks.md) - Build your own playbooks for specific workflows
 4. [Advanced Features](04_Advanced_Features.md) - Discover powerful capabilities for experienced users
+5. [Playbook Cross-References](05_Playbook_Cross_References.md) - Learn how to create links between related playbooks
 
 ## How to Use These Tutorials
 

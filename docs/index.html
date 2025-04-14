@@ -28,6 +28,7 @@
             --shadow-green: 0 0 10px rgba(15, 255, 80, 0.5);
         }
 
+        /* Light Theme Variables */
         [data-theme="light"] {
             --background-dark: #f0f4f8;
             --background-medium: #dbe4f0;
@@ -36,101 +37,122 @@
             --border-light: rgba(0, 131, 176, 0.2);
             /* Keep neon colors the same for brand consistency */
         }
-
-        [data-theme="light"] body {
+        
+        /* Witch Hazel Theme Variables */
+        [data-theme="witchhazel"] {
+            --background-dark: #282634;
+            --background-medium: #332e41;
+            --text-primary: #f8f8f2;
+            --text-secondary: #c5b5e0;
+            --neon-blue: #81ffff;
+            --neon-purple: #b45bcf;
+            --neon-pink: #ff79c6;
+            --neon-yellow: #f4d554;
+            --neon-green: #8bff80;
+            --accent: #ff79c6;
+            --border-light: rgba(129, 255, 255, 0.2);
+            --shadow-blue: 0 0 10px rgba(129, 255, 255, 0.5);
+            --shadow-pink: 0 0 10px rgba(255, 121, 198, 0.5);
+            --shadow-purple: 0 0 10px rgba(180, 91, 207, 0.5);
+            --shadow-yellow: 0 0 10px rgba(244, 213, 84, 0.5);
+            --shadow-green: 0 0 10px rgba(139, 255, 128, 0.5);
+        }
+        
+        /* Witch Hazel Theme Overrides */
+        [data-theme="witchhazel"] body {
             background-color: var(--background-dark);
             color: var(--text-primary);
             background-image: 
-                radial-gradient(circle at 10% 20%, rgba(0, 131, 176, 0.03) 0%, transparent 20%),
-                radial-gradient(circle at 90% 80%, rgba(104, 52, 169, 0.03) 0%, transparent 20%),
-                radial-gradient(circle at 50% 50%, rgba(209, 39, 101, 0.03) 0%, transparent 40%);
+                radial-gradient(circle at 10% 20%, rgba(180, 91, 207, 0.05) 0%, transparent 20%),
+                radial-gradient(circle at 90% 80%, rgba(255, 121, 198, 0.05) 0%, transparent 20%),
+                radial-gradient(circle at 50% 50%, rgba(129, 255, 255, 0.05) 0%, transparent 40%);
         }
 
-        [data-theme="light"] header {
-            background-color: rgba(219, 228, 240, 0.9);
-            border-bottom: 1px solid rgba(0, 131, 176, 0.2);
+        [data-theme="witchhazel"] header {
+            background-color: rgba(40, 38, 52, 0.9);
+            border-bottom: 1px solid rgba(180, 91, 207, 0.2);
         }
 
-        [data-theme="light"] .section {
-            background-color: rgba(240, 244, 248, 0.8);
-            border: 1px solid rgba(0, 131, 176, 0.2);
+        [data-theme="witchhazel"] .section {
+            background-color: rgba(51, 46, 65, 0.8);
+            border: 1px solid rgba(180, 91, 207, 0.2);
         }
 
-        [data-theme="light"] .section-title {
-            color: #005b7a;
-            text-shadow: none;
+        [data-theme="witchhazel"] .section-title {
+            color: #ff79c6;
+            text-shadow: 0 0 5px rgba(255, 121, 198, 0.5);
         }
 
-        [data-theme="light"] .header-btn {
-            background-color: rgba(240, 244, 248, 0.8);
-            border: 1px solid #0083b0;
-            color: #0083b0;
-            box-shadow: 0 0 10px rgba(0, 131, 176, 0.3);
+        [data-theme="witchhazel"] .header-btn {
+            background-color: rgba(40, 38, 52, 0.8);
+            border: 1px solid #81ffff;
+            color: #81ffff;
+            box-shadow: 0 0 10px rgba(129, 255, 255, 0.3);
         }
 
-        [data-theme="light"] .header-btn:hover {
-            background-color: rgba(0, 131, 176, 0.1);
-            box-shadow: 0 0 10px rgba(0, 131, 176, 0.5);
+        [data-theme="witchhazel"] .header-btn:hover {
+            background-color: rgba(129, 255, 255, 0.1);
+            box-shadow: 0 0 10px rgba(129, 255, 255, 0.5);
         }
 
-        [data-theme="light"] .header-btn.pink {
-            border-color: #a8174a;
-            color: #a8174a;
-            box-shadow: 0 0 10px rgba(209, 39, 101, 0.3);
+        [data-theme="witchhazel"] .header-btn.pink {
+            border-color: #ff79c6;
+            color: #ff79c6;
+            box-shadow: 0 0 10px rgba(255, 121, 198, 0.3);
         }
 
-        [data-theme="light"] .header-btn.pink:hover {
-            background-color: rgba(209, 39, 101, 0.1);
-            box-shadow: 0 0 10px rgba(209, 39, 101, 0.5);
+        [data-theme="witchhazel"] .header-btn.pink:hover {
+            background-color: rgba(255, 121, 198, 0.1);
+            box-shadow: 0 0 10px rgba(255, 121, 198, 0.5);
         }
 
-        [data-theme="light"] .feature-card {
-            background-color: rgba(240, 244, 248, 0.7);
-            border: 1px solid rgba(0, 131, 176, 0.2);
+        [data-theme="witchhazel"] .feature-card {
+            background-color: rgba(51, 46, 65, 0.7);
+            border: 1px solid rgba(180, 91, 207, 0.2);
         }
 
-        [data-theme="light"] .feature-title {
-            color: #806600;
-            text-shadow: none;
+        [data-theme="witchhazel"] .feature-title {
+            color: #f4d554;
+            text-shadow: 0 0 5px rgba(244, 213, 84, 0.5);
         }
 
-        [data-theme="light"] .feature-icon {
-            color: #0083b0;
-            text-shadow: none;
+        [data-theme="witchhazel"] .feature-icon {
+            color: #81ffff;
+            text-shadow: 0 0 5px rgba(129, 255, 255, 0.5);
         }
 
-        [data-theme="light"] .step-number {
-            color: #00754a;
-            text-shadow: none;
+        [data-theme="witchhazel"] .step-number {
+            color: #8bff80;
+            text-shadow: 0 0 5px rgba(139, 255, 128, 0.5);
         }
 
-        [data-theme="light"] code {
-            background-color: #f5f7fa;
-            border: 1px solid rgba(0, 131, 176, 0.2);
-            color: #2a2a4a;
+        [data-theme="witchhazel"] code {
+            background-color: #2a2440;
+            border: 1px solid rgba(180, 91, 207, 0.2);
+            color: #f8f8f2;
         }
 
-        [data-theme="light"] .highlight {
-            color: #00754a;
-            font-weight: bold;
+        [data-theme="witchhazel"] .highlight {
+            color: #81ffff;
+            text-shadow: 0 0 5px rgba(129, 255, 255, 0.5);
         }
 
-        [data-theme="light"] .usage-item {
-            background-color: #f5f7fa;
-            border: 1px solid rgba(0, 131, 176, 0.2);
+        [data-theme="witchhazel"] .usage-title {
+            color: #ff79c6;
+            text-shadow: 0 0 5px rgba(255, 121, 198, 0.5);
         }
 
-        [data-theme="light"] footer {
-            background-color: rgba(219, 228, 240, 0.8);
-            border-top: 1px solid rgba(0, 131, 176, 0.2);
+        [data-theme="witchhazel"] footer {
+            background-color: rgba(40, 38, 52, 0.8);
+            border-top: 1px solid rgba(180, 91, 207, 0.2);
         }
 
-        [data-theme="light"] .footer-link {
-            color: #0083b0;
+        [data-theme="witchhazel"] .footer-link {
+            color: #81ffff;
         }
 
-        [data-theme="light"] .social-icon {
-            color: #0083b0;
+        [data-theme="witchhazel"] .social-icon {
+            color: #b45bcf;
         }
 
         * {
@@ -603,9 +625,12 @@
                     <p class="feature-desc">Create, switch between, rename, and close multiple terminal sessions backed by tmux and ttyd.</p>
                 </div>
                 <div class="feature-card">
-                    <div class="feature-icon"><i class="fas fa-book"></i></div>
-                    <h3 class="feature-title">Markdown Playbooks</h3>
-                    <p class="feature-desc">Upload and parse Markdown playbooks with executable code blocks.</p>
+                    <div class="feature-icon"><i class="fas fa-book-open"></i></div>
+                    <h3 class="feature-title">Playbook Integration</h3>
+                    <p class="feature-desc">
+                        Upload Markdown files as playbooks, which are parsed to separate text blocks from code blocks.
+                        Create cross-references between playbooks to build an interconnected knowledge base.
+                    </p>
                 </div>
                 <div class="feature-card">
                     <div class="feature-icon"><i class="fas fa-code"></i></div>
@@ -720,11 +745,11 @@
                 <div class="usage-item">
                     <h3 class="usage-title">Playbooks</h3>
                     <ul class="usage-desc">
-                        <li>Click "Upload Playbook" to load .md files</li>
-                        <li>Click "Create Playbook" to author a new playbook</li>
-                        <li>Links within playbooks to other .md files will load those playbooks</li>
+                        <li>Upload .md files or create new playbooks within the app</li>
+                        <li>Code blocks can be executed directly in the active terminal</li>
                         <li>External links open in new tabs with proper security attributes</li>
                         <li>Click "Execute" to send code to the active terminal tab</li>
+                        <li>Create cross-references between playbooks using <code>[Text](playbook:filename.md)</code> syntax</li>
                     </ul>
                 </div>
                 <div class="usage-item">
@@ -772,7 +797,7 @@
             
             // Toggle theme when button is clicked
             themeToggle.addEventListener('click', function() {
-                toggleTheme();
+                cycleTheme();
             });
             
             // Initialize theme based on saved preference or system preference
@@ -789,22 +814,49 @@
             
             // Apply theme to document
             function applyTheme(theme) {
-                if (theme === 'light') {
-                    document.documentElement.setAttribute('data-theme', 'light');
-                    themeIcon.classList.remove('fa-sun');
-                    themeIcon.classList.add('fa-moon');
-                } else {
-                    document.documentElement.removeAttribute('data-theme');
-                    themeIcon.classList.remove('fa-moon');
-                    themeIcon.classList.add('fa-sun');
+                // Remove existing theme attribute
+                document.documentElement.removeAttribute('data-theme');
+                
+                // Apply new theme if not dark (dark is default)
+                if (theme === 'light' || theme === 'witchhazel') {
+                    document.documentElement.setAttribute('data-theme', theme);
                 }
+                
+                // Update toggle icon based on theme
+                updateToggleIcon(theme);
+                
+                // Save preference
                 localStorage.setItem('commandwave-docs-theme', theme);
             }
             
-            // Toggle between light and dark themes
-            function toggleTheme() {
+            // Update the toggle icon based on theme
+            function updateToggleIcon(theme) {
+                // Reset classes
+                themeIcon.className = '';
+                
+                // Set appropriate icon
+                if (theme === 'dark') {
+                    themeIcon.className = 'fas fa-sun';
+                } else if (theme === 'light') {
+                    themeIcon.className = 'fas fa-moon';
+                } else if (theme === 'witchhazel') {
+                    themeIcon.className = 'fas fa-hat-wizard';
+                }
+            }
+            
+            // Cycle between themes: dark -> light -> witchhazel -> dark
+            function cycleTheme() {
                 const currentTheme = localStorage.getItem('commandwave-docs-theme') || 'dark';
-                const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
+                
+                let newTheme;
+                if (currentTheme === 'dark') {
+                    newTheme = 'light';
+                } else if (currentTheme === 'light') {
+                    newTheme = 'witchhazel';
+                } else {
+                    newTheme = 'dark';
+                }
+                
                 applyTheme(newTheme);
             }
         });

@@ -1082,8 +1082,22 @@ document.addEventListener('DOMContentLoaded', function() {
                 const renderer = new marked.Renderer();
                 // Override link renderer to add target="_blank" and rel attributes
                 renderer.link = function(href, title, text) {
+                    // Check if it's an explicit playbook reference link (starts with playbook:)
+                    if (href.startsWith('playbook:')) {
+                        // Extract the playbook name from the href
+                        const playbookName = href.substring(9); // Remove 'playbook:' prefix
+                        
+                        // Create a special playbook reference link
+                        return `<a href="javascript:void(0)" 
+                            onclick="window.importPlaybook('${playbookName}')" 
+                            class="playbook-reference" 
+                            title="${title || 'Open playbook: ' + playbookName}"
+                            data-playbook="${playbookName}">
+                            <i class="fas fa-book-open"></i> ${text}
+                        </a>`;
+                    }
                     // Check if it's an internal markdown link (no http/https)
-                    if (!href.startsWith('http') && href.endsWith('.md')) {
+                    else if (!href.startsWith('http') && href.endsWith('.md')) {
                         // It's an internal markdown file link - handle with importPlaybook
                         return `<a href="javascript:void(0)" onclick="window.importPlaybook('${href}')" title="${title || 'Open playbook'}">${text}</a>`;
                     } else {
@@ -1750,6 +1764,7 @@ document.addEventListener('DOMContentLoaded', function() {
                                 for (const [key, value] of Object.entries(variables)) {
                                     if (value.value) {
                                         // Convert variable name to match the format in the playbooks
+                                        // For example, 'targetIP' becomes '$TargetIP'
                                         const placeholder = '$' + key.charAt(0).toUpperCase() + key.slice(1);
                                         const regex = new RegExp(escapeRegExp(placeholder), 'g');
                                         commandToExecute = commandToExecute.replace(regex, `<span class="substituted">${value.value}</span>`);
@@ -2258,7 +2273,7 @@ document.addEventListener('DOMContentLoaded', function() {
             }
         });
         
-        // Close when clicking outside the modal
+        // Close when clicking elsewhere
         window.addEventListener('click', function(event) {
             if (event.target === modal) {
                 closeModal();
@@ -2752,3 +2767,73 @@ document.addEventListener('DOMContentLoaded', function() {
         setTimeout(resizeTerminals, 3000);  // 3 seconds
     }
 });
+
+/**
+ * Import a playbook from the server
+ * @param {string} filename - Name of the playbook file to import
+ */
+window.importPlaybook = function(filename) {
+    // Ensure we have an active terminal
+    if (!window.state.activeTerminal || !window.state.terminals[window.state.activeTerminal]) {
+        console.error('No active terminal for playbook import');
+        return;
+    }
+    
+    // Encode the filename to handle spaces and special characters
+    const encodedFilename = encodeURIComponent(filename);
+    
+    fetch(`/api/playbooks/load/${encodedFilename}`)
+        .then(response => response.json())
+        .then(data => {
+            if (data.success) {
+                // Create the playbook object
+                const playbook = {
+                    filename: data.filename,
+                    content: data.content,
+                    blocks: parseMarkdown(data.content),
+                    last_modified: Date.now() / 1000, // Add timestamp for synchronization
+                    editor: 'client',  // Add editor information
+                    terminal_id: `term-${window.state.terminals[window.state.activeTerminal].port}` // Associate with current terminal
+                };
+                
+                // Store in active terminal's playbooks
+                window.state.terminals[window.state.activeTerminal].playbooks[data.filename] = playbook;
+                
+                // Display the playbook
+                displayPlaybook(playbook);
+                
+                // Sync to server for other clients
+                fetch(`/api/playbooks/sync/${encodedFilename}`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        content: data.content,
+                        editor: 'client',
+                        terminal_id: `term-${window.state.terminals[window.state.activeTerminal].port}` // Include terminal ID
+                    })
+                }).catch(error => {
+                    console.error('Error syncing imported playbook:', error);
+                });
+                
+                // Clear search if this was called from search results
+                const searchInput = document.getElementById('searchInput');
+                const resultsContainer = document.getElementById('searchResults');
+                
+                if (searchInput) {
+                    searchInput.value = '';
+                }
+                if (resultsContainer) {
+                    resultsContainer.style.display = 'none';
+                }
+            } else if (!data.success) {
+                console.error('Error importing playbook:', data.error);
+                showErrorModal(`Failed to import playbook: ${data.error}`);
+            }
+        })
+        .catch(error => {
+            console.error('Error importing playbook:', error);
+            showErrorModal('Failed to import playbook. Check the console for details.');
+        });
+    }

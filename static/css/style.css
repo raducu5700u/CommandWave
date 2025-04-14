@@ -1075,6 +1075,10 @@ header {
     background-color: rgba(255, 90, 140, 0.15);
 }
 
+[data-theme="light"] .search-result-item:hover {
+    background-color: rgba(209, 39, 101, 0.05);
+}
+
 .search-result-item .result-header {
     display: flex;
     justify-content: space-between;
@@ -1098,6 +1102,10 @@ header {
     text-shadow: 0 0 5px rgba(255, 90, 140, 0.5);
 }
 
+[data-theme="light"] .search-result-item .filename {
+    color: #a8174a;
+}
+
 .search-result-item .line-number {
     color: rgba(255, 255, 255, 0.6);
     font-size: 0.8rem;
@@ -1105,6 +1113,11 @@ header {
     background-color: rgba(255, 90, 140, 0.1);
     padding: 2px 5px;
     border-radius: 3px;
+}
+
+[data-theme="light"] .search-result-item .line-number {
+    background-color: rgba(209, 39, 101, 0.1);
+    color: #4a4a6a;
 }
 
 .search-result-item .content {
@@ -1117,6 +1130,11 @@ header {
     background-color: rgba(11, 11, 23, 0.6);
     border-radius: 4px;
     border-left: 2px solid var(--neon-pink);
+}
+
+[data-theme="light"] .search-result-item .content {
+    background-color: rgba(219, 228, 240, 0.5);
+    border-left: 2px solid #d12765;
 }
 
 .result-action-btn {
@@ -3575,6 +3593,79 @@ pre[class*="language-"] {
 /* Ensure code blocks have proper padding */
 .playbook-content pre {
     padding: 1em !important;
+}
+
+/* Improve code block padding */
+.playbook-content pre,
+.code-block {
+    padding-bottom: 24px !important; /* Doubled from 12px */
+    margin-bottom: 0 !important;
+}
+
+.playbook-content pre code,
+.code-block code {
+    padding-bottom: 16px !important; /* Doubled from 8px */
+}
+
+/* Playbook reference styling - base styles for all themes */
+.playbook-reference {
+    display: inline-flex;
+    align-items: center;
+    padding: 2px 6px;
+    border-radius: 4px;
+    font-weight: 500;
+    transition: all 0.2s ease;
+    text-decoration: none;
+    margin: 0 2px;
+}
+
+.playbook-reference i {
+    margin-right: 4px;
+}
+
+/* Dark Theme (Default) */
+body .playbook-reference {
+    background-color: rgba(96, 239, 255, 0.1);
+    color: var(--neon-blue);
+    border: 1px solid rgba(96, 239, 255, 0.3);
+    text-shadow: 0 0 5px rgba(96, 239, 255, 0.5);
+    box-shadow: 0 0 5px rgba(96, 239, 255, 0.1);
+}
+
+body .playbook-reference:hover {
+    background-color: rgba(96, 239, 255, 0.2);
+    box-shadow: 0 0 10px rgba(96, 239, 255, 0.5);
+    transform: translateY(-1px);
+}
+
+/* Light Theme */
+body[data-theme="light"] .playbook-reference {
+    background-color: rgba(0, 131, 176, 0.1);
+    color: var(--neon-blue);
+    border: 1px solid rgba(0, 131, 176, 0.3);
+    text-shadow: none;
+    box-shadow: 0 0 3px rgba(0, 131, 176, 0.1);
+}
+
+body[data-theme="light"] .playbook-reference:hover {
+    background-color: rgba(0, 131, 176, 0.2);
+    box-shadow: 0 0 6px rgba(0, 131, 176, 0.3);
+    transform: translateY(-1px);
+}
+
+/* Witch Hazel Theme */
+body[data-theme="witchhazel"] .playbook-reference {
+    background-color: rgba(180, 91, 207, 0.1);
+    color: var(--neon-purple);
+    border: 1px solid rgba(180, 91, 207, 0.3);
+    text-shadow: 0 0 5px rgba(180, 91, 207, 0.5);
+    box-shadow: 0 0 3px rgba(180, 91, 207, 0.1);
+}
+
+body[data-theme="witchhazel"] .playbook-reference:hover {
+    background-color: rgba(180, 91, 207, 0.2);
+    box-shadow: 0 0 6px rgba(180, 91, 207, 0.3);
+    transform: translateY(-1px);
 }
 
 /* Neon Light Theme - Code Syntax Highlighting Overrides */

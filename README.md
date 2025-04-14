@@ -18,6 +18,7 @@ CommandWave provides a streamlined, web-based environment for managing multiple 
     * Upload Markdown (`.md`) files as playbooks.
     * Create new playbooks directly within the application.
     * Playbooks are parsed to separate text blocks from code blocks.
+    * Cross-reference between playbooks using special syntax.
 * **Executable Code Blocks**: Execute shell command blocks from playbooks directly into the active terminal session.
 * **Variable Substitution**: Define variables with user-friendly titles and reference names that are automatically substituted into code blocks before execution.
 * **Playbook Search**: Quickly search across all loaded playbooks for specific commands or text.
@@ -101,6 +102,7 @@ CommandWave provides a streamlined, web-based environment for managing multiple 
         * **Copy**: Copies the code (with variables substituted) to the clipboard.
         * **Execute**: Sends the code (with variables substituted) to the *currently active* terminal tab for execution.
     * Links within playbooks to other .md files will load those playbooks, while external links open in new tabs.
+    * Create cross-references between playbooks using the syntax: `[Link Text](playbook:playbook_name.md)`.
 5.  **Search**:
     * Use the search bar to find lines within any loaded playbook's content.
     * Results show the filename, line number, and content. Click on a result to open that playbook.
