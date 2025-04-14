@@ -47,6 +47,7 @@ scripted_tabs/*
 !scripted_tabs/.gitkeep
 PROJECT_TASKS.md
 user_preferences.json  # Local user theme and other preferences
+commandwave.log  # Application log file - should not be in version control
 
 # OS specific
 .DS_Store
