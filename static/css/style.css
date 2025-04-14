@@ -1119,22 +1119,6 @@ header {
     background-color: rgba(209, 39, 101, 0.1);
     color: #4a4a6a;
 }
-
-.search-result-item .content {
-    font-family: 'Consolas', monospace;
-    font-size: 0.9rem;
-    color: #ddd;
-    white-space: pre-wrap;
-    word-break: break-word;
-    padding: 0.5rem;
-    background-color: rgba(11, 11, 23, 0.6);
-    border-radius: 4px;
-    border-left: 2px solid var(--neon-pink);
-}
-
-[data-theme="light"] .search-result-item .content {
-    background-color: rgba(219, 228, 240, 0.5);
-    border-left: 2px solid #d12765;
 }
 
 .result-action-btn {
