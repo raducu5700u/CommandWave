@@ -1,0 +1,79 @@
+2025-04-13 23:19:59,208 - commandwave - INFO - Cleaning up all terminal processes...
+2025-04-13 23:19:59,211 - commandwave - INFO - Cleanup complete
+2025-04-13 23:20:06,692 - commandwave - INFO - Cleaning up all terminal processes...
+2025-04-13 23:20:06,693 - commandwave - INFO - Cleanup complete
+2025-04-13 23:21:03,769 - commandwave - INFO - Cleaning up all terminal processes...
+2025-04-13 23:21:03,770 - commandwave - INFO - Cleanup complete
+2025-04-13 23:21:51,107 - commandwave - INFO - Cleaning up all terminal processes...
+2025-04-13 23:21:51,108 - commandwave - INFO - Cleanup complete
+2025-04-13 23:25:10,190 - commandwave - INFO - Cleaning up all terminal processes...
+2025-04-13 23:25:10,191 - commandwave - INFO - Cleanup complete
+2025-04-13 23:25:16,488 - commandwave - INFO - Cleaning up all terminal processes...
+2025-04-13 23:25:16,489 - commandwave - INFO - Cleanup complete
+2025-04-13 23:25:28,271 - commandwave - INFO - Cleaning up all terminal processes...
+2025-04-13 23:25:28,272 - commandwave - INFO - Cleanup complete
+2025-04-13 23:26:40,603 - commandwave - INFO - Created new terminal on port 7682 with name 'Test Terminal'
+2025-04-13 23:26:40,700 - commandwave - INFO - Cleaning up all terminal processes...
+2025-04-13 23:26:40,702 - commandwave - INFO - Cleanup complete
+2025-04-13 23:27:49,849 - commandwave - INFO - Cleaning up all terminal processes...
+2025-04-13 23:27:49,850 - commandwave - INFO - Cleanup complete
+2025-04-13 23:28:52,756 - commandwave - ERROR - Error saving playbook: maximum recursion depth exceeded
+2025-04-13 23:28:52,843 - commandwave - INFO - Cleaning up all terminal processes...
+2025-04-13 23:28:52,844 - commandwave - INFO - Cleanup complete
+2025-04-13 23:29:17,712 - commandwave - INFO - Cleaning up all terminal processes...
+2025-04-13 23:29:17,713 - commandwave - INFO - Cleanup complete
+2025-04-13 23:31:42,349 - commandwave - INFO - Cleaning up all terminal processes...
+2025-04-13 23:31:42,350 - commandwave - INFO - Cleanup complete
+2025-04-13 23:32:32,289 - commandwave - INFO - Cleaning up all terminal processes...
+2025-04-13 23:32:32,290 - commandwave - INFO - Cleanup complete
+2025-04-13 23:33:49,402 - commandwave - INFO - Cleaning up all terminal processes...
+2025-04-13 23:33:49,403 - commandwave - INFO - Cleanup complete
+2025-04-13 23:34:27,638 - commandwave - ERROR - Error loading playbook /tmp/tmpuo6habig/playbooks/protected.md: Permission denied
+2025-04-13 23:34:28,936 - selenium.webdriver.common.selenium_manager - WARNING - Error sending stats to Plausible: error sending request for url (https://plausible.io/api/event)
+2025-04-13 23:34:29,340 - werkzeug - INFO -  * Running on http://127.0.0.1:5001/ (Press CTRL+C to quit)
+2025-04-13 23:34:31,353 - werkzeug - INFO - 127.0.0.1 - - [13/Apr/2025 23:34:31] "GET /test/playbook HTTP/1.1" 200 -
+2025-04-13 23:34:31,498 - werkzeug - INFO - 127.0.0.1 - - [13/Apr/2025 23:34:31] "GET /api/playbooks/test_playbook.md HTTP/1.1" 200 -
+2025-04-13 23:34:31,504 - werkzeug - INFO - 127.0.0.1 - - [13/Apr/2025 23:34:31] "[33mGET /favicon.ico HTTP/1.1[0m" 404 -
+2025-04-13 23:34:44,389 - werkzeug - INFO -  * Running on http://127.0.0.1:5002/ (Press CTRL+C to quit)
+2025-04-13 23:34:46,404 - werkzeug - INFO - 127.0.0.1 - - [13/Apr/2025 23:34:46] "GET /test/vars HTTP/1.1" 200 -
+2025-04-13 23:34:46,446 - werkzeug - INFO - 127.0.0.1 - - [13/Apr/2025 23:34:46] "[33mGET /favicon.ico HTTP/1.1[0m" 404 -
+2025-04-13 23:34:49,240 - werkzeug - INFO -  * Running on http://127.0.0.1:5003/ (Press CTRL+C to quit)
+2025-04-13 23:34:51,255 - werkzeug - INFO - 127.0.0.1 - - [13/Apr/2025 23:34:51] "GET /test/ui HTTP/1.1" 200 -
+2025-04-13 23:34:51,279 - werkzeug - INFO - 127.0.0.1 - - [13/Apr/2025 23:34:51] "GET /mock/playbooks HTTP/1.1" 200 -
+2025-04-13 23:34:51,298 - werkzeug - INFO - 127.0.0.1 - - [13/Apr/2025 23:34:51] "[33mGET /favicon.ico HTTP/1.1[0m" 404 -
+2025-04-13 23:34:51,492 - werkzeug - INFO - 127.0.0.1 - - [13/Apr/2025 23:34:51] "GET /mock/playbooks/test_playbook.md HTTP/1.1" 200 -
+2025-04-13 23:34:51,734 - commandwave - INFO - Cleaning up all terminal processes...
+2025-04-13 23:34:51,735 - commandwave - INFO - Cleanup complete
+2025-04-13 23:39:39,406 - commandwave - ERROR - Error loading playbook /tmp/tmpg27zrz9_/playbooks/protected.md: Permission denied
+2025-04-13 23:39:39,456 - commandwave - INFO - Created new terminal on port 7682 with name 'Terminal 1'
+2025-04-13 23:39:39,458 - commandwave - ERROR - Could not find available port for new terminal
+2025-04-13 23:39:39,465 - commandwave - ERROR - Error saving playbook: 400 Bad Request: The browser (or proxy) sent a request that this server could not understand.
+2025-04-13 23:39:40,102 - werkzeug - INFO -  * Running on http://127.0.0.1:5001/ (Press CTRL+C to quit)
+2025-04-13 23:39:42,117 - werkzeug - INFO - 127.0.0.1 - - [13/Apr/2025 23:39:42] "GET /test/playbook HTTP/1.1" 200 -
+2025-04-13 23:39:42,142 - werkzeug - INFO - 127.0.0.1 - - [13/Apr/2025 23:39:42] "GET /api/playbooks/test_playbook.md HTTP/1.1" 200 -
+2025-04-13 23:39:42,161 - werkzeug - INFO - 127.0.0.1 - - [13/Apr/2025 23:39:42] "[33mGET /favicon.ico HTTP/1.1[0m" 404 -
+2025-04-13 23:39:52,893 - werkzeug - INFO -  * Running on http://127.0.0.1:5002/ (Press CTRL+C to quit)
+2025-04-13 23:39:54,907 - werkzeug - INFO - 127.0.0.1 - - [13/Apr/2025 23:39:54] "GET /test/vars HTTP/1.1" 200 -
+2025-04-13 23:39:54,950 - werkzeug - INFO - 127.0.0.1 - - [13/Apr/2025 23:39:54] "[33mGET /favicon.ico HTTP/1.1[0m" 404 -
+2025-04-13 23:39:55,578 - werkzeug - INFO -  * Running on http://127.0.0.1:5003/ (Press CTRL+C to quit)
+2025-04-13 23:39:57,592 - werkzeug - INFO - 127.0.0.1 - - [13/Apr/2025 23:39:57] "GET /test/ui HTTP/1.1" 200 -
+2025-04-13 23:39:57,614 - werkzeug - INFO - 127.0.0.1 - - [13/Apr/2025 23:39:57] "GET /api/playbooks/list/all HTTP/1.1" 200 -
+2025-04-13 23:39:57,633 - werkzeug - INFO - 127.0.0.1 - - [13/Apr/2025 23:39:57] "[33mGET /favicon.ico HTTP/1.1[0m" 404 -
+2025-04-13 23:40:07,926 - commandwave - INFO - Created new terminal on port 7682 with name 'Integration Test Terminal'
+2025-04-13 23:40:07,932 - commandwave - INFO - Created new terminal on port 7682 with name 'User 1 Terminal'
+2025-04-13 23:40:07,932 - commandwave - INFO - Created new terminal on port 7683 with name 'User 2 Terminal'
+2025-04-13 23:40:07,933 - commandwave - INFO - Created new terminal on port 7684 with name 'User 3 Terminal'
+2025-04-13 23:40:07,998 - commandwave - INFO - Cleaning up all terminal processes...
+2025-04-13 23:40:07,999 - commandwave - INFO - Cleanup complete
+2025-04-13 23:41:22,655 - commandwave - ERROR - Error loading playbook /tmp/tmpt_8m961q/playbooks/protected.md: Permission denied
+2025-04-13 23:41:22,663 - commandwave - INFO - Created new terminal on port 7682 with name 'Terminal 1'
+2025-04-13 23:41:22,665 - commandwave - ERROR - Could not find available port for new terminal
+2025-04-13 23:41:22,668 - commandwave - ERROR - Error saving playbook: 400 Bad Request: The browser (or proxy) sent a request that this server could not understand.
+2025-04-13 23:41:22,731 - commandwave - INFO - Cleaning up all terminal processes...
+2025-04-13 23:41:22,732 - commandwave - INFO - Cleanup complete
+2025-04-13 23:42:13,540 - commandwave - ERROR - Error loading playbook /tmp/tmpw9c9eug8/playbooks/protected.md: Permission denied
+2025-04-13 23:42:13,548 - commandwave - INFO - Created new terminal on port 7682 with name 'Terminal 1'
+2025-04-13 23:42:13,550 - commandwave - ERROR - Could not find available port for new terminal
+2025-04-13 23:42:13,553 - commandwave - ERROR - Error saving playbook: 400 Bad Request: The browser (or proxy) sent a request that this server could not understand.
+2025-04-13 23:42:13,628 - commandwave - INFO - Cleaning up all terminal processes...
+2025-04-13 23:42:13,629 - commandwave - INFO - Cleanup complete

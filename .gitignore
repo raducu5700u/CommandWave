@@ -24,12 +24,20 @@ var/
 venv/
 ENV/
 .env
+commandwave_venv/
 
 # IDE specific files
 .idea/
 .vscode/
 *.swp
 *.swo
+
+# Testing
+.pytest_cache/
+.coverage
+htmlcov/
+coverage.xml
+tests/test_data/*.json
 
 # CommandWave specific
 notes_data/*.json
