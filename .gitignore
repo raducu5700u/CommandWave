@@ -41,6 +41,7 @@ tests/test_data/*.json
 
 # CommandWave specific
 notes_data/*.json
+notes_data/*.txt
 playbooks/*.md
 !playbooks/example_*.md
 scripted_tabs/*
@@ -48,6 +49,8 @@ scripted_tabs/*
 PROJECT_TASKS.md
 user_preferences.json  # Local user theme and other preferences
 commandwave.log  # Application log file - should not be in version control
+static/css/combined.css  # Generated combined CSS file
+static/css/*.bak  # Backup CSS files
 
 # OS specific
 .DS_Store
