@@ -736,3 +736,215 @@
 2025-04-15 09:59:17,786 - commandwave - INFO - Cleanup complete
 2025-04-15 09:59:17,787 - commandwave - INFO - Cleaning up all terminal processes...
 2025-04-15 09:59:17,787 - commandwave - INFO - Cleanup complete
+2025-04-15 10:00:11,003 - commandwave - INFO - Starting CommandWave on port 5000
+2025-04-15 10:00:11,003 - commandwave - INFO - Using hostname: 192.168.170.129
+2025-04-15 10:00:11,006 - commandwave - INFO - Creating new tmux session with config: /home/kali/Tools/CommandWave/commandwave_theme.tmux.conf
+2025-04-15 10:00:11,017 - commandwave - INFO - Created tmux session: commandwave-main
+2025-04-15 10:00:11,017 - commandwave - INFO - Created tmux helper script with theme at /home/kali/Tools/CommandWave/apply_theme_7681.sh
+2025-04-15 10:00:11,517 - commandwave - INFO - Started ttyd on port 7681 linked to tmux session commandwave-main
+2025-04-15 10:00:11,518 - commandwave - INFO - Started main terminal on port 7681
+2025-04-15 10:00:11,525 - werkzeug - INFO - [31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on all addresses (0.0.0.0)
+ * Running on http://127.0.0.1:5000
+ * Running on http://192.168.170.129:5000
+2025-04-15 10:00:11,525 - werkzeug - INFO - [33mPress CTRL+C to quit[0m
+2025-04-15 10:00:12,702 - werkzeug - INFO - 127.0.0.1 - - [15/Apr/2025 10:00:12] "GET / HTTP/1.1" 200 -
+2025-04-15 10:00:12,712 - werkzeug - INFO - 127.0.0.1 - - [15/Apr/2025 10:00:12] "GET /static/css/style.css HTTP/1.1" 200 -
+2025-04-15 10:00:12,718 - werkzeug - INFO - 127.0.0.1 - - [15/Apr/2025 10:00:12] "GET /static/js/script.js HTTP/1.1" 200 -
+2025-04-15 10:00:12,730 - werkzeug - INFO - 127.0.0.1 - - [15/Apr/2025 10:00:12] "GET /api/notes/global HTTP/1.1" 200 -
+2025-04-15 10:00:12,731 - werkzeug - INFO - 127.0.0.1 - - [15/Apr/2025 10:00:12] "GET /api/notes/tab/term-7681 HTTP/1.1" 200 -
+2025-04-15 10:00:12,732 - werkzeug - INFO - 127.0.0.1 - - [15/Apr/2025 10:00:12] "GET /api/terminals/list HTTP/1.1" 200 -
+2025-04-15 10:00:12,733 - werkzeug - INFO - 127.0.0.1 - - [15/Apr/2025 10:00:12] "GET /api/playbooks/list/all HTTP/1.1" 200 -
+2025-04-15 10:00:12,778 - werkzeug - INFO - 127.0.0.1 - - [15/Apr/2025 10:00:12] "[36mGET /static/favicon.ico HTTP/1.1[0m" 304 -
+2025-04-15 10:00:13,821 - werkzeug - INFO - 127.0.0.1 - - [15/Apr/2025 10:00:13] "GET /api/terminals/list HTTP/1.1" 200 -
+2025-04-15 10:00:13,822 - werkzeug - INFO - 127.0.0.1 - - [15/Apr/2025 10:00:13] "GET /api/playbooks/list/all HTTP/1.1" 200 -
+2025-04-15 10:00:13,931 - werkzeug - INFO - 127.0.0.1 - - [15/Apr/2025 10:00:13] "GET /api/terminals/list HTTP/1.1" 200 -
+2025-04-15 10:00:13,932 - werkzeug - INFO - 127.0.0.1 - - [15/Apr/2025 10:00:13] "GET /api/playbooks/list/all HTTP/1.1" 200 -
+2025-04-15 10:00:14,970 - werkzeug - INFO - 127.0.0.1 - - [15/Apr/2025 10:00:14] "POST /api/playbooks/sync/NetExec%20(nxc)%20-%20Initial%20Windows%20Enumeration.md HTTP/1.1" 200 -
+2025-04-15 10:00:17,730 - werkzeug - INFO - 127.0.0.1 - - [15/Apr/2025 10:00:17] "GET /api/terminals/list HTTP/1.1" 200 -
+2025-04-15 10:00:17,730 - werkzeug - INFO - 127.0.0.1 - - [15/Apr/2025 10:00:17] "GET /api/playbooks/list/all HTTP/1.1" 200 -
+2025-04-15 10:00:18,078 - werkzeug - INFO - 127.0.0.1 - - [15/Apr/2025 10:00:18] "POST /api/playbooks/sync/NetExec%20(nxc)%20-%20Initial%20Windows%20Enumeration.md HTTP/1.1" 200 -
+2025-04-15 10:00:18,821 - werkzeug - INFO - 127.0.0.1 - - [15/Apr/2025 10:00:18] "GET /api/terminals/list HTTP/1.1" 200 -
+2025-04-15 10:00:18,822 - werkzeug - INFO - 127.0.0.1 - - [15/Apr/2025 10:00:18] "GET /api/playbooks/list/all HTTP/1.1" 200 -
+2025-04-15 10:00:18,928 - werkzeug - INFO - 127.0.0.1 - - [15/Apr/2025 10:00:18] "GET /api/terminals/list HTTP/1.1" 200 -
+2025-04-15 10:00:18,928 - werkzeug - INFO - 127.0.0.1 - - [15/Apr/2025 10:00:18] "GET /api/playbooks/list/all HTTP/1.1" 200 -
+2025-04-15 10:00:19,179 - werkzeug - INFO - 127.0.0.1 - - [15/Apr/2025 10:00:19] "POST /api/playbooks/sync/NetExec%20(nxc)%20-%20Initial%20Windows%20Enumeration.md HTTP/1.1" 200 -
+2025-04-15 10:00:19,966 - werkzeug - INFO - 127.0.0.1 - - [15/Apr/2025 10:00:19] "POST /api/playbooks/sync/NetExec%20(nxc)%20-%20Initial%20Windows%20Enumeration.md HTTP/1.1" 200 -
+2025-04-15 10:00:20,852 - werkzeug - INFO - 127.0.0.1 - - [15/Apr/2025 10:00:20] "POST /api/playbooks/sync/NetExec%20(nxc)%20-%20Initial%20Windows%20Enumeration.md HTTP/1.1" 200 -
+2025-04-15 10:00:22,729 - werkzeug - INFO - 127.0.0.1 - - [15/Apr/2025 10:00:22] "GET /api/terminals/list HTTP/1.1" 200 -
+2025-04-15 10:00:22,730 - werkzeug - INFO - 127.0.0.1 - - [15/Apr/2025 10:00:22] "GET /api/playbooks/list/all HTTP/1.1" 200 -
+2025-04-15 10:00:23,073 - werkzeug - INFO - 127.0.0.1 - - [15/Apr/2025 10:00:23] "GET /api/playbooks/search?query=nmap HTTP/1.1" 200 -
+2025-04-15 10:00:23,822 - werkzeug - INFO - 127.0.0.1 - - [15/Apr/2025 10:00:23] "GET /api/terminals/list HTTP/1.1" 200 -
+2025-04-15 10:00:23,823 - werkzeug - INFO - 127.0.0.1 - - [15/Apr/2025 10:00:23] "GET /api/playbooks/list/all HTTP/1.1" 200 -
+2025-04-15 10:00:23,928 - werkzeug - INFO - 127.0.0.1 - - [15/Apr/2025 10:00:23] "GET /api/terminals/list HTTP/1.1" 200 -
+2025-04-15 10:00:23,929 - werkzeug - INFO - 127.0.0.1 - - [15/Apr/2025 10:00:23] "GET /api/playbooks/list/all HTTP/1.1" 200 -
+2025-04-15 10:00:27,730 - werkzeug - INFO - 127.0.0.1 - - [15/Apr/2025 10:00:27] "GET /api/terminals/list HTTP/1.1" 200 -
+2025-04-15 10:00:27,731 - werkzeug - INFO - 127.0.0.1 - - [15/Apr/2025 10:00:27] "GET /api/playbooks/list/all HTTP/1.1" 200 -
+2025-04-15 10:00:28,822 - werkzeug - INFO - 127.0.0.1 - - [15/Apr/2025 10:00:28] "GET /api/terminals/list HTTP/1.1" 200 -
+2025-04-15 10:00:28,824 - werkzeug - INFO - 127.0.0.1 - - [15/Apr/2025 10:00:28] "GET /api/playbooks/list/all HTTP/1.1" 200 -
+2025-04-15 10:00:28,928 - werkzeug - INFO - 127.0.0.1 - - [15/Apr/2025 10:00:28] "GET /api/terminals/list HTTP/1.1" 200 -
+2025-04-15 10:00:28,929 - werkzeug - INFO - 127.0.0.1 - - [15/Apr/2025 10:00:28] "GET /api/playbooks/list/all HTTP/1.1" 200 -
+2025-04-15 10:00:32,731 - werkzeug - INFO - 127.0.0.1 - - [15/Apr/2025 10:00:32] "GET /api/terminals/list HTTP/1.1" 200 -
+2025-04-15 10:00:32,732 - werkzeug - INFO - 127.0.0.1 - - [15/Apr/2025 10:00:32] "GET /api/playbooks/list/all HTTP/1.1" 200 -
+2025-04-15 10:00:33,822 - werkzeug - INFO - 127.0.0.1 - - [15/Apr/2025 10:00:33] "GET /api/terminals/list HTTP/1.1" 200 -
+2025-04-15 10:00:33,823 - werkzeug - INFO - 127.0.0.1 - - [15/Apr/2025 10:00:33] "GET /api/playbooks/list/all HTTP/1.1" 200 -
+2025-04-15 10:00:33,928 - werkzeug - INFO - 127.0.0.1 - - [15/Apr/2025 10:00:33] "GET /api/terminals/list HTTP/1.1" 200 -
+2025-04-15 10:00:33,929 - werkzeug - INFO - 127.0.0.1 - - [15/Apr/2025 10:00:33] "GET /api/playbooks/list/all HTTP/1.1" 200 -
+2025-04-15 10:00:37,729 - werkzeug - INFO - 127.0.0.1 - - [15/Apr/2025 10:00:37] "GET /api/terminals/list HTTP/1.1" 200 -
+2025-04-15 10:00:37,730 - werkzeug - INFO - 127.0.0.1 - - [15/Apr/2025 10:00:37] "GET /api/playbooks/list/all HTTP/1.1" 200 -
+2025-04-15 10:00:38,822 - werkzeug - INFO - 127.0.0.1 - - [15/Apr/2025 10:00:38] "GET /api/terminals/list HTTP/1.1" 200 -
+2025-04-15 10:00:38,823 - werkzeug - INFO - 127.0.0.1 - - [15/Apr/2025 10:00:38] "GET /api/playbooks/list/all HTTP/1.1" 200 -
+2025-04-15 10:00:38,928 - werkzeug - INFO - 127.0.0.1 - - [15/Apr/2025 10:00:38] "GET /api/terminals/list HTTP/1.1" 200 -
+2025-04-15 10:00:38,928 - werkzeug - INFO - 127.0.0.1 - - [15/Apr/2025 10:00:38] "GET /api/playbooks/list/all HTTP/1.1" 200 -
+2025-04-15 10:00:42,730 - werkzeug - INFO - 127.0.0.1 - - [15/Apr/2025 10:00:42] "GET /api/terminals/list HTTP/1.1" 200 -
+2025-04-15 10:00:42,733 - werkzeug - INFO - 127.0.0.1 - - [15/Apr/2025 10:00:42] "GET /api/playbooks/list/all HTTP/1.1" 200 -
+2025-04-15 10:00:43,823 - werkzeug - INFO - 127.0.0.1 - - [15/Apr/2025 10:00:43] "GET /api/terminals/list HTTP/1.1" 200 -
+2025-04-15 10:00:43,824 - werkzeug - INFO - 127.0.0.1 - - [15/Apr/2025 10:00:43] "GET /api/playbooks/list/all HTTP/1.1" 200 -
+2025-04-15 10:00:43,928 - werkzeug - INFO - 127.0.0.1 - - [15/Apr/2025 10:00:43] "GET /api/terminals/list HTTP/1.1" 200 -
+2025-04-15 10:00:43,929 - werkzeug - INFO - 127.0.0.1 - - [15/Apr/2025 10:00:43] "GET /api/playbooks/list/all HTTP/1.1" 200 -
+2025-04-15 10:00:47,731 - werkzeug - INFO - 127.0.0.1 - - [15/Apr/2025 10:00:47] "GET /api/terminals/list HTTP/1.1" 200 -
+2025-04-15 10:00:47,732 - werkzeug - INFO - 127.0.0.1 - - [15/Apr/2025 10:00:47] "GET /api/playbooks/list/all HTTP/1.1" 200 -
+2025-04-15 10:00:48,823 - werkzeug - INFO - 127.0.0.1 - - [15/Apr/2025 10:00:48] "GET /api/terminals/list HTTP/1.1" 200 -
+2025-04-15 10:00:48,824 - werkzeug - INFO - 127.0.0.1 - - [15/Apr/2025 10:00:48] "GET /api/playbooks/list/all HTTP/1.1" 200 -
+2025-04-15 10:00:48,928 - werkzeug - INFO - 127.0.0.1 - - [15/Apr/2025 10:00:48] "GET /api/terminals/list HTTP/1.1" 200 -
+2025-04-15 10:00:48,929 - werkzeug - INFO - 127.0.0.1 - - [15/Apr/2025 10:00:48] "GET /api/playbooks/list/all HTTP/1.1" 200 -
+2025-04-15 10:00:52,730 - werkzeug - INFO - 127.0.0.1 - - [15/Apr/2025 10:00:52] "GET /api/terminals/list HTTP/1.1" 200 -
+2025-04-15 10:00:52,730 - werkzeug - INFO - 127.0.0.1 - - [15/Apr/2025 10:00:52] "GET /api/playbooks/list/all HTTP/1.1" 200 -
+2025-04-15 10:00:53,823 - werkzeug - INFO - 127.0.0.1 - - [15/Apr/2025 10:00:53] "GET /api/terminals/list HTTP/1.1" 200 -
+2025-04-15 10:00:53,824 - werkzeug - INFO - 127.0.0.1 - - [15/Apr/2025 10:00:53] "GET /api/playbooks/list/all HTTP/1.1" 200 -
+2025-04-15 10:00:53,928 - werkzeug - INFO - 127.0.0.1 - - [15/Apr/2025 10:00:53] "GET /api/terminals/list HTTP/1.1" 200 -
+2025-04-15 10:00:53,929 - werkzeug - INFO - 127.0.0.1 - - [15/Apr/2025 10:00:53] "GET /api/playbooks/list/all HTTP/1.1" 200 -
+2025-04-15 10:00:57,241 - commandwave - INFO - Received signal 2, shutting down...
+2025-04-15 10:00:57,241 - commandwave - INFO - Cleaning up all terminal processes...
+2025-04-15 10:00:57,243 - commandwave - INFO - Terminated ttyd process for port 7681
+2025-04-15 10:00:57,248 - commandwave - INFO - Killed tmux session commandwave-main
+2025-04-15 10:00:57,248 - commandwave - INFO - Removed helper script: /home/kali/Tools/CommandWave/apply_theme_7681.sh
+2025-04-15 10:00:57,248 - commandwave - INFO - Cleanup complete
+2025-04-15 10:00:57,249 - commandwave - INFO - Cleaning up all terminal processes...
+2025-04-15 10:00:57,249 - commandwave - INFO - Cleanup complete
+2025-04-15 10:00:58,759 - commandwave - INFO - Starting CommandWave on port 5000
+2025-04-15 10:00:58,759 - commandwave - INFO - Using hostname: 192.168.170.129
+2025-04-15 10:00:58,762 - commandwave - INFO - Creating new tmux session with config: /home/kali/Tools/CommandWave/commandwave_theme.tmux.conf
+2025-04-15 10:00:58,774 - commandwave - INFO - Created tmux session: commandwave-main
+2025-04-15 10:00:58,775 - commandwave - INFO - Created tmux helper script with theme at /home/kali/Tools/CommandWave/apply_theme_7681.sh
+2025-04-15 10:00:59,275 - commandwave - INFO - Started ttyd on port 7681 linked to tmux session commandwave-main
+2025-04-15 10:00:59,275 - commandwave - INFO - Started main terminal on port 7681
+2025-04-15 10:00:59,283 - werkzeug - INFO - [31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on all addresses (0.0.0.0)
+ * Running on http://127.0.0.1:5000
+ * Running on http://192.168.170.129:5000
+2025-04-15 10:00:59,283 - werkzeug - INFO - [33mPress CTRL+C to quit[0m
+2025-04-15 10:01:01,040 - werkzeug - INFO - 127.0.0.1 - - [15/Apr/2025 10:01:01] "GET / HTTP/1.1" 200 -
+2025-04-15 10:01:01,053 - werkzeug - INFO - 127.0.0.1 - - [15/Apr/2025 10:01:01] "GET /static/css/style.css HTTP/1.1" 200 -
+2025-04-15 10:01:01,058 - werkzeug - INFO - 127.0.0.1 - - [15/Apr/2025 10:01:01] "[36mGET /static/js/script.js HTTP/1.1[0m" 304 -
+2025-04-15 10:01:01,107 - werkzeug - INFO - 127.0.0.1 - - [15/Apr/2025 10:01:01] "GET /api/notes/global HTTP/1.1" 200 -
+2025-04-15 10:01:01,108 - werkzeug - INFO - 127.0.0.1 - - [15/Apr/2025 10:01:01] "GET /api/notes/tab/term-7681 HTTP/1.1" 200 -
+2025-04-15 10:01:01,109 - werkzeug - INFO - 127.0.0.1 - - [15/Apr/2025 10:01:01] "GET /api/terminals/list HTTP/1.1" 200 -
+2025-04-15 10:01:01,109 - werkzeug - INFO - 127.0.0.1 - - [15/Apr/2025 10:01:01] "GET /api/playbooks/list/all HTTP/1.1" 200 -
+2025-04-15 10:01:01,119 - werkzeug - INFO - 127.0.0.1 - - [15/Apr/2025 10:01:01] "[36mGET /static/favicon.ico HTTP/1.1[0m" 304 -
+2025-04-15 10:01:02,928 - werkzeug - INFO - 127.0.0.1 - - [15/Apr/2025 10:01:02] "GET /api/terminals/list HTTP/1.1" 200 -
+2025-04-15 10:01:02,929 - werkzeug - INFO - 127.0.0.1 - - [15/Apr/2025 10:01:02] "GET /api/playbooks/list/all HTTP/1.1" 200 -
+2025-04-15 10:01:03,826 - werkzeug - INFO - 127.0.0.1 - - [15/Apr/2025 10:01:03] "GET /api/terminals/list HTTP/1.1" 200 -
+2025-04-15 10:01:03,827 - werkzeug - INFO - 127.0.0.1 - - [15/Apr/2025 10:01:03] "GET /api/playbooks/list/all HTTP/1.1" 200 -
+2025-04-15 10:01:03,929 - werkzeug - INFO - 127.0.0.1 - - [15/Apr/2025 10:01:03] "GET /api/terminals/list HTTP/1.1" 200 -
+2025-04-15 10:01:03,929 - werkzeug - INFO - 127.0.0.1 - - [15/Apr/2025 10:01:03] "GET /api/playbooks/list/all HTTP/1.1" 200 -
+2025-04-15 10:01:04,403 - werkzeug - INFO - 127.0.0.1 - - [15/Apr/2025 10:01:04] "GET /api/playbooks/search?query=nmap HTTP/1.1" 200 -
+2025-04-15 10:01:06,109 - werkzeug - INFO - 127.0.0.1 - - [15/Apr/2025 10:01:06] "GET /api/terminals/list HTTP/1.1" 200 -
+2025-04-15 10:01:06,109 - werkzeug - INFO - 127.0.0.1 - - [15/Apr/2025 10:01:06] "GET /api/playbooks/list/all HTTP/1.1" 200 -
+2025-04-15 10:01:07,931 - werkzeug - INFO - 127.0.0.1 - - [15/Apr/2025 10:01:07] "GET /api/terminals/list HTTP/1.1" 200 -
+2025-04-15 10:01:07,932 - werkzeug - INFO - 127.0.0.1 - - [15/Apr/2025 10:01:07] "GET /api/playbooks/list/all HTTP/1.1" 200 -
+2025-04-15 10:01:08,824 - werkzeug - INFO - 127.0.0.1 - - [15/Apr/2025 10:01:08] "GET /api/terminals/list HTTP/1.1" 200 -
+2025-04-15 10:01:08,825 - werkzeug - INFO - 127.0.0.1 - - [15/Apr/2025 10:01:08] "GET /api/playbooks/list/all HTTP/1.1" 200 -
+2025-04-15 10:01:08,929 - werkzeug - INFO - 127.0.0.1 - - [15/Apr/2025 10:01:08] "GET /api/terminals/list HTTP/1.1" 200 -
+2025-04-15 10:01:08,930 - werkzeug - INFO - 127.0.0.1 - - [15/Apr/2025 10:01:08] "GET /api/playbooks/list/all HTTP/1.1" 200 -
+2025-04-15 10:01:11,132 - werkzeug - INFO - 127.0.0.1 - - [15/Apr/2025 10:01:11] "GET /api/playbooks/list/all HTTP/1.1" 200 -
+2025-04-15 10:01:11,132 - werkzeug - INFO - 127.0.0.1 - - [15/Apr/2025 10:01:11] "GET /api/terminals/list HTTP/1.1" 200 -
+2025-04-15 10:01:12,929 - werkzeug - INFO - 127.0.0.1 - - [15/Apr/2025 10:01:12] "GET /api/terminals/list HTTP/1.1" 200 -
+2025-04-15 10:01:12,931 - werkzeug - INFO - 127.0.0.1 - - [15/Apr/2025 10:01:12] "GET /api/playbooks/list/all HTTP/1.1" 200 -
+2025-04-15 10:01:13,824 - werkzeug - INFO - 127.0.0.1 - - [15/Apr/2025 10:01:13] "GET /api/terminals/list HTTP/1.1" 200 -
+2025-04-15 10:01:13,825 - werkzeug - INFO - 127.0.0.1 - - [15/Apr/2025 10:01:13] "GET /api/playbooks/list/all HTTP/1.1" 200 -
+2025-04-15 10:01:16,108 - werkzeug - INFO - 127.0.0.1 - - [15/Apr/2025 10:01:16] "GET /api/terminals/list HTTP/1.1" 200 -
+2025-04-15 10:01:16,109 - werkzeug - INFO - 127.0.0.1 - - [15/Apr/2025 10:01:16] "GET /api/playbooks/list/all HTTP/1.1" 200 -
+2025-04-15 10:01:16,928 - werkzeug - INFO - 127.0.0.1 - - [15/Apr/2025 10:01:16] "GET /api/terminals/list HTTP/1.1" 200 -
+2025-04-15 10:01:16,928 - werkzeug - INFO - 127.0.0.1 - - [15/Apr/2025 10:01:16] "GET /api/playbooks/list/all HTTP/1.1" 200 -
+2025-04-15 10:01:17,928 - werkzeug - INFO - 127.0.0.1 - - [15/Apr/2025 10:01:17] "GET /api/playbooks/list/all HTTP/1.1" 200 -
+2025-04-15 10:01:17,929 - werkzeug - INFO - 127.0.0.1 - - [15/Apr/2025 10:01:17] "GET /api/terminals/list HTTP/1.1" 200 -
+2025-04-15 10:01:18,824 - werkzeug - INFO - 127.0.0.1 - - [15/Apr/2025 10:01:18] "GET /api/terminals/list HTTP/1.1" 200 -
+2025-04-15 10:01:18,826 - werkzeug - INFO - 127.0.0.1 - - [15/Apr/2025 10:01:18] "GET /api/playbooks/list/all HTTP/1.1" 200 -
+2025-04-15 10:01:21,108 - werkzeug - INFO - 127.0.0.1 - - [15/Apr/2025 10:01:21] "GET /api/terminals/list HTTP/1.1" 200 -
+2025-04-15 10:01:21,109 - werkzeug - INFO - 127.0.0.1 - - [15/Apr/2025 10:01:21] "GET /api/playbooks/list/all HTTP/1.1" 200 -
+2025-04-15 10:01:22,928 - werkzeug - INFO - 127.0.0.1 - - [15/Apr/2025 10:01:22] "GET /api/terminals/list HTTP/1.1" 200 -
+2025-04-15 10:01:22,929 - werkzeug - INFO - 127.0.0.1 - - [15/Apr/2025 10:01:22] "GET /api/playbooks/list/all HTTP/1.1" 200 -
+2025-04-15 10:01:23,824 - werkzeug - INFO - 127.0.0.1 - - [15/Apr/2025 10:01:23] "GET /api/terminals/list HTTP/1.1" 200 -
+2025-04-15 10:01:23,825 - werkzeug - INFO - 127.0.0.1 - - [15/Apr/2025 10:01:23] "GET /api/playbooks/list/all HTTP/1.1" 200 -
+2025-04-15 10:01:26,108 - werkzeug - INFO - 127.0.0.1 - - [15/Apr/2025 10:01:26] "GET /api/terminals/list HTTP/1.1" 200 -
+2025-04-15 10:01:26,109 - werkzeug - INFO - 127.0.0.1 - - [15/Apr/2025 10:01:26] "GET /api/playbooks/list/all HTTP/1.1" 200 -
+2025-04-15 10:01:27,928 - werkzeug - INFO - 127.0.0.1 - - [15/Apr/2025 10:01:27] "GET /api/terminals/list HTTP/1.1" 200 -
+2025-04-15 10:01:27,929 - werkzeug - INFO - 127.0.0.1 - - [15/Apr/2025 10:01:27] "GET /api/playbooks/list/all HTTP/1.1" 200 -
+2025-04-15 10:01:28,825 - werkzeug - INFO - 127.0.0.1 - - [15/Apr/2025 10:01:28] "GET /api/terminals/list HTTP/1.1" 200 -
+2025-04-15 10:01:28,826 - werkzeug - INFO - 127.0.0.1 - - [15/Apr/2025 10:01:28] "GET /api/playbooks/list/all HTTP/1.1" 200 -
+2025-04-15 10:01:29,576 - werkzeug - INFO - 127.0.0.1 - - [15/Apr/2025 10:01:29] "POST /api/playbooks/sync/NetExec%20(nxc)%20-%20Initial%20Windows%20Enumeration.md HTTP/1.1" 200 -
+2025-04-15 10:01:31,108 - werkzeug - INFO - 127.0.0.1 - - [15/Apr/2025 10:01:31] "GET /api/terminals/list HTTP/1.1" 200 -
+2025-04-15 10:01:31,109 - werkzeug - INFO - 127.0.0.1 - - [15/Apr/2025 10:01:31] "GET /api/playbooks/list/all HTTP/1.1" 200 -
+2025-04-15 10:01:31,742 - werkzeug - INFO - 127.0.0.1 - - [15/Apr/2025 10:01:31] "POST /api/playbooks/sync/NetExec%20(nxc)%20-%20Initial%20Windows%20Enumeration.md HTTP/1.1" 200 -
+2025-04-15 10:01:32,928 - werkzeug - INFO - 127.0.0.1 - - [15/Apr/2025 10:01:32] "GET /api/terminals/list HTTP/1.1" 200 -
+2025-04-15 10:01:32,929 - werkzeug - INFO - 127.0.0.1 - - [15/Apr/2025 10:01:32] "GET /api/playbooks/list/all HTTP/1.1" 200 -
+2025-04-15 10:01:33,825 - werkzeug - INFO - 127.0.0.1 - - [15/Apr/2025 10:01:33] "GET /api/terminals/list HTTP/1.1" 200 -
+2025-04-15 10:01:33,825 - werkzeug - INFO - 127.0.0.1 - - [15/Apr/2025 10:01:33] "GET /api/playbooks/list/all HTTP/1.1" 200 -
+2025-04-15 10:01:36,108 - werkzeug - INFO - 127.0.0.1 - - [15/Apr/2025 10:01:36] "GET /api/terminals/list HTTP/1.1" 200 -
+2025-04-15 10:01:36,109 - werkzeug - INFO - 127.0.0.1 - - [15/Apr/2025 10:01:36] "GET /api/playbooks/list/all HTTP/1.1" 200 -
+2025-04-15 10:01:37,928 - werkzeug - INFO - 127.0.0.1 - - [15/Apr/2025 10:01:37] "GET /api/terminals/list HTTP/1.1" 200 -
+2025-04-15 10:01:37,929 - werkzeug - INFO - 127.0.0.1 - - [15/Apr/2025 10:01:37] "GET /api/playbooks/list/all HTTP/1.1" 200 -
+2025-04-15 10:01:38,825 - werkzeug - INFO - 127.0.0.1 - - [15/Apr/2025 10:01:38] "GET /api/terminals/list HTTP/1.1" 200 -
+2025-04-15 10:01:38,825 - werkzeug - INFO - 127.0.0.1 - - [15/Apr/2025 10:01:38] "GET /api/playbooks/list/all HTTP/1.1" 200 -
+2025-04-15 10:01:41,108 - werkzeug - INFO - 127.0.0.1 - - [15/Apr/2025 10:01:41] "GET /api/terminals/list HTTP/1.1" 200 -
+2025-04-15 10:01:41,109 - werkzeug - INFO - 127.0.0.1 - - [15/Apr/2025 10:01:41] "GET /api/playbooks/list/all HTTP/1.1" 200 -
+2025-04-15 10:01:42,930 - werkzeug - INFO - 127.0.0.1 - - [15/Apr/2025 10:01:42] "GET /api/terminals/list HTTP/1.1" 200 -
+2025-04-15 10:01:42,931 - werkzeug - INFO - 127.0.0.1 - - [15/Apr/2025 10:01:42] "GET /api/playbooks/list/all HTTP/1.1" 200 -
+2025-04-15 10:01:43,826 - werkzeug - INFO - 127.0.0.1 - - [15/Apr/2025 10:01:43] "GET /api/terminals/list HTTP/1.1" 200 -
+2025-04-15 10:01:43,826 - werkzeug - INFO - 127.0.0.1 - - [15/Apr/2025 10:01:43] "GET /api/playbooks/list/all HTTP/1.1" 200 -
+2025-04-15 10:01:46,108 - werkzeug - INFO - 127.0.0.1 - - [15/Apr/2025 10:01:46] "GET /api/terminals/list HTTP/1.1" 200 -
+2025-04-15 10:01:46,109 - werkzeug - INFO - 127.0.0.1 - - [15/Apr/2025 10:01:46] "GET /api/playbooks/list/all HTTP/1.1" 200 -
+2025-04-15 10:01:47,928 - werkzeug - INFO - 127.0.0.1 - - [15/Apr/2025 10:01:47] "GET /api/terminals/list HTTP/1.1" 200 -
+2025-04-15 10:01:47,929 - werkzeug - INFO - 127.0.0.1 - - [15/Apr/2025 10:01:47] "GET /api/playbooks/list/all HTTP/1.1" 200 -
+2025-04-15 10:01:48,825 - werkzeug - INFO - 127.0.0.1 - - [15/Apr/2025 10:01:48] "GET /api/terminals/list HTTP/1.1" 200 -
+2025-04-15 10:01:48,826 - werkzeug - INFO - 127.0.0.1 - - [15/Apr/2025 10:01:48] "GET /api/playbooks/list/all HTTP/1.1" 200 -
+2025-04-15 10:01:51,108 - werkzeug - INFO - 127.0.0.1 - - [15/Apr/2025 10:01:51] "GET /api/terminals/list HTTP/1.1" 200 -
+2025-04-15 10:01:51,109 - werkzeug - INFO - 127.0.0.1 - - [15/Apr/2025 10:01:51] "GET /api/playbooks/list/all HTTP/1.1" 200 -
+2025-04-15 10:01:52,929 - werkzeug - INFO - 127.0.0.1 - - [15/Apr/2025 10:01:52] "GET /api/terminals/list HTTP/1.1" 200 -
+2025-04-15 10:01:52,930 - werkzeug - INFO - 127.0.0.1 - - [15/Apr/2025 10:01:52] "GET /api/playbooks/list/all HTTP/1.1" 200 -
+2025-04-15 10:01:53,250 - werkzeug - INFO - 127.0.0.1 - - [15/Apr/2025 10:01:53] "GET /api/playbooks/search?query=nmap HTTP/1.1" 200 -
+2025-04-15 10:01:53,825 - werkzeug - INFO - 127.0.0.1 - - [15/Apr/2025 10:01:53] "GET /api/terminals/list HTTP/1.1" 200 -
+2025-04-15 10:01:53,826 - werkzeug - INFO - 127.0.0.1 - - [15/Apr/2025 10:01:53] "GET /api/playbooks/list/all HTTP/1.1" 200 -
+2025-04-15 10:01:56,119 - werkzeug - INFO - 127.0.0.1 - - [15/Apr/2025 10:01:56] "GET /api/terminals/list HTTP/1.1" 200 -
+2025-04-15 10:01:56,121 - werkzeug - INFO - 127.0.0.1 - - [15/Apr/2025 10:01:56] "GET /api/playbooks/list/all HTTP/1.1" 200 -
+2025-04-15 10:01:57,928 - werkzeug - INFO - 127.0.0.1 - - [15/Apr/2025 10:01:57] "GET /api/terminals/list HTTP/1.1" 200 -
+2025-04-15 10:01:57,929 - werkzeug - INFO - 127.0.0.1 - - [15/Apr/2025 10:01:57] "GET /api/playbooks/list/all HTTP/1.1" 200 -
+2025-04-15 10:01:58,909 - werkzeug - INFO - 127.0.0.1 - - [15/Apr/2025 10:01:58] "GET /api/terminals/list HTTP/1.1" 200 -
+2025-04-15 10:01:58,910 - werkzeug - INFO - 127.0.0.1 - - [15/Apr/2025 10:01:58] "GET /api/playbooks/list/all HTTP/1.1" 200 -
+2025-04-15 10:02:01,110 - werkzeug - INFO - 127.0.0.1 - - [15/Apr/2025 10:02:01] "GET /api/terminals/list HTTP/1.1" 200 -
+2025-04-15 10:02:01,110 - werkzeug - INFO - 127.0.0.1 - - [15/Apr/2025 10:02:01] "GET /api/playbooks/list/all HTTP/1.1" 200 -
+2025-04-15 10:02:03,910 - werkzeug - INFO - 127.0.0.1 - - [15/Apr/2025 10:02:03] "GET /api/terminals/list HTTP/1.1" 200 -
+2025-04-15 10:02:03,912 - werkzeug - INFO - 127.0.0.1 - - [15/Apr/2025 10:02:03] "GET /api/playbooks/list/all HTTP/1.1" 200 -
+2025-04-15 10:02:06,108 - werkzeug - INFO - 127.0.0.1 - - [15/Apr/2025 10:02:06] "GET /api/terminals/list HTTP/1.1" 200 -
+2025-04-15 10:02:06,109 - werkzeug - INFO - 127.0.0.1 - - [15/Apr/2025 10:02:06] "GET /api/playbooks/list/all HTTP/1.1" 200 -
+2025-04-15 10:02:08,911 - werkzeug - INFO - 127.0.0.1 - - [15/Apr/2025 10:02:08] "GET /api/terminals/list HTTP/1.1" 200 -
+2025-04-15 10:02:08,912 - werkzeug - INFO - 127.0.0.1 - - [15/Apr/2025 10:02:08] "GET /api/playbooks/list/all HTTP/1.1" 200 -
+2025-04-15 10:02:11,109 - werkzeug - INFO - 127.0.0.1 - - [15/Apr/2025 10:02:11] "GET /api/terminals/list HTTP/1.1" 200 -
+2025-04-15 10:02:11,117 - werkzeug - INFO - 127.0.0.1 - - [15/Apr/2025 10:02:11] "GET /api/playbooks/list/all HTTP/1.1" 200 -
+2025-04-15 10:02:13,910 - werkzeug - INFO - 127.0.0.1 - - [15/Apr/2025 10:02:13] "GET /api/terminals/list HTTP/1.1" 200 -
+2025-04-15 10:02:13,910 - werkzeug - INFO - 127.0.0.1 - - [15/Apr/2025 10:02:13] "GET /api/playbooks/list/all HTTP/1.1" 200 -
+2025-04-15 10:02:16,109 - werkzeug - INFO - 127.0.0.1 - - [15/Apr/2025 10:02:16] "GET /api/terminals/list HTTP/1.1" 200 -
+2025-04-15 10:02:16,110 - werkzeug - INFO - 127.0.0.1 - - [15/Apr/2025 10:02:16] "GET /api/playbooks/list/all HTTP/1.1" 200 -
+2025-04-15 10:02:18,946 - werkzeug - INFO - 127.0.0.1 - - [15/Apr/2025 10:02:18] "GET /api/terminals/list HTTP/1.1" 200 -
+2025-04-15 10:02:18,946 - werkzeug - INFO - 127.0.0.1 - - [15/Apr/2025 10:02:18] "GET /api/playbooks/list/all HTTP/1.1" 200 -
+2025-04-15 10:02:21,108 - werkzeug - INFO - 127.0.0.1 - - [15/Apr/2025 10:02:21] "GET /api/playbooks/list/all HTTP/1.1" 200 -
+2025-04-15 10:02:21,109 - werkzeug - INFO - 127.0.0.1 - - [15/Apr/2025 10:02:21] "GET /api/terminals/list HTTP/1.1" 200 -
+2025-04-15 10:02:23,947 - werkzeug - INFO - 127.0.0.1 - - [15/Apr/2025 10:02:23] "GET /api/playbooks/list/all HTTP/1.1" 200 -
+2025-04-15 10:02:23,948 - werkzeug - INFO - 127.0.0.1 - - [15/Apr/2025 10:02:23] "GET /api/terminals/list HTTP/1.1" 200 -
+2025-04-15 10:02:26,108 - werkzeug - INFO - 127.0.0.1 - - [15/Apr/2025 10:02:26] "GET /api/terminals/list HTTP/1.1" 200 -
+2025-04-15 10:02:26,109 - werkzeug - INFO - 127.0.0.1 - - [15/Apr/2025 10:02:26] "GET /api/playbooks/list/all HTTP/1.1" 200 -
+2025-04-15 10:02:28,946 - werkzeug - INFO - 127.0.0.1 - - [15/Apr/2025 10:02:28] "GET /api/terminals/list HTTP/1.1" 200 -
+2025-04-15 10:02:28,946 - werkzeug - INFO - 127.0.0.1 - - [15/Apr/2025 10:02:28] "GET /api/playbooks/list/all HTTP/1.1" 200 -
+2025-04-15 10:02:31,109 - werkzeug - INFO - 127.0.0.1 - - [15/Apr/2025 10:02:31] "GET /api/terminals/list HTTP/1.1" 200 -
+2025-04-15 10:02:31,110 - werkzeug - INFO - 127.0.0.1 - - [15/Apr/2025 10:02:31] "GET /api/playbooks/list/all HTTP/1.1" 200 -
