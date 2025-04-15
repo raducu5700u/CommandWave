@@ -1449,15 +1449,11 @@ document.addEventListener('DOMContentLoaded', function() {
         // Extract the actual playbook filename from the playbook-id (format: terminal-id-playbook-name)
         let playbookFilename;
         if (typeof playbook === 'object') {
-            // If playbook object is passed directly
             playbookFilename = playbook.filename;
         } else if (typeof playbook === 'string') {
-            // If it's a string, it could be either a filename or a playbook-id
             if (playbook.includes('-')) {
-                // It's probably a playbook-id, extract the filename
                 playbookFilename = playbook.split('-').slice(1).join('-');
             } else {
-                // It's just a filename
                 playbookFilename = playbook;
             }
         } else {
@@ -1479,9 +1475,12 @@ document.addEventListener('DOMContentLoaded', function() {
         const codeElement = codeBlock.querySelector('code');
         if (!codeElement) return;
         
-        // Create a textarea to replace the code
+        // Store the original content for restoration
+        const originalContent = codeElement.dataset.rawCode || codeElement.textContent;
+        
+        // Create a textarea for editing
         const textarea = document.createElement('textarea');
-        textarea.className = 'code-editor';
+        textarea.className = 'code-textarea';
         textarea.value = playbookData.blocks[blockIndex].content;
         
         // Sanitize the filename for use as a CSS class
@@ -1492,6 +1491,9 @@ document.addEventListener('DOMContentLoaded', function() {
         if (playbookContainer) {
             playbookContainer.classList.add(`playbook-editing-${sanitizedFilename}`);
         }
+        
+        // Store the original code block for restoration if needed
+        const originalCodeBlock = codeBlock.cloneNode(true);
         
         // Replace the code with the textarea
         codeContainer.replaceChild(textarea, codeBlock);
@@ -1563,11 +1565,11 @@ document.addEventListener('DOMContentLoaded', function() {
                 if (oldCopyBtn) {
                     const newCopyBtn = document.createElement('button');
                     newCopyBtn.className = 'code-action-btn copy';
-                    newCopyBtn.textContent = 'Copy';
+                    newCopyBtn.innerHTML = '<i class="fas fa-copy"></i> Copy';
                     newCopyBtn.addEventListener('click', function() {
                         copyToClipboard(getSubstitutedCode(newCodeElement));
-                        this.textContent = 'Copied!';
-                        setTimeout(() => { this.textContent = 'Copy'; }, 2000);
+                        this.innerHTML = '<i class="fas fa-check"></i> Copied!';
+                        setTimeout(() => { this.innerHTML = '<i class="fas fa-copy"></i> Copy'; }, 2000);
                     });
                     
                     // Replace the old button
@@ -1579,7 +1581,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 if (oldExecuteBtn) {
                     const newExecuteBtn = document.createElement('button');
                     newExecuteBtn.className = 'code-action-btn execute';
-                    newExecuteBtn.textContent = 'Execute';
+                    newExecuteBtn.innerHTML = '<i class="fas fa-play"></i> Execute';
                     newExecuteBtn.addEventListener('click', function() {
                         executeCode(getSubstitutedCode(newCodeElement));
                     });
