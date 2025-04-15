@@ -717,3 +717,22 @@
 2025-04-15 09:58:58,508 - werkzeug - INFO - 127.0.0.1 - - [15/Apr/2025 09:58:58] "GET /api/playbooks/list/all HTTP/1.1" 200 -
 2025-04-15 09:58:58,816 - werkzeug - INFO - 127.0.0.1 - - [15/Apr/2025 09:58:58] "GET /api/terminals/list HTTP/1.1" 200 -
 2025-04-15 09:58:58,816 - werkzeug - INFO - 127.0.0.1 - - [15/Apr/2025 09:58:58] "GET /api/playbooks/list/all HTTP/1.1" 200 -
+2025-04-15 09:59:03,508 - werkzeug - INFO - 127.0.0.1 - - [15/Apr/2025 09:59:03] "GET /api/terminals/list HTTP/1.1" 200 -
+2025-04-15 09:59:03,509 - werkzeug - INFO - 127.0.0.1 - - [15/Apr/2025 09:59:03] "GET /api/playbooks/list/all HTTP/1.1" 200 -
+2025-04-15 09:59:03,817 - werkzeug - INFO - 127.0.0.1 - - [15/Apr/2025 09:59:03] "GET /api/playbooks/list/all HTTP/1.1" 200 -
+2025-04-15 09:59:03,823 - werkzeug - INFO - 127.0.0.1 - - [15/Apr/2025 09:59:03] "GET /api/terminals/list HTTP/1.1" 200 -
+2025-04-15 09:59:08,507 - werkzeug - INFO - 127.0.0.1 - - [15/Apr/2025 09:59:08] "GET /api/terminals/list HTTP/1.1" 200 -
+2025-04-15 09:59:08,508 - werkzeug - INFO - 127.0.0.1 - - [15/Apr/2025 09:59:08] "GET /api/playbooks/list/all HTTP/1.1" 200 -
+2025-04-15 09:59:08,816 - werkzeug - INFO - 127.0.0.1 - - [15/Apr/2025 09:59:08] "GET /api/terminals/list HTTP/1.1" 200 -
+2025-04-15 09:59:08,817 - werkzeug - INFO - 127.0.0.1 - - [15/Apr/2025 09:59:08] "GET /api/playbooks/list/all HTTP/1.1" 200 -
+2025-04-15 09:59:13,507 - werkzeug - INFO - 127.0.0.1 - - [15/Apr/2025 09:59:13] "GET /api/terminals/list HTTP/1.1" 200 -
+2025-04-15 09:59:13,508 - werkzeug - INFO - 127.0.0.1 - - [15/Apr/2025 09:59:13] "GET /api/playbooks/list/all HTTP/1.1" 200 -
+2025-04-15 09:59:13,817 - werkzeug - INFO - 127.0.0.1 - - [15/Apr/2025 09:59:13] "GET /api/terminals/list HTTP/1.1" 200 -
+2025-04-15 09:59:13,817 - werkzeug - INFO - 127.0.0.1 - - [15/Apr/2025 09:59:13] "GET /api/playbooks/list/all HTTP/1.1" 200 -
+2025-04-15 09:59:17,781 - commandwave - INFO - Received signal 2, shutting down...
+2025-04-15 09:59:17,782 - commandwave - INFO - Cleaning up all terminal processes...
+2025-04-15 09:59:17,786 - commandwave - INFO - Killed tmux session commandwave-main
+2025-04-15 09:59:17,786 - commandwave - INFO - Removed helper script: /home/kali/Tools/CommandWave/apply_theme_7681.sh
+2025-04-15 09:59:17,786 - commandwave - INFO - Cleanup complete
+2025-04-15 09:59:17,787 - commandwave - INFO - Cleaning up all terminal processes...
+2025-04-15 09:59:17,787 - commandwave - INFO - Cleanup complete

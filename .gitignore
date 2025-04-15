@@ -51,6 +51,7 @@ user_preferences.json  # Local user theme and other preferences
 commandwave.log  # Application log file - should not be in version control
 static/css/combined.css  # Generated combined CSS file
 static/css/*.bak  # Backup CSS files
+commandwave.log
 
 # OS specific
 .DS_Store
