@@ -6,7 +6,6 @@
     <title>CommandWave - Terminal Management Interface</title>
     <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;700;900&family=Roboto:wght@300;400;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
-    <link rel="stylesheet" href="{{ url_for('static', filename='css/components/feature-card.css') }}">
     <!-- Custom dark theme for Prism instead of prism-tomorrow -->
     <style>
     /* Custom Dark Cyberpunk theme for Prism.js */
@@ -183,57 +182,6 @@
             </div>
         </div>
     </header>
-
-    <!-- Key Features Section - Cyberpunk Card Grid -->
-    <section class="features-section">
-        <h2 class="section-title">Key Features</h2>
-        <div class="feature-grid">
-            <!-- ENSURE: Only the styled feature cards for Full Synchronization and Variable Substitution exist here. Remove any duplicate, unstyled blocks. -->
-            <div class="feature-card">
-                <span class="feature-icon"><i class="fas fa-terminal"></i></span>
-                <div class="feature-title">Terminal Management</div>
-                <div class="feature-desc">Create, switch between, rename, and close multiple terminal sessions backed by tmux and ttyd.</div>
-            </div>
-            <div class="feature-card">
-                <span class="feature-icon"><i class="fas fa-book"></i></span>
-                <div class="feature-title">Playbook Integration</div>
-                <div class="feature-desc">Upload Markdown files as playbooks, parsed to text/code blocks. Enable cross-references for an interconnected knowledge base.</div>
-            </div>
-            <div class="feature-card">
-                <span class="feature-icon"><i class="fas fa-sync"></i></span>
-                <div class="feature-title">Full Synchronization</div>
-                <div class="feature-desc">
-                    <b>All application data synchronized across clients.</b>
-                    <ul>
-                        <li>Terminal tabs sync between sessions</li>
-                        <li>Playbooks sync in real-time</li>
-                        <li>Variables sync across browser windows and sessions</li>
-                        <li>Persistent data between sessions</li>
-                        <li>Consistent variable values across all connected clients</li>
-                    </ul>
-                </div>
-            </div>
-            <div class="feature-card">
-                <span class="feature-icon"><i class="fas fa-code"></i></span>
-                <div class="feature-title">Variable Substitution</div>
-                <div class="feature-desc">
-                    <b>Define and use variables across your playbooks and terminal sessions.</b>
-                    <ul>
-                        <li>User-friendly variable definition</li>
-                        <li>Automatic substitution in code blocks</li>
-                        <li>Variables persist and synchronize across sessions</li>
-                        <li>Create custom named variables</li>
-                        <li>Real-time synchronization of variable values between clients</li>
-                    </ul>
-                </div>
-            </div>
-            <div class="feature-card">
-                <span class="feature-icon"><i class="fas fa-play"></i></span>
-                <div class="feature-title">Command Execution</div>
-                <div class="feature-desc">Execute commands directly from playbooks to the active terminal.</div>
-            </div>
-        </div>
-    </section>
 
     <main class="container">
         <div class="content-area">
