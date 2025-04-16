@@ -6,6 +6,7 @@
     <title>CommandWave - Terminal Management Interface</title>
     <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;700;900&family=Roboto:wght@300;400;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/components/feature-card.css') }}">
     <!-- Custom dark theme for Prism instead of prism-tomorrow -->
     <style>
     /* Custom Dark Cyberpunk theme for Prism.js */
@@ -182,6 +183,63 @@
             </div>
         </div>
     </header>
+
+    <!-- Key Features Section - Cyberpunk Card Grid -->
+    <section class="features-section">
+        <h2 class="section-title">Key Features</h2>
+        <div class="feature-grid">
+            <div class="feature-card">
+                <span class="feature-icon"><i class="fas fa-terminal"></i></span>
+                <div class="feature-title">Terminal Management</div>
+                <div class="feature-desc">Create, switch between, rename, and close multiple terminal sessions backed by tmux and ttyd.</div>
+            </div>
+            <div class="feature-card">
+                <span class="feature-icon"><i class="fas fa-book"></i></span>
+                <div class="feature-title">Playbook Integration</div>
+                <div class="feature-desc">Upload Markdown files as playbooks, parsed to text/code blocks. Enable cross-references for an interconnected knowledge base.</div>
+            </div>
+            <div class="feature-card">
+                <span class="feature-icon"><i class="fas fa-code"></i></span>
+                <div class="feature-title">Variable Substitution</div>
+                <div class="feature-desc">Define variables with user-friendly names that are auto-substituted into code blocks before execution.</div>
+            </div>
+            <div class="feature-card">
+                <span class="feature-icon"><i class="fas fa-play"></i></span>
+                <div class="feature-title">Command Execution</div>
+                <div class="feature-desc">Execute commands directly from playbooks to the active terminal.</div>
+            </div>
+            <div class="feature-card">
+                <span class="feature-icon"><i class="fas fa-sticky-note"></i></span>
+                <div class="feature-title">Notes System</div>
+                <div class="feature-desc">Global and per-tab notes for keeping track of your work.</div>
+            </div>
+            <div class="feature-card">
+                <span class="feature-icon"><i class="fas fa-search"></i></span>
+                <div class="feature-title">Local Playbook Search</div>
+                <div class="feature-desc">Search through your local playbook collection.</div>
+            </div>
+            <div class="feature-card">
+                <span class="feature-icon"><i class="fas fa-moon"></i></span>
+                <div class="feature-title">Dark/Light Theme Toggle</div>
+                <div class="feature-desc">Switch between cyberpunk dark and neon light themes with persistent preferences.</div>
+            </div>
+            <div class="feature-card">
+                <span class="feature-icon"><i class="fas fa-microchip"></i></span>
+                <div class="feature-title">Cyberpunk UI</div>
+                <div class="feature-desc">Beautiful neon-inspired interface with consistent theming.</div>
+            </div>
+            <div class="feature-card">
+                <span class="feature-icon"><i class="fas fa-sliders-h"></i></span>
+                <div class="feature-title">Custom tmux Theming</div>
+                <div class="feature-desc">Included configuration for matching terminal aesthetics.</div>
+            </div>
+            <div class="feature-card">
+                <span class="feature-icon"><i class="fas fa-keyboard"></i></span>
+                <div class="feature-title">Executable Code Blocks</div>
+                <div class="feature-desc">Execute shell command blocks from playbooks directly into the active terminal session with a single click.</div>
+            </div>
+        </div>
+    </section>
 
     <main class="container">
         <div class="content-area">

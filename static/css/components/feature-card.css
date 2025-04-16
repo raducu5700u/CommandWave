@@ -1,0 +1,55 @@
+/* Cyberpunk Feature Card Styles */
+.feature-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+    gap: 2rem;
+    margin: 2.5rem 0 2rem 0;
+}
+
+.feature-card {
+    background: linear-gradient(120deg, #15152b 60%, #1a1a33 100%);
+    border-radius: 16px;
+    box-shadow: 0 0 24px 2px #60efff33, 0 0 0 2px #60efff44;
+    padding: 2.2rem 1.6rem 1.6rem 1.6rem;
+    color: #e0e0fc;
+    transition: box-shadow 0.2s, transform 0.2s;
+    position: relative;
+    overflow: hidden;
+    min-height: 210px;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    justify-content: flex-start;
+}
+
+.feature-card:hover {
+    box-shadow: 0 0 32px 6px #60efffaa, 0 0 0 2px #fcee09cc;
+    transform: translateY(-4px) scale(1.025);
+    z-index: 2;
+}
+
+.feature-card .feature-icon {
+    font-size: 2.2rem;
+    color: #60efff;
+    margin-bottom: 1rem;
+    text-shadow: 0 0 8px #60efff88;
+}
+
+.feature-card .feature-title {
+    font-family: 'Orbitron', 'Roboto', sans-serif;
+    font-weight: 700;
+    font-size: 1.25rem;
+    color: #fcee09;
+    margin-bottom: 0.7rem;
+    letter-spacing: 0.03em;
+    text-shadow: 0 0 4px #fcee0944;
+}
+
+.feature-card .feature-desc {
+    font-family: 'Roboto', sans-serif;
+    font-size: 1rem;
+    color: #e0e0fc;
+    opacity: 0.92;
+    line-height: 1.5;
+    margin-bottom: 0;
+}
