@@ -55,19 +55,20 @@
                 radial-gradient(circle at 10% 20%, #00e5ff22 0%, transparent 25%),
                 radial-gradient(circle at 90% 80%, #c264fe22 0%, transparent 25%),
                 radial-gradient(circle at 50% 50%, #ff5a8c22 0%, transparent 45%);
+            animation: neon-bg 18s linear infinite alternate;
         }
 
         [data-theme="light"] .section {
             background: rgba(250,253,255,0.93);
             border: 1.5px solid var(--border-light);
-            box-shadow: 0 0 24px #00e5ff30;
+            box-shadow: 0 0 24px var(--neon-blue);
             backdrop-filter: blur(6px);
             border-radius: 12px;
         }
 
         [data-theme="light"] .section-title {
             color: var(--neon-blue);
-            text-shadow: 0 0 6px #00e5ff80, 0 0 2px #fff;
+            text-shadow: 0 0 6px var(--neon-blue), 0 0 2px #fff;
             border-bottom: 1.5px solid var(--border-light);
             letter-spacing: 1.5px;
         }
@@ -136,9 +137,20 @@
 
         [data-theme="light"] .screenshot {
             border: 2px solid var(--neon-pink);
-            box-shadow: 0 0 12px var(--neon-pink);
+            border-radius: 8px;
+            max-width: 100%;
+            height: auto;
+            margin: 2rem 0;
+            box-shadow: var(--shadow-pink);
+            transition: box-shadow 0.3s, transform 0.35s;
+            cursor: pointer;
+            z-index: 1;
         }
-
+        [data-theme="light"] .screenshot:hover {
+            transform: scale(1.16) perspective(1000px) translateY(-12px) rotateX(2deg) rotateZ(-1deg);
+            box-shadow: 0 0 64px 8px var(--neon-pink), 0 0 28px 2px var(--neon-blue), 0 0 6px #fff;
+            z-index: 10;
+        }
         [data-theme="light"] code {
             background: #eaf6ff;
             border: 1.5px solid var(--border-light);
@@ -194,6 +206,108 @@
             border-top: 2px solid var(--border-light);
             box-shadow: 0 0 16px var(--neon-blue);
             color: var(--text-secondary);
+        }
+
+        /* --- Neon White Theme Enhancements --- */
+        [data-theme="light"] .feature-card,
+        [data-theme="light"] .usage-item,
+        [data-theme="light"] .section {
+            box-shadow: 0 0 32px 4px #00e5ff44, 0 0 8px #c264fe22, 0 0 1px #fff;
+            border: 1.8px solid var(--border-light);
+            position: relative;
+        }
+        [data-theme="light"] .feature-card:hover,
+        [data-theme="light"] .usage-item:hover {
+            box-shadow: 0 0 48px 8px #00e5ff88, 0 0 18px #ff5a8c44, 0 0 2px #fff;
+            z-index: 2;
+        }
+        [data-theme="light"] .feature-title,
+        [data-theme="light"] .section-title,
+        [data-theme="light"] .usage-title {
+            text-shadow: 0 0 12px var(--neon-blue), 0 0 6px #fff, 0 0 1px #00e5ff;
+        }
+        [data-theme="light"] .feature-icon,
+        [data-theme="light"] .usage-title i {
+            text-shadow: 0 0 16px var(--neon-blue), 0 0 4px #fff;
+        }
+        [data-theme="light"] .header-btn,
+        [data-theme="light"] .footer-link {
+            transition: box-shadow 0.3s, text-shadow 0.3s, filter 0.3s;
+        }
+        [data-theme="light"] .header-btn:hover,
+        [data-theme="light"] .footer-link:hover {
+            box-shadow: 0 0 24px var(--neon-blue), 0 0 8px #fff;
+            text-shadow: 0 0 16px var(--neon-blue), 0 0 4px #fff;
+            filter: brightness(1.2);
+            animation: neon-pulse 1.5s infinite alternate;
+        }
+        [data-theme="light"] .header-btn.pink:hover {
+            box-shadow: 0 0 24px var(--neon-pink), 0 0 8px #fff;
+            text-shadow: 0 0 16px var(--neon-pink), 0 0 4px #fff;
+        }
+        @keyframes neon-pulse {
+            0% { filter: brightness(1.1); }
+            100% { filter: brightness(1.35) drop-shadow(0 0 12px var(--neon-blue)); }
+        }
+        [data-theme="light"] .step {
+            border-left: 2.5px solid var(--neon-green);
+            box-shadow: 0 0 10px 2px #0fff5040;
+            background: rgba(250,253,255,0.97);
+            margin-bottom: 1.2rem;
+        }
+        [data-theme="light"] .step-number {
+            color: #2a2a4a;
+            text-shadow: 0 0 8px var(--neon-green), 0 0 2px #fff, 0 0 4px #0fff50;
+        }
+        [data-theme="light"] .usage-item {
+            box-shadow: 0 0 18px 2px #ff5a8c44, 0 0 6px #00e5ff44;
+            border: 1.5px solid var(--border-light);
+            background: rgba(255,255,255,0.97);
+            margin-bottom: 1.2rem;
+        }
+        [data-theme="light"] .usage-title {
+            color: var(--neon-pink);
+            text-shadow: 0 0 10px var(--neon-pink), 0 0 2px #fff;
+        }
+        [data-theme="light"] .usage-desc {
+            color: var(--text-secondary);
+        }
+        [data-theme="light"] .usage-desc ul li::before {
+            color: var(--neon-blue);
+        }
+        [data-theme="light"] .footer {
+            border-top: 2.5px solid var(--border-light);
+            box-shadow: 0 0 20px 4px #00e5ff44;
+            background: rgba(234,246,255,0.99);
+        }
+        [data-theme="light"] .social-icon {
+            color: var(--neon-purple);
+            text-shadow: 0 0 12px var(--neon-purple), 0 0 3px #fff;
+        }
+        [data-theme="light"] a {
+            transition: text-shadow 0.3s, color 0.3s;
+        }
+        [data-theme="light"] a:hover {
+            color: var(--neon-blue);
+            text-shadow: 0 0 8px var(--neon-blue), 0 0 2px #fff;
+            text-decoration: underline wavy var(--neon-blue);
+        }
+        [data-theme="light"] :focus {
+            outline: 2.5px solid var(--neon-blue);
+            box-shadow: 0 0 10px 2px var(--neon-blue);
+        }
+        [data-theme="light"] body {
+            background-color: var(--background-dark);
+            color: var(--text-primary);
+            background-image:
+                radial-gradient(circle at 10% 20%, #00e5ff22 0%, transparent 25%),
+                radial-gradient(circle at 90% 80%, #c264fe22 0%, transparent 25%),
+                radial-gradient(circle at 50% 50%, #ff5a8c22 0%, transparent 45%);
+            animation: neon-bg 18s linear infinite alternate;
+        }
+        @keyframes neon-bg {
+            0% { background-position: 0% 0%, 100% 100%, 50% 50%; }
+            100% { background-position: 100% 100%, 0% 0%, 50% 60%; }
         }
 
         /* Witch Hazel Theme Variables */
@@ -265,18 +379,29 @@
         }
 
         [data-theme="witchhazel"] .feature-card {
-            background-color: rgba(51, 46, 65, 0.7);
-            border: 1px solid rgba(180, 91, 207, 0.2);
+            background: rgba(51, 46, 65, 0.82);
+            border: 1.5px solid #a884ff77;
+            box-shadow: 0 0 14px 2px #a884ff33, 0 0 4px #fff1;
+            border-radius: 11px;
+            transition: box-shadow 0.25s, transform 0.25s;
+            position: relative;
+            z-index: 1;
+        }
+
+        [data-theme="witchhazel"] .feature-card:hover {
+            box-shadow: 0 0 24px 4px #a884ff66, 0 0 8px #fff2;
+            transform: scale(1.025) translateY(-2px);
+            z-index: 2;
         }
 
         [data-theme="witchhazel"] .feature-title {
-            color: #f4d554;
-            text-shadow: 0 0 5px rgba(244, 213, 84, 0.5);
+            color: #d9baff;
+            text-shadow: 0 0 6px #a884ff99, 0 0 2px #fff;
         }
 
         [data-theme="witchhazel"] .feature-icon {
-            color: #81ffff;
-            text-shadow: 0 0 5px rgba(129, 255, 255, 0.5);
+            color: #a884ff;
+            text-shadow: 0 0 8px #e9baff77, 0 0 2px #fff;
         }
 
         [data-theme="witchhazel"] .step-number {
@@ -340,6 +465,13 @@
             position: relative;
         }
 
+        [data-theme="light"] header {
+            background: linear-gradient(180deg, #fafdff 80%, #eaf6ff 100%);
+            border-bottom: 2.5px solid var(--border-light);
+            box-shadow: 0 2px 24px 0 #00e5ff33;
+            padding: 2.2rem 0 1.5rem 0;
+        }
+
         .main-title {
             font-family: 'Orbitron', sans-serif;
             font-weight: 900;
@@ -351,6 +483,12 @@
             margin-bottom: 1rem;
         }
 
+        [data-theme="light"] .main-title {
+            color: #0a2a3a;
+            background: none;
+            text-shadow: 0 2px 12px #00e5ff, 0 0 2px #fff, 0 0 0 #000;
+        }
+
         .wave-text {
             background: linear-gradient(90deg, var(--neon-blue), #60efff);
             -webkit-background-clip: text;
@@ -359,11 +497,23 @@
             text-shadow: var(--shadow-blue);
         }
 
+        [data-theme="light"] .wave-text {
+            color: #00e5ff;
+            background: none;
+            text-shadow: 0 2px 18px #00e5ff, 0 0 2px #fff, 0 0 0 #000;
+            font-weight: 900;
+        }
+
         .tagline {
             font-family: 'Orbitron', sans-serif;
             font-size: 1.2rem;
             color: var(--text-secondary);
             margin-bottom: 1.5rem;
+        }
+
+        [data-theme="light"] .tagline {
+            color: #3a3a6a;
+            text-shadow: 0 0 6px #00e5ff33;
         }
 
         .header-buttons {
@@ -388,6 +538,16 @@
             display: inline-block;
         }
 
+        [data-theme="light"] .header-btn {
+            background: #fafdff;
+            border: 2px solid var(--neon-blue);
+            color: var(--neon-blue);
+            box-shadow: 0 0 12px var(--neon-blue);
+            font-weight: 700;
+            text-shadow: 0 0 6px var(--neon-blue), 0 0 1px #fff;
+            margin: 0 0.5rem;
+        }
+
         .header-btn:hover {
             background-color: rgba(0, 229, 255, 0.1);
             box-shadow: var(--shadow-blue);
@@ -403,6 +563,13 @@
         .header-btn.pink:hover {
             background-color: rgba(255, 90, 140, 0.1);
             box-shadow: var(--shadow-pink);
+        }
+
+        [data-theme="light"] .header-btn.pink {
+            border-color: var(--neon-pink);
+            color: var(--neon-pink);
+            box-shadow: 0 0 12px var(--neon-pink);
+            text-shadow: 0 0 8px var(--neon-pink), 0 0 1px #fff;
         }
 
         .container {
@@ -480,12 +647,14 @@
             height: auto;
             margin: 2rem 0;
             box-shadow: var(--shadow-pink);
-            transition: all 0.3s ease;
+            transition: box-shadow 0.3s, transform 0.35s cubic-bezier(.19,1,.22,1), z-index 0.3s;
+            cursor: pointer;
+            z-index: 1;
         }
-
         .screenshot:hover {
-            transform: scale(1.01);
-            box-shadow: 0 0 20px rgba(255, 90, 140, 0.7);
+            transform: scale(1.16) perspective(1000px) translateY(-12px) rotateX(2deg) rotateZ(-1deg);
+            box-shadow: 0 0 64px 8px var(--neon-pink), 0 0 28px 2px var(--neon-blue), 0 0 6px #fff;
+            z-index: 10;
         }
 
         .install-steps {
@@ -698,15 +867,20 @@
             box-shadow: var(--shadow-purple);
         }
 
+        [data-theme="light"] .theme-toggle {
+            background: #fafdff;
+            border: 2px solid var(--neon-purple);
+            color: var(--neon-purple);
+            box-shadow: 0 0 10px var(--neon-purple);
+        }
+
         .theme-toggle:hover {
             background-color: rgba(194, 100, 254, 0.1);
             transform: translateY(-2px);
         }
 
-        [data-theme="light"] .theme-toggle {
-            background-color: rgba(219, 228, 240, 0.8);
-            border: 1px solid #6834a9;
-            box-shadow: 0 0 10px rgba(104, 52, 169, 0.3);
+        [data-theme="light"] .theme-toggle:hover {
+            background: #eaf6ff;
         }
 
         @media (max-width: 768px) {
@@ -726,6 +900,33 @@
             .main-title {
                 font-size: 2.2rem;
             }
+        }
+
+        [data-theme="witchhazel"] .usage-item {
+            background: rgba(51, 46, 65, 0.82);
+            border: 1.5px solid #a884ff77;
+            box-shadow: 0 0 14px 2px #a884ff33, 0 0 4px #fff1;
+            border-radius: 11px;
+            margin-bottom: 1.2rem;
+            padding: 1.1rem 1.2rem;
+            transition: box-shadow 0.25s, transform 0.25s;
+            color: #e6dbf7;
+        }
+        [data-theme="witchhazel"] .usage-item:hover {
+            box-shadow: 0 0 24px 4px #a884ff66, 0 0 8px #fff2;
+            transform: scale(1.025) translateY(-2px);
+        }
+        [data-theme="witchhazel"] .usage-title {
+            color: #d9baff;
+            text-shadow: 0 0 6px #a884ff99, 0 0 2px #fff;
+            font-weight: 700;
+        }
+        [data-theme="witchhazel"] .usage-title i {
+            color: #a884ff;
+            text-shadow: 0 0 8px #e9baff77, 0 0 2px #fff;
+        }
+        [data-theme="witchhazel"] .usage-desc {
+            color: #c8bce0;
         }
     </style>
 </head>
@@ -793,14 +994,7 @@
                 <div class="feature-card">
                     <div class="feature-icon"><i class="fas fa-code"></i></div>
                     <h3 class="feature-title">Variable Substitution</h3>
-                    <p class="feature-desc">Define and use variables across your playbooks and terminal sessions. Variables have user-friendly titles and reference names, are automatically substituted into code blocks before execution, persist and synchronize across sessions, and support real-time updates between clients.</p>
-                    <ul class="feature-list">
-                        <li>User-friendly variable definition</li>
-                        <li>Automatic substitution in code blocks</li>
-                        <li>Variables persist and synchronize across sessions</li>
-                        <li>Create custom named variables</li>
-                        <li>Real-time synchronization of variable values between clients</li>
-                    </ul>
+                    <p class="feature-desc">Create custom variables and reference them in code blocks. All variables are auto-substituted, synchronized, and updated in real time across sessions.</p>
                 </div>
                 <div class="feature-card">
                     <div class="feature-icon"><i class="fas fa-play"></i></div>
@@ -914,7 +1108,7 @@
                         <li>Code blocks can be executed directly in the active terminal</li>
                         <li>External links open in new tabs with proper security attributes</li>
                         <li>Click "Execute" to send code to the active terminal tab</li>
-                        <li>Create cross-references between playbooks using <code>[Text](playbook:filename.md)</code> syntax</li>
+                        <li>Create cross-references between playbooks using syntax</li>
                     </ul>
                 </div>
                 <div class="usage-item">
