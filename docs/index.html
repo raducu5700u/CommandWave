@@ -32,130 +32,168 @@
         [data-theme="light"] {
             --background-dark: #fafdff;
             --background-medium: #eaf6ff;
-            --text-primary: #22223b;
-            --text-secondary: #5a5a8a;
-            --border-light: rgba(0, 229, 255, 0.18);
+            --text-primary: #23234a;
+            --text-secondary: #3a3a6a;
+            --border-light: #b2eaff;
             --neon-blue: #00e5ff;
             --neon-purple: #c264fe;
             --neon-pink: #ff5a8c;
             --neon-yellow: #fcee09;
             --neon-green: #0fff50;
             --accent: #00e5ff;
-            --shadow-blue: 0 0 12px #00e5ff60;
-            --shadow-purple: 0 0 12px #c264fe60;
-            --shadow-pink: 0 0 12px #ff5a8c60;
-            --shadow-yellow: 0 0 12px #fcee0960;
-            --shadow-green: 0 0 12px #0fff5060;
+            --shadow-blue: 0 0 18px #00e5ff80;
+            --shadow-purple: 0 0 18px #c264fe60;
+            --shadow-pink: 0 0 18px #ff5a8c60;
+            --shadow-yellow: 0 0 18px #fcee0960;
+            --shadow-green: 0 0 18px #0fff5060;
         }
 
         [data-theme="light"] body {
             background-color: var(--background-dark);
             color: var(--text-primary);
             background-image:
-                radial-gradient(circle at 10% 20%, #00e5ff18 0%, transparent 25%),
-                radial-gradient(circle at 90% 80%, #c264fe18 0%, transparent 25%),
-                radial-gradient(circle at 50% 50%, #ff5a8c18 0%, transparent 45%);
+                radial-gradient(circle at 10% 20%, #00e5ff22 0%, transparent 25%),
+                radial-gradient(circle at 90% 80%, #c264fe22 0%, transparent 25%),
+                radial-gradient(circle at 50% 50%, #ff5a8c22 0%, transparent 45%);
         }
 
         [data-theme="light"] .section {
-            background-color: rgba(234, 246, 255, 0.75);
-            border: 1px solid var(--border-light);
-            box-shadow: var(--shadow-blue);
+            background: rgba(250,253,255,0.93);
+            border: 1.5px solid var(--border-light);
+            box-shadow: 0 0 24px #00e5ff30;
+            backdrop-filter: blur(6px);
+            border-radius: 12px;
         }
 
         [data-theme="light"] .section-title {
             color: var(--neon-blue);
-            text-shadow: var(--shadow-blue);
-            border-bottom: 1px solid var(--border-light);
+            text-shadow: 0 0 6px #00e5ff80, 0 0 2px #fff;
+            border-bottom: 1.5px solid var(--border-light);
+            letter-spacing: 1.5px;
         }
 
         [data-theme="light"] .feature-card {
-            background-color: rgba(250, 253, 255, 0.92);
-            border: 1px solid var(--border-light);
-            box-shadow: var(--shadow-blue);
+            background: rgba(255,255,255,0.92);
+            border: 1.5px solid var(--border-light);
+            box-shadow: 0 0 18px #00e5ff30;
+            backdrop-filter: blur(3px);
+            border-radius: 10px;
+            transition: box-shadow 0.3s, transform 0.3s;
         }
-
+        [data-theme="light"] .feature-card:hover {
+            box-shadow: 0 0 32px var(--neon-blue), 0 0 8px #fff;
+            transform: translateY(-5px) scale(1.03);
+        }
         [data-theme="light"] .feature-title {
             color: var(--neon-yellow);
-            text-shadow: var(--shadow-yellow);
+            text-shadow: 0 0 8px var(--neon-yellow), 0 0 2px #fff;
         }
-
+        [data-theme="light"] .feature-desc {
+            color: var(--text-secondary);
+            font-weight: 500;
+        }
         [data-theme="light"] .feature-icon {
             color: var(--neon-blue);
-            text-shadow: var(--shadow-blue);
+            text-shadow: 0 0 8px var(--neon-blue), 0 0 2px #fff;
         }
-
-        [data-theme="light"] .feature-card:hover {
-            box-shadow: 0 0 24px var(--neon-blue);
-            transform: translateY(-5px);
+        [data-theme="light"] .feature-list li {
+            color: var(--text-primary);
         }
 
         [data-theme="light"] .header-btn {
-            background-color: rgba(234, 246, 255, 0.9);
-            border: 1px solid var(--neon-blue);
+            background: rgba(250,253,255,0.97);
+            border: 1.5px solid var(--neon-blue);
             color: var(--neon-blue);
-            box-shadow: var(--shadow-blue);
+            box-shadow: 0 0 10px var(--neon-blue);
+            font-weight: 600;
+            text-shadow: 0 0 4px var(--neon-blue), 0 0 1px #fff;
         }
         [data-theme="light"] .header-btn.pink {
             border-color: var(--neon-pink);
             color: var(--neon-pink);
-            box-shadow: var(--shadow-pink);
+            box-shadow: 0 0 10px var(--neon-pink);
+            text-shadow: 0 0 4px var(--neon-pink), 0 0 1px #fff;
         }
         [data-theme="light"] .header-btn:hover {
-            background-color: rgba(0, 229, 255, 0.08);
-            box-shadow: 0 0 16px var(--neon-blue);
+            background: rgba(0,229,255,0.08);
+            box-shadow: 0 0 18px var(--neon-blue), 0 0 8px #fff;
         }
         [data-theme="light"] .header-btn.pink:hover {
-            background-color: rgba(255, 90, 140, 0.08);
-            box-shadow: 0 0 16px var(--neon-pink);
+            background: rgba(255,90,140,0.08);
+            box-shadow: 0 0 18px var(--neon-pink), 0 0 8px #fff;
         }
 
         [data-theme="light"] .theme-toggle {
-            background-color: rgba(234, 246, 255, 0.8);
-            border: 1px solid var(--neon-purple);
+            background: rgba(250,253,255,0.92);
+            border: 1.5px solid var(--neon-purple);
             color: var(--neon-purple);
-            box-shadow: var(--shadow-purple);
+            box-shadow: 0 0 10px var(--neon-purple);
         }
         [data-theme="light"] .theme-toggle:hover {
-            background-color: rgba(194, 100, 254, 0.09);
-            transform: translateY(-2px);
+            background: rgba(194,100,254,0.09);
+            transform: translateY(-2px) scale(1.07);
         }
 
         [data-theme="light"] .screenshot {
             border: 2px solid var(--neon-pink);
-            box-shadow: var(--shadow-pink);
+            box-shadow: 0 0 12px var(--neon-pink);
         }
 
         [data-theme="light"] code {
-            background-color: #f0f8ff;
-            border: 1px solid var(--border-light);
-            color: var(--neon-yellow);
+            background: #eaf6ff;
+            border: 1.5px solid var(--border-light);
+            color: #23234a;
+            font-weight: 600;
+            border-radius: 4px;
+            box-shadow: 0 0 8px var(--neon-yellow);
         }
 
         [data-theme="light"] .step {
-            border-left: 2px solid var(--neon-green);
+            border-left: 2.5px solid var(--neon-green);
+            background: rgba(250,253,255,0.97);
         }
         [data-theme="light"] .step-number {
             color: var(--neon-green);
-            text-shadow: var(--shadow-green);
+            text-shadow: 0 0 8px var(--neon-green), 0 0 2px #fff;
         }
         [data-theme="light"] .highlight {
             color: var(--neon-blue);
-            text-shadow: var(--shadow-blue);
+            text-shadow: 0 0 8px var(--neon-blue), 0 0 2px #fff;
+            font-weight: 600;
+        }
+        [data-theme="light"] .usage-grid {
+            background: none;
+        }
+        [data-theme="light"] .usage-item {
+            background: rgba(255,255,255,0.93);
+            border: 1.5px solid var(--border-light);
+            border-radius: 10px;
+            box-shadow: 0 0 10px var(--neon-blue);
+            color: var(--text-primary);
         }
         [data-theme="light"] .usage-title {
             color: var(--neon-pink);
-            text-shadow: var(--shadow-pink);
+            text-shadow: 0 0 8px var(--neon-pink), 0 0 2px #fff;
+        }
+        [data-theme="light"] .usage-desc {
+            color: var(--text-secondary);
+        }
+        [data-theme="light"] .usage-desc ul li::before {
+            color: var(--neon-blue);
         }
         [data-theme="light"] .footer-link {
             color: var(--neon-blue);
+            text-shadow: 0 0 6px var(--neon-blue);
         }
         [data-theme="light"] .social-icon {
             color: var(--neon-purple);
+            text-shadow: 0 0 6px var(--neon-purple);
         }
         [data-theme="light"] footer {
-            background-color: rgba(234, 246, 255, 0.88);
-            border-top: 1px solid var(--border-light);
+            background: rgba(234,246,255,0.97);
+            border-top: 2px solid var(--border-light);
+            box-shadow: 0 0 16px var(--neon-blue);
+            color: var(--text-secondary);
         }
 
         /* Witch Hazel Theme Variables */
