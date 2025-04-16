@@ -1,108 +1,102 @@
-# Playbook Cross-References
+# CommandWave: Playbook Cross-References
 
-## Overview
+This tutorial explains how to create and use cross-references between playbooks, allowing you to build an interconnected knowledge base.
 
-CommandWave now allows you to create direct references between playbooks, making it easy to build an interconnected knowledge base. This tutorial explains how to use the new cross-referencing feature to create links between related playbooks.
+## What are Playbook Cross-References?
 
-## Creating Playbook References
+Cross-references are links between playbooks that allow you to create a network of connected documentation. This is especially useful for:
 
-To create a link to another playbook, use the special `playbook:` prefix in your markdown links.
+- Breaking complex workflows into smaller, focused playbooks
+- Creating a hierarchy of documentation (general guides linking to specific techniques)
+- Establishing relationships between related tasks
 
-### Syntax
+## Creating Cross-References
+
+To create a reference to another playbook, use this special syntax:
 
 ```markdown
-[Link Text](playbook:playbook_filename.md)
+[Link text](playbook:filename.md)
 ```
 
 For example:
+
 ```markdown
-See the [Network Setup](playbook:network_setup.md) playbook for more details.
+See our [Network Scanning Guide](playbook:Network_Security_Scanning.md) for more details.
 ```
 
-When rendered, this creates a special styled button-like link that visually indicates it leads to another playbook.
+When clicked, CommandWave will load the referenced playbook automatically.
 
-## Example Usage
+## Example Use Cases
 
-Here are some examples of how you might use playbook cross-references:
+### Main Index Playbook
 
-### Creating a Master Index
+Create a central index that links to all your specialized playbooks:
 
 ```markdown
-# Security Tools Collection
+# Penetration Testing Playbooks
 
-## Reconnaissance
-- [Port Scanner](playbook:port_scanner.md)
-- [DNS Enumeration](playbook:dns_enum.md)
-- [Network Mapping](playbook:network_map.md)
+## Information Gathering
+- [Network Scanning](playbook:Network_Security_Scanning.md)
+- [Web Enumeration](playbook:Web_Enumeration.md)
 
 ## Exploitation
-- [SQL Injection](playbook:sql_injection.md)
-- [XSS Attacks](playbook:xss_attacks.md)
+- [Windows Exploitation](playbook:Windows_Exploitation.md)
+- [Linux Exploitation](playbook:Linux_Exploitation.md)
 
 ## Post-Exploitation
-- [Privilege Escalation](playbook:priv_esc.md)
-- [Data Exfiltration](playbook:data_exfil.md)
+- [Privilege Escalation](playbook:Privilege_Escalation.md)
+- [Data Exfiltration](playbook:Data_Exfiltration.md)
 ```
 
-### Adding References Within Documentation
+### Procedural Workflows
+
+Create step-by-step workflows that connect multiple playbooks:
 
 ```markdown
-# Kerberos Authentication
+# Network Assessment Workflow
 
-## Prerequisites
-Before attempting Kerberos authentication, ensure you have:
-1. Domain controller information (see [Active Directory Setup](playbook:ad_setup.md))
-2. Valid domain credentials 
-3. Properly configured DNS (see [DNS Configuration](playbook:dns_config.md))
+1. [Initial Reconnaissance](playbook:Initial_Recon.md)
+2. [Network Scanning](playbook:Network_Security_Scanning.md)
+3. [Vulnerability Assessment](playbook:Vulnerability_Assessment.md)
+4. [Exploitation](playbook:Exploitation.md)
+5. [Documentation](playbook:Report_Writing.md)
 ```
 
-## Benefits of Playbook Cross-References
+## Synchronized Playbook References
 
-1. **Improved Organization**: Create logical connections between related content
-2. **Better Navigation**: Quickly jump between relevant playbooks
-3. **Modular Documentation**: Split complex processes into smaller, focused playbooks
-4. **Visual Distinction**: Cross-references are styled differently from regular links
+When you upload or create a new playbook, it becomes immediately available for cross-referencing across all browser sessions:
 
-## How It Works
-
-When you click a playbook reference link, CommandWave will:
-
-1. Search for the referenced playbook
-2. Load the playbook's content
-3. Display it in the interface
-4. Maintain the original playbook in view (if multiple playbooks are open)
-
-## Advanced Use: Building Knowledge Trees
-
-You can use cross-references to create hierarchical structures:
-
-```markdown
-# Project Documentation
-
-## Overview
-This is the root document for the project. Navigate to specific sections:
-
-- [Development Setup](playbook:dev_setup.md)
-- [API Documentation](playbook:api_docs.md)
-- [Deployment Procedures](playbook:deployment.md)
-- [Troubleshooting Guide](playbook:troubleshooting.md)
+```bash
+# No command needed - playbooks synchronize automatically
+# 1. Create a new playbook in one browser window
+# 2. The playbook is immediately available for cross-referencing in other windows
+# 3. Any changes to playbooks sync across all sessions
 ```
 
-Each of these playbooks can then contain more specific cross-references, creating a tree-like structure of documentation.
+## Best Practices for Cross-References
 
-## Style Differences by Theme
+1. **Use Descriptive Link Text**: Make link text clear and descriptive
+2. **Consistent Naming**: Use a consistent naming convention for playbooks
+3. **Avoid Circular References**: Be careful not to create loops of references
+4. **Maintain Hierarchy**: Create a logical structure (general → specific)
+5. **Keep Context**: Ensure each playbook provides enough context to stand alone
 
-The appearance of playbook references changes based on your selected theme:
+## External Links vs. Playbook Links
 
-- **Cyberpunk Dark**: Cyan/blue glow effect with neon styling
-- **Neon Light**: Modern blue styling with subtle shadow effects
-- **Witch Hazel**: Purple accent color with the theme's signature style
+CommandWave differentiates between cross-references and external links:
+
+- Playbook references: `[Text](playbook:filename.md)` - Opens in CommandWave
+- External links: `[Text](https://example.com)` - Opens in a new browser tab
 
 ## Try It Yourself
 
-Use the editor to create a new playbook that references other playbooks, or modify existing playbooks to add cross-references. This will help you build a more interconnected and navigable collection of documentation.
+Create a series of connected playbooks:
+
+1. Create a main index playbook that references other playbooks
+2. Create several topic-specific playbooks
+3. Add cross-references between related playbooks
+4. Test the navigation by clicking the links
 
 ```bash
-# This is just a demo command - it doesn't create references directly
-echo "Creating playbook cross-references helps organize your documentation!"
+echo "You've completed the Playbook Cross-References tutorial!"
 ```

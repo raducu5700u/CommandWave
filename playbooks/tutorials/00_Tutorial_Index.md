@@ -1,30 +1,33 @@
 # CommandWave Tutorials
 
-Welcome to the CommandWave tutorial series! These guides will help you learn how to use CommandWave effectively for your terminal management and command execution workflows.
+Welcome to the CommandWave tutorial series! These tutorials will help you learn how to use CommandWave effectively, from basic operations to advanced features.
 
-## Available Tutorials
+## Getting Started
 
-1. [Getting Started](01_Getting_Started.md) - Introduction to CommandWave's basic features
-2. [Variables and Substitution](02_Variables.md) - Learn how to use variables to create flexible playbooks
-3. [Creating Custom Playbooks](03_Custom_Playbooks.md) - Build your own playbooks for specific workflows
-4. [Advanced Features](04_Advanced_Features.md) - Discover powerful capabilities for experienced users
-5. [Playbook Cross-References](05_Playbook_Cross_References.md) - Learn how to create links between related playbooks
+- [01. Getting Started](01_Getting_Started.md) - Introduction to the CommandWave interface and basic functionality
+- [02. Variables](02_Variables.md) - Working with variables and variable synchronization
+- [03. Custom Playbooks](03_Custom_Playbooks.md) - Creating, editing, and organizing your own playbooks
+- [04. Advanced Features](04_Advanced_Features.md) - Advanced functionality including themes and synchronization
+- [05. Playbook Cross References](05_Playbook_Cross_References.md) - Creating links between playbooks
 
-## How to Use These Tutorials
+## What's New in CommandWave
 
-Each tutorial is designed to be interactive. You can:
+### Latest Features
 
-- Read through the explanations
-- Click the "Execute" button next to any code block to run the commands directly
-- Try modifying the commands to experiment with different options
-- Use the search feature to find specific topics across all tutorials
+- **Variable Synchronization**: Variables now synchronize across browser sessions and persist between application restarts
+- **Enhanced Themes**: Choose between Cyberpunk Dark, Neon Light, and Witch Hazel themes
+- **Code Block Editing**: Double-click on any code block to edit it with the new editor interface
+- **Enhanced Command Visibility**: Improved syntax highlighting for command names and arguments
+- **Full Synchronization**: Terminal tabs, playbooks, and variables now sync across all connected sessions
 
-## Getting Help
+### Tutorial Updates
 
-If you need additional assistance:
+These tutorials have been updated to include information about the latest CommandWave features. Key updates include:
 
-- Check the [CommandWave GitHub repository](https://github.com/Journey-West/CommandWave)
-- Use the search feature to find relevant commands
-- Create your own notes in the global or tab-specific notes panels
+- **[Variables](02_Variables.md)** now includes information about variable synchronization across sessions
+- **[Custom Playbooks](03_Custom_Playbooks.md)** covers the new code block editing functionality
+- **[Advanced Features](04_Advanced_Features.md)** details the theme system and enhanced code highlighting
 
-Happy exploring!
+## Need Help?
+
+If you encounter any issues or have questions that aren't covered in these tutorials, please check the [CommandWave GitHub repository](https://github.com/Journey-West/CommandWave) or open an issue if you need assistance.

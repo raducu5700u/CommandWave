@@ -1,144 +1,173 @@
 # CommandWave: Creating Custom Playbooks
 
-This tutorial will guide you through the process of creating your own custom playbooks to organize and automate your command-line workflows.
+This tutorial will guide you through creating and managing your own custom playbooks in CommandWave.
 
 ## What are Playbooks?
 
-Playbooks in CommandWave are Markdown files that contain organized collections of commands with explanatory text. They allow you to:
-
-- Document complex command sequences
-- Share knowledge with team members
-- Execute commands directly from the documentation
-- Use variables for flexible automation
-
-## Playbook Structure
-
-A well-structured playbook typically includes:
-
-1. **Title and Description** - What the playbook does
-2. **Sections** - Organized by task or topic (using ## headings)
-3. **Command Blocks** - Executable code sections (using ```bash)
-4. **Documentation** - Explanatory text between commands
+Playbooks in CommandWave are Markdown (.md) files containing a mix of documentation and executable code blocks. They help you organize, document, and execute command sequences in a structured way.
 
 ## Creating a New Playbook
 
-You can create playbooks in two ways:
+There are two ways to create playbooks:
 
-### 1. Using the Create Playbook Button
-
-```bash
-# No command needed - use the interface:
-# 1. Click the "Create Playbook" button in the main interface
-# 2. Enter a name for your playbook (must end with .md)
-# 3. Add your content in the editor with proper markdown formatting
-# 4. Click "Create Playbook" to save
-```
-
-### 2. Uploading an Existing Markdown File
+### 1. Upload Existing Markdown Files
 
 ```bash
 # No command needed - use the interface:
 # 1. Click the "Upload Playbook" button
-# 2. Select your Markdown file (.md)
-# 3. The playbook will appear in your list of available playbooks
+# 2. Select a .md file from your computer
+# 3. The playbook will appear in the list
 ```
 
-## Markdown Basics for Playbooks
-
-CommandWave playbooks use standard Markdown syntax:
+### 2. Create a Playbook in the App
 
 ```bash
-# Create a simple example file to demonstrate markdown
-cat > example.md << EOF
-# Playbook Title
-
-## Section 1
-Normal text goes here
-
-### Subsection
-More detailed information
-
-\`\`\`bash
-# Your commands go here
-echo "This is a command block"
-\`\`\`
-EOF
-
-# View the file
-cat example.md
+# No command needed - use the interface:
+# 1. Click the "Create Playbook" button
+# 2. Enter a name for your playbook (add .md if not automatically added)
+# 3. Use the editor to write your playbook content
+# 4. Click "Save" when finished
 ```
 
-## Code Block Best Practices
+## Markdown Basics
 
-For command blocks to be most effective:
+CommandWave playbooks support standard Markdown syntax:
 
-1. Use ```bash for proper syntax highlighting
-2. Include comments to explain complex commands
-3. Keep commands focused on single tasks
-4. Use variables for values that might change (using the proper $varName format)
+### Headings
 
-## Example: Creating a System Info Playbook
+```
+# Heading 1
+## Heading 2
+### Heading 3
+```
 
-Let's create a simple system information playbook as practice:
+### Lists
+
+```
+- Bullet point 1
+- Bullet point 2
+  - Nested bullet point
+
+1. Numbered item 1
+2. Numbered item 2
+```
+
+### Text Formatting
+
+```
+*italic*
+**bold**
+`inline code`
+[Link text](https://example.com)
+```
+
+## Code Blocks
+
+The most powerful feature of playbooks is executable code blocks:
+
+### Basic Code Block
 
 ```bash
-# This would be in a Markdown file, not executed directly
-
-# System Information Playbook
-
-## Basic System Info
-
-### System Overview
-\`\`\`bash
-uname -a
-\`\`\`
-
-### Disk Usage
-\`\`\`bash
-df -h
-\`\`\`
-
-### Memory Usage
-\`\`\`bash
-free -m
-\`\`\`
-
-## Process Management
-
-### List Running Processes
-\`\`\`bash
-ps aux | grep $PROCESS_NAME
-\`\`\`
-
-### Process Resource Usage
-\`\`\`bash
-top -n 1
-\`\`\`
+# This is a code block that can be executed
+echo "Hello, CommandWave!"
 ```
 
-## Testing Your Playbook
+### Code Block with Language Highlighting
 
-After creating a playbook:
+```python
+# Python code with syntax highlighting (not executable in terminal)
+def hello():
+    print("Hello, CommandWave!")
+```
 
-1. Test each command by using the "Execute" button
-2. Verify variable substitution is working correctly
-3. Check formatting and readability 
-4. Consider adding examples of expected output
+## Editing Code Blocks
 
-## Sharing Playbooks
-
-Playbooks can be easily shared with your team:
+CommandWave allows you to edit code blocks directly:
 
 ```bash
-# Export your playbooks directory (not executed directly)
-# zip -r commandwave_playbooks.zip /path/to/playbooks
-
-# Import received playbooks via the Upload button
+# Try editing this code block:
+# 1. Double-click on this code block
+# 2. Make changes to the command
+# 3. Press Ctrl+Enter or click the Save button to save changes
+echo "This is an editable code block"
 ```
 
-## Advanced Playbook Tips
+Key editing features:
+- Double-click any code block to enter edit mode
+- Make changes to the content as needed
+- Press Ctrl+Enter or click the Save button to save changes
+- ESC key cancels editing without saving
+- Edited blocks are highlighted until saved
 
-- Create playbooks for specific workflows or projects
-- Use consistent formatting and structure
-- Include error handling and troubleshooting sections
-- Document dependencies and prerequisites
+## Working with Variables in Playbooks
+
+Custom playbooks are more powerful when combined with variables:
+
+```bash
+# Example using variables
+ping -c 3 $targetIP
+```
+
+Variables are automatically substituted when you execute the command. If the variable isn't defined, you'll see a message indicating it needs to be set.
+
+## Playbook Organization
+
+For complex tasks, organize your playbooks with clear sections:
+
+```
+# Network Scanning Playbook
+
+## Initial Reconnaissance
+```bash
+nmap -sn $targetNetwork/24
+```
+
+## Full Port Scan
+```bash
+nmap -p- -T4 $targetIP
+```
+
+## Service Enumeration
+```bash
+nmap -sV -sC $targetIP
+```
+```
+
+## Playbook Best Practices
+
+1. Start with a clear title and description
+2. Organize commands logically with headings and sections
+3. Provide comments explaining what each command does
+4. Use variables to make playbooks reusable
+5. Include examples of expected output where helpful
+6. Link to related playbooks or external documentation
+
+## Advanced: Cross-Referencing Playbooks
+
+CommandWave allows you to reference other playbooks:
+
+```
+[Link to another playbook](playbook:another_playbook.md)
+```
+
+This helps create a network of related playbooks for complex tasks.
+
+## Saving and Sharing Playbooks
+
+```bash
+# No command needed - playbooks are automatically saved when edited
+# Playbooks are stored in the playbooks/ directory on the server
+```
+
+## Try It Yourself
+
+Create a simple playbook with:
+1. A title and description
+2. At least two sections with headings
+3. At least two code blocks
+4. Use of at least one variable
+5. Try editing a code block after saving
+
+```bash
+echo "Congratulations on creating your first custom playbook!"
+```

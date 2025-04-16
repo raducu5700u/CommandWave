@@ -32,7 +32,7 @@
     --modal-footer-bg: linear-gradient(90deg, #0f0d1a 0%, #18161f 100%);
     
     /* Code blocks */
-    --code-background: #0d0d1b;
+    --code-background: #090915;
     --code-border: rgba(96, 239, 255, 0.3);
     --code-text: #e0e0fc;
     
@@ -745,12 +745,32 @@ header {
     overflow-x: auto;
     margin: 1rem 0;
     border: 1px solid var(--code-border);
+    box-shadow: 0 0 15px rgba(0, 0, 0, 0.4);
 }
 
 .playbook-content code {
     font-family: 'Roboto Mono', monospace;
     font-size: 0.9rem;
     color: var(--code-text);
+}
+
+/* Improve code contrast */
+.playbook-content code {
+    text-shadow: 0 0 1px rgba(255, 255, 255, 0.2);
+    letter-spacing: 0.5px;
+}
+
+/* Specifically target command text and tool names like nxc */
+.playbook-content code span:first-of-type {
+    color: #60efff;
+    text-shadow: 0 0 5px rgba(96, 239, 255, 0.5);
+    font-weight: bold;
+}
+
+/* Style comments */
+.playbook-content code .comment {
+    color: #8a8aa5;
+    font-style: italic;
 }
 
 .playbook-content li {
@@ -1118,7 +1138,6 @@ header {
     background-color: rgba(209, 39, 101, 0.1);
     color: #4a4a6a;
 }
-}
 
 .result-action-btn {
     background-color: rgba(255, 90, 140, 0.15);
@@ -1303,6 +1322,8 @@ header {
     margin: 1rem 0;
 }
 
+/* Code Block Header */
+
 .code-header {
     display: flex;
     justify-content: flex-end;
@@ -1446,8 +1467,8 @@ header {
 .code-container pre {
     margin: 0;
     border-radius: 0 0 8px 8px;
-    background-color: var(--code-background);
-    box-shadow: var(--shadow-blue);
+    background-color: #080817;
+    box-shadow: 0 0 15px rgba(96, 239, 255, 0.3);
     border: 1px solid var(--code-border);
 }
 
@@ -1462,6 +1483,8 @@ header {
     padding: 0 2px;
     border-radius: 2px;
     font-weight: bold;
+    text-shadow: 0 0 8px rgba(15, 255, 80, 0.6);
+    box-shadow: 0 0 3px rgba(15, 255, 80, 0.3);
 }
 
 [data-theme="light"] .substituted {
@@ -2870,7 +2893,7 @@ button[data-action="execute"]:hover {
 }
 
 .search-modal-item:hover {
-    background-color: rgba(255, 90, 140, 0.1);
+    background-color: rgba(255, 90, 140, 0.15);
 }
 
 [data-theme="light"] .search-modal-item:hover {
@@ -3095,7 +3118,6 @@ button[data-action="execute"]:hover {
     color: #4a4a6a;
 }
 
-/* Network Security Scanning specific styles */
 .search-result-item .code-block {
     background-color: var(--code-background);
     padding: 0.7rem;
@@ -3402,3 +3424,197 @@ button[data-action="execute"]:hover {
     border-color: var(--neon-purple);
     box-shadow: var(--shadow-purple);
 }
+
+.playbook-content pre, .markdown-text pre, pre[class*="language-"] {
+    background: linear-gradient(120deg, #080817 60%, #0d0d1f 100%);
+    border: 1.5px solid var(--code-border);
+    color: var(--code-text);
+    border-radius: 6px;
+    padding: 1.2rem;
+    box-shadow: 0 4px 24px 0 rgba(96, 239, 255, 0.12);
+    font-family: 'Roboto Mono', 'Fira Code', monospace;
+    font-size: 1rem;
+    margin: 1.2rem 0;
+    overflow-x: auto;
+    transition: background 0.3s, box-shadow 0.3s;
+}
+
+[data-theme="light"] .playbook-content pre, [data-theme="light"] .markdown-text pre, [data-theme="light"] pre[class*="language-"] {
+    background: linear-gradient(120deg, #f5f7fa 60%, #dbe4f0 100%);
+    border: 1.5px solid rgba(0, 131, 176, 0.2);
+    color: #2a2a4a;
+    box-shadow: 0 4px 24px 0 rgba(0, 131, 176, 0.06);
+}
+
+[data-theme="witchhazel"] .playbook-content pre, [data-theme="witchhazel"] .markdown-text pre, [data-theme="witchhazel"] pre[class*="language-"] {
+    background: linear-gradient(120deg, #332e41 60%, #282634 100%);
+    border: 1.5px solid #433e56;
+    color: #f8f8f2;
+    box-shadow: 0 4px 24px 0 rgba(180, 91, 207, 0.08);
+}
+
+/* Enhance search result content styling for headings */
+.search-result-item .content {
+    font-family: 'Roboto Mono', monospace;
+    margin-top: 0.5rem;
+    line-height: 1.4;
+}
+
+/* Specific styling for markdown headings in search results */
+.search-result-item .content {
+    color: var(--text-primary);
+}
+
+.search-result-item .content strong,
+.search-result-item .content b {
+    color: var(--neon-yellow);
+    text-shadow: 0 0 5px rgba(252, 238, 9, 0.5);
+}
+
+/* Style markdown headings with ### in search results */
+.search-result-item .content:first-line {
+    color: var(--neon-blue);
+    font-family: 'Orbitron', sans-serif;
+    font-weight: bold;
+    font-size: 1.1em;
+    text-shadow: 0 0 8px rgba(96, 239, 255, 0.6);
+    letter-spacing: 0.5px;
+}
+
+/* Style lines that start with ### specifically */
+.search-result-item .content:has(::first-line:matches("###")) {
+    padding-left: 0.5rem;
+    border-left: 2px solid var(--neon-blue);
+}
+
+/* Enhance search result content styling with cyberpunk theme */
+.search-result-item .content {
+    font-family: 'Roboto Mono', monospace;
+    margin-top: 0.5rem;
+    line-height: 1.4;
+    color: var(--text-primary);
+    padding: 0.5rem;
+    border-radius: 4px;
+    background-color: rgba(11, 11, 23, 0.5);
+    border: 1px solid rgba(96, 239, 255, 0.1);
+}
+
+/* Specific styling for markdown headings in search results */
+.search-result-item .content-heading {
+    border-left: 3px solid var(--neon-blue);
+    background-color: rgba(96, 239, 255, 0.05);
+    padding-left: 0.8rem;
+    transition: all 0.3s ease;
+    box-shadow: inset 0 0 10px rgba(96, 239, 255, 0.1);
+}
+
+.search-result-item .content-heading:hover {
+    background-color: rgba(96, 239, 255, 0.1);
+    box-shadow: inset 0 0 20px rgba(96, 239, 255, 0.15);
+}
+
+.search-result-item .heading-text {
+    color: var(--neon-blue);
+    font-family: 'Orbitron', sans-serif;
+    font-weight: bold;
+    font-size: 1.1em;
+    text-shadow: 0 0 8px rgba(96, 239, 255, 0.6);
+    letter-spacing: 0.5px;
+    display: block;
+}
+
+/* Highlight matched text in search results */
+.search-result-item .highlight {
+    background-color: rgba(255, 90, 140, 0.2);
+    color: var(--neon-pink);
+    padding: 0 2px;
+    border-radius: 2px;
+    font-weight: bold;
+    text-shadow: 0 0 5px rgba(255, 90, 140, 0.6);
+}
+
+/* Remove the previously added styles that may not work in all browsers */
+.search-result-item .content:first-line {
+    color: inherit;
+    font-family: inherit;
+    font-weight: inherit;
+    font-size: inherit;
+    text-shadow: inherit;
+    letter-spacing: inherit;
+}
+
+.search-result-item .content strong,
+.search-result-item .content b {
+    color: var(--neon-yellow);
+    text-shadow: 0 0 5px rgba(252, 238, 9, 0.5);
+}
+
+/* Style lines that start with ### specifically - removed unsupported selector */
+.search-result-item .content-heading {
+    border-left: 3px solid var(--neon-blue);
+}
+
+/* Special styling for specific tools/commands to improve readability */
+.playbook-content code span:not([class]):first-child {
+    color: #60efff !important;
+    font-weight: bold;
+    text-shadow: 0 0 5px rgba(96, 239, 255, 0.5);
+}
+
+/* Specific style for common pentest tools */
+.playbook-content code span:not([class]):first-child:is(
+    [data-content="nxc"],
+    [data-content="nmap"],
+    [data-content="netcat"],
+    [data-content="nc"],
+    [data-content="ssh"],
+    [data-content="smbclient"],
+    [data-content="curl"],
+    [data-content="wget"]
+) {
+    color: #60efff !important;
+    font-weight: bold;
+    text-shadow: 0 0 8px rgba(96, 239, 255, 0.7);
+}
+
+/* Enhance readability of commands by increasing contrast */
+.code-container pre {
+    background: linear-gradient(120deg, #060612 60%, #0a0a1a 100%);
+    color: #f0f0ff;
+}
+
+/* Make bright commands stand out against dark background */
+.code-container code {
+    color: #f0f0ff;
+}
+
+/* Override any theme colors for command text */
+.code-container span:not([class]) {
+    color: #f0f0ff !important;
+    text-shadow: 0 0 1px rgba(255, 255, 255, 0.3);
+}
+
+/* Specifically style the nxc tool to fix the issue shown in the image */
+pre code span:first-child:contains('nxc') {
+    color: #60efff !important;
+    font-weight: bold;
+    text-shadow: 0 0 8px rgba(96, 239, 255, 0.8);
+}
+
+/* Style tool arguments with different colors */
+.code-container span.operator + span:not([class]),
+.code-container span.operator ~ span:not([class]) {
+    color: #60efff !important;
+}
+
+/* Specifically target common SMB commands */
+.code-container code:contains('smb') span:not([class]):nth-child(1) {
+    color: #60efff !important;
+    font-weight: bold;
+}
+
+.code-container code:contains('smb') span:not([class]):nth-child(2) {
+    color: #ff5a8c !important;
+    font-weight: bold;
+}
+

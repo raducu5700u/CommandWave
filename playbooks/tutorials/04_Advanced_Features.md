@@ -15,6 +15,18 @@ CommandWave allows you to create and manage multiple terminal sessions simultane
 # 3. Rename terminals by double-clicking on a tab name
 ```
 
+### Terminal Synchronization
+
+Your terminal tabs automatically synchronize across sessions:
+
+```bash
+# No command needed - terminals automatically sync across browser sessions
+# 1. Open CommandWave in two different browsers or devices
+# 2. Create a new terminal in one window
+# 3. The terminal will appear in the other window automatically
+# 4. All terminals persist across browser restarts
+```
+
 ### Terminal History
 
 Each terminal maintains its own command history:
@@ -24,6 +36,43 @@ Each terminal maintains its own command history:
 # Or view history with:
 history
 ```
+
+## Themes and Visual Customization
+
+### Theme Selection
+
+CommandWave offers three distinct themes to match your preferences:
+
+```bash
+# No command needed - use the interface to change themes:
+# 1. Click the gear icon in the top-right corner
+# 2. Select "Theme Settings"
+# 3. Choose from the available themes:
+#    - Cyberpunk Dark (default)
+#    - Neon Light
+#    - Witch Hazel
+```
+
+Each theme provides a different color scheme while maintaining readability:
+- **Cyberpunk Dark**: Classic dark theme with neon blue and purple highlights
+- **Neon Light**: Light background with vibrant neon accents
+- **Witch Hazel**: Dark purple background with complementary pastel highlights
+
+### Enhanced Code Readability
+
+CommandWave features special syntax highlighting for commands:
+
+```bash
+# Common tools and commands are highlighted for better visibility
+nmap -sV -p 22,80,443 $targetIP
+nxc smb $dcIP -u $username -p $password
+```
+
+Notice how command names and important parameters are more visible with:
+- Brighter colors for command names and tools
+- Special highlighting for pentesting tools like `nmap` and `nxc`
+- Distinct colors for arguments and options
+- Glowing effect on critical commands
 
 ## Advanced Playbook Features
 
@@ -35,6 +84,27 @@ CommandWave provides both global notes and tab-specific notes:
 # No command needed - click "Global Notes" or "Tab Notes" buttons
 # Notes are markdown-compatible and persist between sessions
 # Tab notes are specific to each terminal tab
+```
+
+### Cross-Referencing Playbooks
+
+Link between playbooks to create a knowledge network:
+
+```bash
+# Use special syntax in your markdown:
+# [Link text](playbook:filename.md)
+# 
+# Example: [See Network Scanning Guide](playbook:Network_Security_Scanning.md)
+```
+
+### Playbook Synchronization
+
+Playbooks synchronize across all connected sessions:
+
+```bash
+# Edit a playbook in one window and the changes appear in all others
+# All playbooks persist between browser sessions
+# No manual export/import needed
 ```
 
 ### Playbook Search
@@ -51,7 +121,7 @@ Quickly find commands across all your playbooks:
 
 ### Variable Management
 
-Create complex workflows with custom variables:
+Create complex workflows with custom variables that sync across sessions:
 
 ```bash
 # Define multiple related variables for a workflow
@@ -162,6 +232,7 @@ CommandWave supports various keyboard shortcuts:
 # Ctrl+C - Interrupt/cancel current command
 # Ctrl+L - Clear screen
 # Ctrl+R - Search command history
+# Ctrl+Enter - Save edited code block
 ```
 
 ### Command Chaining

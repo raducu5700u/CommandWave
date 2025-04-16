@@ -41,6 +41,23 @@ export MY_VARIABLE="Hello World"
 echo $MY_VARIABLE
 ```
 
+## Variable Synchronization
+
+CommandWave automatically synchronizes variables across all connected sessions:
+
+```bash
+# No command needed - variables sync automatically
+# 1. When you set a variable in one browser window, it's available in all others
+# 2. Variables persist between application restarts
+# 3. Even custom variables sync between sessions
+```
+
+Variables are synchronized in real-time. If someone else changes a variable value in another browser window or device connected to the same server, your session will reflect those changes automatically. This is perfect for:
+
+- Team collaboration on the same server
+- Using CommandWave across multiple devices
+- Ensuring consistency in distributed workflows
+
 ## Using Variables in Playbooks
 
 Once defined, variables can be used in any command block:
@@ -76,6 +93,7 @@ cp -r $TARGET_DIR $BACKUP_DIR/logs_$(date +%Y%m%d)
 2. Avoid spaces in variable references (use camelCase or snake_case)
 3. Group related variables together
 4. Set default values for common scenarios
+5. For team environments, use standardized variable names
 
 ```bash
 # Example of setting default values if not already defined
@@ -107,3 +125,16 @@ Practice by creating and using variables:
 # 1. Create TARGET_PATH variable in the Variables panel
 # 2. Run this command to see its value
 ls -la $TARGET_PATH
+```
+
+## Multi-Browser Synchronization Test
+
+A great way to see variable synchronization in action:
+
+```bash
+# 1. Open CommandWave in two different browser windows
+# 2. In Window 1: Create a new variable named "testSync" with value "Hello"
+# 3. In Window 2: You'll see the variable appear automatically
+# 4. In Window 2: Change the value to "Hello World"
+# 5. In Window 1: You'll see the value update in real-time
+```

@@ -19,13 +19,25 @@ CommandWave provides a streamlined, web-based environment for managing multiple 
     * Create new playbooks directly within the application.
     * Playbooks are parsed to separate text blocks from code blocks.
     * Cross-reference between playbooks using special syntax.
+    * Playbooks synchronize across sessions and clients automatically.
 * **Executable Code Blocks**: Execute shell command blocks from playbooks directly into the active terminal session.
-* **Variable Substitution**: Define variables with user-friendly titles and reference names that are automatically substituted into code blocks before execution.
+* **Variable Substitution**: 
+    * Define variables with user-friendly titles and reference names.
+    * Variables are automatically substituted into code blocks before execution.
+    * Variables persist and synchronize across browser sessions and devices.
+* **Synchronization**:
+    * Terminal tabs, playbooks, and variables sync across all connected sessions.
+    * Changes made in one browser window reflect in all others in real-time.
+    * All user data persists between browser sessions.
 * **Playbook Search**: Quickly search across all loaded playbooks for specific commands or text.
-* **Dark/Light Theme Toggle**:
-    * Switch between the default cyberpunk dark theme and a light theme.
+* **Theme Selection**:
+    * Switch between the default cyberpunk dark theme, neon light theme, and witch hazel theme.
     * Theme preference is saved between sessions.
-    * Terminal areas remain dark in both themes for optimal readability.
+    * Terminal areas remain dark in all themes for optimal readability.
+* **Enhanced Code Readability**:
+    * Syntax highlighting with cyberpunk-style neon colors.
+    * Specially enhanced visibility for command names and arguments.
+    * Common pentesting tools and commands highlighted for better readability.
 * **Persistent Notes**:
     * A global notes panel for general information.
     * A separate notes panel for each terminal tab. Notes are saved automatically.
@@ -82,9 +94,10 @@ CommandWave provides a streamlined, web-based environment for managing multiple 
     * Click on a tab to switch to that terminal.
     * Double-click a tab name (not the 'x') to rename it.
     * Click the `x` on a tab to close that terminal session.
+    * Terminal tabs synchronize across all browser sessions connected to the same server.
 2.  **Theme Settings**:
     * Click the gear icon in the top right corner and select "Theme Settings" to open the theme modal.
-    * Choose between "Cyberpunk Dark" (default) and "Neon Light" themes.
+    * Choose between "Cyberpunk Dark" (default), "Neon Light", and "Witch Hazel" themes.
     * Your selection is saved in the browser and will persist between sessions.
 3.  **Variables**:
     * Use the "Variables" section to define variables for use in your playbooks.
@@ -94,6 +107,7 @@ CommandWave provides a streamlined, web-based environment for managing multiple 
         * **Variable Reference**: The actual reference name used in code (no spaces allowed, automatically prefixed with $)
     * Example: Title "Target IP Address" with Reference "targetIp" would be used as `$targetIp` in code blocks.
     * Variables will be substituted when you click "Execute" on a code block.
+    * Variables synchronize across browser sessions and persist between sessions.
 4.  **Playbooks**:
     * Click "Upload Playbook" to load `.md` files.
     * Click "Create Playbook" to author a new playbook within the app.
@@ -101,14 +115,17 @@ CommandWave provides a streamlined, web-based environment for managing multiple 
     * Within code blocks (` ``` `), click:
         * **Copy**: Copies the code (with variables substituted) to the clipboard.
         * **Execute**: Sends the code (with variables substituted) to the *currently active* terminal tab for execution.
+        * **Edit**: Double-click on a code block to edit it. Press Ctrl+Enter or click the Save button to save changes.
     * Links within playbooks to other .md files will load those playbooks, while external links open in new tabs.
     * Create cross-references between playbooks using the syntax: `[Link Text](playbook:playbook_name.md)`.
+    * Playbooks synchronize across browser sessions and persist between sessions.
 5.  **Search**:
     * Use the search bar to find lines within any loaded playbook's content.
     * Results show the filename, line number, and content. Click on a result to open that playbook.
 6.  **Notes**:
     * Click "Global Notes" or "Tab Notes" in the header to toggle the respective side panels.
     * Content is saved automatically as you type.
+    * Notes persist between sessions.
 7.  **Error Handling**:
     * The application displays dedicated error modals with clear messages for various error conditions.
     * These modals include specific guidance on how to resolve common issues.

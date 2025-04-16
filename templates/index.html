@@ -6,7 +6,162 @@
     <title>CommandWave - Terminal Management Interface</title>
     <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;700;900&family=Roboto:wght@300;400;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.25.0/themes/prism-tomorrow.min.css">
+    <!-- Custom dark theme for Prism instead of prism-tomorrow -->
+    <style>
+    /* Custom Dark Cyberpunk theme for Prism.js */
+    code[class*="language-"],
+    pre[class*="language-"] {
+        color: #e0e0fc;
+        background: none;
+        font-family: 'Roboto Mono', Consolas, Monaco, 'Andale Mono', 'Ubuntu Mono', monospace;
+        text-align: left;
+        white-space: pre;
+        word-spacing: normal;
+        word-break: normal;
+        word-wrap: normal;
+        line-height: 1.5;
+        tab-size: 4;
+        hyphens: none;
+    }
+
+    pre[class*="language-"] {
+        background: linear-gradient(120deg, #080817 60%, #0d0d1f 100%);
+        border-radius: 6px;
+        padding: 1.2rem;
+        margin: .5em 0;
+        overflow: auto;
+        box-shadow: 0 0 15px rgba(96, 239, 255, 0.3);
+    }
+
+    :not(pre) > code[class*="language-"] {
+        padding: .1em;
+        border-radius: .3em;
+        white-space: normal;
+    }
+
+    .token.comment,
+    .token.block-comment,
+    .token.prolog,
+    .token.doctype,
+    .token.cdata {
+        color: #8a8aa5;
+    }
+
+    .token.punctuation {
+        color: #9e9ecd;
+    }
+
+    .token.tag,
+    .token.namespace,
+    .token.deleted {
+        color: #ff5a8c;
+    }
+
+    .token.attr-name {
+        color: #c264fe;
+    }
+
+    .token.function-name {
+        color: #60efff;
+    }
+
+    .token.boolean,
+    .token.number {
+        color: #fcee09;
+    }
+
+    .token.function {
+        color: #60efff;
+    }
+
+    .token.property,
+    .token.class-name,
+    .token.constant,
+    .token.symbol {
+        color: #fcee09;
+    }
+
+    .token.selector,
+    .token.important,
+    .token.atrule,
+    .token.keyword,
+    .token.builtin {
+        color: #c264fe;
+    }
+
+    .token.string,
+    .token.char,
+    .token.attr-value,
+    .token.regex {
+        color: #0fff50;
+    }
+
+    /* Make commands more readable - use cyan for commands like nxc */
+    .token.operator,
+    .token.entity,
+    .token.url,
+    .language-bash .token.operator {
+        color: #60efff;
+    }
+
+    /* Make command names more visible with blue cyan */
+    .language-bash .token.function {
+        color: #60efff;
+        font-weight: bold;
+        text-shadow: 0 0 5px rgba(96, 239, 255, 0.5);
+    }
+    
+    /* Style common tool commands with more vibrant colors */
+    code[class*="language-bash"] span:first-child,
+    .language-bash .token.keyword {
+        color: #60efff;
+        font-weight: bold;
+        text-shadow: 0 0 5px rgba(96, 239, 255, 0.5);
+    }
+    
+    /* Style command arguments with better contrast */
+    .language-bash .token.parameter,
+    .language-bash .token.variable,
+    .language-bash span:not([class]) {
+        color: #e0e0fc;
+        text-shadow: 0 0 2px rgba(224, 224, 252, 0.3);
+    }
+
+    .token.important,
+    .token.bold {
+        font-weight: bold;
+    }
+
+    .token.italic {
+        font-style: italic;
+    }
+
+    .token.entity {
+        cursor: help;
+    }
+
+    .token.inserted {
+        color: #0fff50;
+    }
+
+    /* Custom variable styling - make it stand out more */
+    .substituted {
+        background-color: rgba(15, 255, 80, 0.15);
+        color: #0fff50 !important;
+        padding: 0 2px;
+        border-radius: 2px;
+        font-weight: bold;
+        text-shadow: 0 0 8px rgba(15, 255, 80, 0.6);
+        box-shadow: 0 0 3px rgba(15, 255, 80, 0.3);
+    }
+
+    /* Add shadow around whole code blocks for better visibility */
+    .code-container {
+        border-radius: 6px;
+        box-shadow: 0 0 20px rgba(0, 0, 0, 0.4);
+        margin: 1rem 0;
+    }
+    </style>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link rel="icon" type="image/x-icon" href="{{ url_for('static', filename='favicon.ico') }}">
 </head>

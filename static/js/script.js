@@ -96,6 +96,9 @@ document.addEventListener('DOMContentLoaded', function() {
     // Setup playbook synchronization
     setupPlaybookSync();
 
+    // Setup variable synchronization
+    setupVariableSync();
+
     // Playbook upload
     const uploadPlaybookInput = document.getElementById('uploadPlaybook');
     if (uploadPlaybookInput) {
@@ -472,11 +475,174 @@ document.addEventListener('DOMContentLoaded', function() {
         // Initialize with empty values for all variable inputs
         document.querySelectorAll('.variable-input input').forEach(input => {
             const varName = input.id;
-            window.state.terminals[terminalId].variables[varName] = {
-                title: input.placeholder,
-                name: varName,
-                value: ''
-            };
+            if (!window.state.terminals[terminalId].variables[varName]) {
+                window.state.terminals[terminalId].variables[varName] = {
+                    title: input.placeholder,
+                    name: varName,
+                    value: ''
+                };
+            }
+        });
+        
+        // Load saved variables from server
+        loadVariablesFromServer(terminalId);
+    }
+
+    /**
+     * Setup variable synchronization with server
+     */
+    function setupVariableSync() {
+        // Start polling for variable updates periodically
+        pollVariableUpdates();
+        
+        // Set up interval to poll for updates every 5 seconds
+        setInterval(pollVariableUpdates, 5000);
+    }
+
+    /**
+     * Poll for variable updates from other sessions
+     */
+    function pollVariableUpdates() {
+        fetch('/api/variables/list/all')
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    updateVariablesFromServer(data.variables);
+                }
+            })
+            .catch(error => {
+                console.error('Error polling variable updates:', error);
+            });
+    }
+
+    /**
+     * Update local variables from server data
+     */
+    function updateVariablesFromServer(serverVariables) {
+        // If we have no active terminal, there's nothing to update
+        if (!window.state.activeTerminal || !window.state.terminals[window.state.activeTerminal]) {
+            return;
+        }
+        
+        const activeTerminalId = window.state.activeTerminal;
+        const terminalPort = window.state.terminals[activeTerminalId].port;
+        const terminalIdForServer = `term-${terminalPort}`;
+        
+        // Check if server has variables for this terminal
+        if (serverVariables[terminalIdForServer]) {
+            const serverVars = serverVariables[terminalIdForServer];
+            
+            // Update local variables with server values if not being edited
+            Object.keys(serverVars).forEach(varName => {
+                // Skip if this variable is currently being edited
+                const inputElement = document.querySelector(`input[name="${varName}"]`);
+                if (inputElement && document.activeElement === inputElement) {
+                    return;
+                }
+                
+                // Update the variable in state
+                if (!window.state.terminals[activeTerminalId].variables[varName] ||
+                    window.state.terminals[activeTerminalId].variables[varName].value !== serverVars[varName].value) {
+                    
+                    // Update local state
+                    window.state.terminals[activeTerminalId].variables[varName] = serverVars[varName];
+                    
+                    // Update UI if variable exists
+                    if (inputElement) {
+                        inputElement.value = serverVars[varName].value || '';
+                    } else {
+                        // Create variable UI if it doesn't exist
+                        addCustomVariable(
+                            serverVars[varName].title || varName,
+                            serverVars[varName].name || `$${varName}`,
+                            serverVars[varName].value || ''
+                        );
+                    }
+                }
+            });
+            
+            // Update substitutions in code blocks
+            updateVariableSubstitutions();
+        }
+    }
+
+    /**
+     * Load variables from server for a terminal
+     */
+    function loadVariablesFromServer(terminalId) {
+        if (!terminalId) return;
+        
+        const portMatch = terminalId.match(/^terminal-(\d+)$/);
+        if (!portMatch) return;
+        
+        const port = portMatch[1];
+        const terminalIdForServer = `term-${port}`;
+        
+        fetch(`/api/variables/load/${terminalIdForServer}`)
+            .then(response => response.json())
+            .then(data => {
+                if (data.success && data.variables) {
+                    // Update local state with loaded variables
+                    for (const [key, value] of Object.entries(data.variables)) {
+                        window.state.terminals[terminalId].variables[key] = value;
+                        
+                        // Create UI for custom variables
+                        if (!document.getElementById(`var-${key}`) && key !== 'targetIP' && 
+                            key !== 'port' && key !== 'dcIP' && key !== 'userFile' && 
+                            key !== 'passFile' && key !== 'wordlist' && key !== 'controlSocket') {
+                            addCustomVariable(value.title, value.name, value.value);
+                        }
+                    }
+                    
+                    // Update input values
+                    updateVariableInputsFromState();
+                    
+                    // Update code blocks with substitutions
+                    updateVariableSubstitutions();
+                    
+                    console.log(`Loaded variables for terminal ${terminalId}`);
+                }
+            })
+            .catch(error => {
+                console.error(`Error loading variables for terminal ${terminalId}:`, error);
+            });
+    }
+
+    /**
+     * Sync variables to server
+     */
+    function syncVariablesToServer() {
+        if (!window.state.activeTerminal || !window.state.terminals[window.state.activeTerminal]) {
+            return;
+        }
+        
+        const activeTerminalId = window.state.activeTerminal;
+        const terminalPort = window.state.terminals[activeTerminalId].port;
+        const terminalIdForServer = `term-${terminalPort}`;
+        
+        // Get variables from state
+        const variablesToSync = window.state.terminals[activeTerminalId].variables;
+        
+        // Send to server
+        fetch(`/api/variables/sync/${terminalIdForServer}`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+                variables: variablesToSync
+            })
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.success) {
+                console.log('Variables synced successfully');
+            } else {
+                console.error('Error syncing variables:', data.error);
+            }
+        })
+        .catch(error => {
+            console.error('Error syncing variables:', error);
         });
     }
 
@@ -494,6 +660,10 @@ document.addEventListener('DOMContentLoaded', function() {
                 if (window.state.activeTerminal) {
                     window.state.terminals[window.state.activeTerminal].variables[this.name].value = this.value;
                     updateVariableSubstitutions();
+                    
+                    // Sync variables to server after a short delay for typing
+                    clearTimeout(input.syncTimeout);
+                    input.syncTimeout = setTimeout(syncVariablesToServer, 1000);
                 }
             });
         });
@@ -509,6 +679,7 @@ document.addEventListener('DOMContentLoaded', function() {
                         delete window.state.terminals[window.state.activeTerminal].variables[varName];
                         varInput.remove();
                         updateVariableSubstitutions();
+                        syncVariablesToServer();
                     }
                 }
             });
@@ -689,6 +860,8 @@ document.addEventListener('DOMContentLoaded', function() {
         if (existingVar) {
             // Update the value
             existingVar.querySelector('input').value = value;
+            // Also sync to server
+            syncVariablesToServer();
             return;
         }
         
@@ -711,13 +884,18 @@ document.addEventListener('DOMContentLoaded', function() {
                 varInput.remove();
                 delete window.state.terminals[window.state.activeTerminal].variables[varName];
                 updateVariableSubstitutions();
+                syncVariablesToServer();
             }
         });
         
         // Add event listener to input
         varInput.querySelector('input').addEventListener('input', function() {
-            window.state.terminals[window.state.activeTerminal].variables[this.id].value = this.value;
+            window.state.terminals[window.state.activeTerminal].variables[this.name].value = this.value;
             updateVariableSubstitutions();
+            
+            // Sync variables to server after a short delay for typing
+            clearTimeout(this.syncTimeout);
+            this.syncTimeout = setTimeout(syncVariablesToServer, 1000);
         });
         
         // Add to container
@@ -725,6 +903,9 @@ document.addEventListener('DOMContentLoaded', function() {
         
         // Update any code that might use this variable
         updateVariableSubstitutions();
+        
+        // Sync to server
+        syncVariablesToServer();
     }
 
     /**
@@ -1726,6 +1907,14 @@ document.addEventListener('DOMContentLoaded', function() {
                         const queryRegex = new RegExp(`(${escapeRegExp(query)})`, 'gi');
                         highlightedContent = highlightedContent.replace(queryRegex, '<span class="highlight">$1</span>');
                         
+                        // Check if the line starts with ### to add special class for headings
+                        let contentClass = 'content';
+                        if (result.line.trim().startsWith('###')) {
+                            contentClass += ' content-heading';
+                            // Process the heading to wrap it in a span for better styling
+                            highlightedContent = `<span class="heading-text">${highlightedContent}</span>`;
+                        }
+                        
                         resultItem.innerHTML = `
                             <div class="result-header">
                                 <span class="filename">${result.filename}</span>
@@ -1736,7 +1925,7 @@ document.addEventListener('DOMContentLoaded', function() {
                                     <button class="result-action-btn import" title="Import playbook"><i class="fas fa-file-import"></i> Import</button>
                                 </div>
                             </div>
-                            <div class="content">${highlightedContent}</div>
+                            <div class="${contentClass}">${highlightedContent}</div>
                         `;
                         
                         // Add event listeners for the buttons

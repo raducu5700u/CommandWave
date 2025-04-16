@@ -59,6 +59,10 @@ process_lock = threading.Lock()
 playbooks = {}
 playbook_lock = threading.Lock()
 
+# Store information about variables
+variables = {}
+variables_lock = threading.Lock()
+
 def parse_arguments():
     """Parse command-line arguments."""
     parser = argparse.ArgumentParser(description='CommandWave - Terminal Management Web Application')
@@ -816,6 +820,115 @@ def get_playbook_state(filename):
             'success': False,
             'error': str(e)
         }), 500
+
+@app.route('/api/variables/sync/<terminal_id>', methods=['POST'])
+def sync_variables(terminal_id):
+    """Sync variables for a specific terminal."""
+    # Sanitize terminal_id to prevent directory traversal
+    sanitized_id = re.sub(r'[^a-zA-Z0-9\-_]', '', terminal_id)
+    if sanitized_id != terminal_id:
+        return jsonify({'success': False, 'error': 'Invalid terminal ID'}), 400
+    
+    try:
+        # Get variables from request
+        data = request.json
+        if not data or not isinstance(data.get('variables'), dict):
+            return jsonify({
+                'success': False,
+                'error': 'Missing or invalid variables data'
+            }), 400
+        
+        # Store variables in server state
+        with variables_lock:
+            variables[sanitized_id] = data['variables']
+        
+        # Save variables to disk for persistence
+        variables_dir = os.path.join(BASE_DIR, 'variables_data')
+        os.makedirs(variables_dir, exist_ok=True)
+        
+        variables_file = os.path.join(variables_dir, f'variables_{sanitized_id}.json')
+        with open(variables_file, 'w', encoding='utf-8') as f:
+            json.dump(data['variables'], f)
+        
+        return jsonify({'success': True})
+    except Exception as e:
+        logger.error(f"Error syncing variables for {terminal_id}: {e}")
+        return jsonify({'success': False, 'error': str(e)}), 500
+
+@app.route('/api/variables/load/<terminal_id>', methods=['GET'])
+def load_variables(terminal_id):
+    """Load variables for a specific terminal."""
+    # Sanitize terminal_id to prevent directory traversal
+    sanitized_id = re.sub(r'[^a-zA-Z0-9\-_]', '', terminal_id)
+    if sanitized_id != terminal_id:
+        return jsonify({'success': False, 'error': 'Invalid terminal ID'}), 400
+    
+    try:
+        # Check if variables exist in memory
+        with variables_lock:
+            if sanitized_id in variables:
+                return jsonify({
+                    'success': True,
+                    'variables': variables[sanitized_id]
+                })
+        
+        # If not in memory, try to load from disk
+        variables_dir = os.path.join(BASE_DIR, 'variables_data')
+        variables_file = os.path.join(variables_dir, f'variables_{sanitized_id}.json')
+        
+        if os.path.exists(variables_file):
+            with open(variables_file, 'r', encoding='utf-8') as f:
+                loaded_variables = json.load(f)
+                
+                # Store in memory for future access
+                with variables_lock:
+                    variables[sanitized_id] = loaded_variables
+                
+                return jsonify({
+                    'success': True,
+                    'variables': loaded_variables
+                })
+        else:
+            # No variables found, return empty object
+            return jsonify({
+                'success': True,
+                'variables': {}
+            })
+    except Exception as e:
+        logger.error(f"Error loading variables for {terminal_id}: {e}")
+        return jsonify({'success': False, 'error': str(e)}), 500
+
+@app.route('/api/variables/list/all', methods=['GET'])
+def list_all_variables():
+    """List all saved variables."""
+    try:
+        variables_dir = os.path.join(BASE_DIR, 'variables_data')
+        os.makedirs(variables_dir, exist_ok=True)
+        
+        # Get all variable files
+        variable_files = glob.glob(os.path.join(variables_dir, 'variables_*.json'))
+        
+        result = {}
+        for file_path in variable_files:
+            try:
+                # Extract terminal ID from filename
+                file_name = os.path.basename(file_path)
+                terminal_id = file_name.replace('variables_', '').replace('.json', '')
+                
+                # Load variables from file
+                with open(file_path, 'r', encoding='utf-8') as f:
+                    result[terminal_id] = json.load(f)
+            except Exception as e:
+                logger.error(f"Error reading variables file {file_path}: {e}")
+                continue
+        
+        return jsonify({
+            'success': True,
+            'variables': result
+        })
+    except Exception as e:
+        logger.error(f"Error listing variables: {e}")
+        return jsonify({'success': False, 'error': str(e)}), 500
 
 # Main entry point
 if __name__ == '__main__':
