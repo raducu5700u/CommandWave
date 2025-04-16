@@ -345,6 +345,28 @@ document.addEventListener('DOMContentLoaded', function() {
                 openRenameModal.handleRename();
             };
         }
+        
+        // Set up button handlers
+        const submitButton = modal.querySelector('#renameTerminalSubmitBtn');
+        if (submitButton) {
+            submitButton.onclick = function() {
+                openRenameModal.handleRename();
+            };
+        }
+        
+        const cancelButton = modal.querySelector('#cancelRenameBtn');
+        if (cancelButton) {
+            cancelButton.onclick = function() {
+                openRenameModal.closeModal();
+            };
+        }
+        
+        const closeButton = modal.querySelector('.close-modal-btn');
+        if (closeButton) {
+            closeButton.onclick = function() {
+                openRenameModal.closeModal();
+            };
+        }
     }
     
     function createRenameModal() {
@@ -360,10 +382,12 @@ document.addEventListener('DOMContentLoaded', function() {
                     <button class="close-modal-btn">&times;</button>
                 </div>
                 <div class="modal-body">
-                    <div class="form-group">
-                        <label for="terminalNameInput">Terminal Name:</label>
-                        <input type="text" id="terminalNameInput" class="modal-input">
-                    </div>
+                    <form>
+                        <div class="form-group">
+                            <label for="terminalNameInput">Terminal Name:</label>
+                            <input type="text" id="terminalNameInput" class="modal-input">
+                        </div>
+                    </form>
                 </div>
                 <div class="modal-footer">
                     <button id="cancelRenameBtn" class="modal-btn cancel">Cancel</button>
