@@ -3,13 +3,47 @@
 <div align="center">
   <img src="static/img/commandwave-logo.png" alt="CommandWave Logo" width="400">
   <p><em>A cyberpunk-themed web interface for managing terminal sessions alongside executable Markdown playbooks.</em></p>
-  </div>
+  <br>
+  <a href="https://github.com/Journey-West/CommandWave/actions"><img src="https://img.shields.io/github/actions/workflow/status/Journey-West/CommandWave/main.yml?branch=main&style=flat-square" alt="CI Status"></a>
+  <img src="https://img.shields.io/badge/python-3.6+-blue?style=flat-square" alt="Python Version">
+  <img src="https://img.shields.io/github/license/Journey-West/CommandWave?style=flat-square" alt="License">
+</div>
+
+> 🚀 **Try CommandWave in seconds!**
+>
+> 1. Clone the repo: `git clone https://github.com/Journey-West/CommandWave`
+> 2. Install Python deps: `pip install -r requirements.txt`
+> 3. Install `ttyd` and `tmux`
+> 4. Run: `python main.py --use-default-tmux-config`
+> 5. Visit [http://localhost:5000](http://localhost:5000)
+
+---
+
+## Table of Contents
+- [Overview](#overview)
+- [Features](#features)
+- [Requirements](#requirements)
+- [Installation](#installation)
+- [Running CommandWave](#running-commandwave)
+- [Usage Guide](#usage-guide)
+- [Contributing](#contributing)
+- [Community & Support](#community--support)
+- [License](#license)
+- [Acknowledgments](#acknowledgments)
 
 ## Overview
 
 CommandWave provides a streamlined, web-based environment for managing multiple terminal sessions powered by `tmux` and `ttyd`. It features a distinct cyberpunk/neon aesthetic and allows users to work with Markdown-based "playbooks" containing executable code blocks. Define variables, search through local playbooks, and execute commands directly into your active terminal session, enhancing command-line workflows.
 
 ![CommandWave Screenshot](static/img/screenshot.png)
+
+> **Why CommandWave?**
+>
+> - ⚡️ Real-time multi-session terminal management
+> - 📝 Executable Markdown playbooks
+> - 🌈 Cyberpunk/neon themed UI
+> - 🔄 Seamless synchronization across browsers
+> - 🛠️ Designed for pentesting, automation, and teaching
 
 ## Features
 
@@ -139,6 +173,11 @@ Contributions are welcome! Please follow standard fork-and-pull-request workflow
 3.  Commit your changes (`git commit -m 'Add some feature'`).
 4.  Push to the branch (`git push origin feature/your-feature`).
 5.  Open a Pull Request.
+
+## Community & Support
+
+- 💬 [GitHub Discussions](https://github.com/Journey-West/CommandWave/discussions) — Ask questions, share ideas, or get help
+- 🐞 [Issue Tracker](https://github.com/Journey-West/CommandWave/issues) — Report bugs or request features
 
 ## License
 
