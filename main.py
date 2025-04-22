@@ -18,6 +18,7 @@ import time
 import re
 from urllib.parse import quote
 from flask import Flask, render_template, request, jsonify, abort, send_from_directory
+from flask_socketio import SocketIO
 
 # Configure logging
 logging.basicConfig(
@@ -51,17 +52,17 @@ app = Flask(__name__,
             static_folder=STATIC_DIR, 
             template_folder=TEMPLATES_DIR)
 
-# Store information about running terminals
-terminals = {}
-process_lock = threading.Lock()
+# Store the terminals dictionary in the Flask app for access by blueprints
+app.terminals = {}
+app.process_lock = threading.Lock()
 
-# Store information about shared playbooks
-playbooks = {}
-playbook_lock = threading.Lock()
-
-# Store information about variables
-variables = {}
-variables_lock = threading.Lock()
+# Import route blueprints
+from routes.playbook_routes import playbook_routes
+from routes.variable_routes import variable_routes, VARIABLE_STORAGE_DIR
+from routes.terminal_routes import terminal_routes
+from routes.sync_routes import sync_routes, init_socketio_events
+from routes.notes_routes import notes_routes
+from core.sync_utils import init_socketio
 
 def parse_arguments():
     """Parse command-line arguments."""
@@ -84,12 +85,22 @@ def is_port_available(port):
 def find_available_port(start_port, end_port):
     """Find an available port in the specified range."""
     for port in range(start_port, end_port + 1):
-        if is_port_available(port) and port not in terminals:
+        if is_port_available(port) and port not in app.terminals:
             return port
     return None
 
 def start_ttyd_process(port, tmux_session_name, use_tmux_config=False):
-    """Start a ttyd process linked to a tmux session on the specified port."""
+    """
+    Start a ttyd process linked to a tmux session on the specified port.
+
+    This function creates a new tmux session with the given name, or reuses an existing one if it already exists.
+    It then starts a ttyd process linked to this tmux session, and returns the process object.
+
+    :param port: The port number to use for the ttyd process.
+    :param tmux_session_name: The name of the tmux session to create or reuse.
+    :param use_tmux_config: Whether to use a custom tmux configuration file.
+    :return: The ttyd process object, or None if the process could not be started.
+    """
     try:
         # First check if the port is actually available
         if not is_port_available(port):
@@ -213,12 +224,12 @@ def send_keys_to_tmux(tmux_session_name, keys):
 
 def kill_terminal(port):
     """Kill a ttyd process and its associated tmux session."""
-    if port not in terminals:
+    if port not in app.terminals:
         return False
         
-    with process_lock:
+    with app.process_lock:
         try:
-            terminal_info = terminals[port]
+            terminal_info = app.terminals[port]
             
             # Kill the ttyd process
             if terminal_info['process'] and terminal_info['process'].poll() is None:
@@ -243,7 +254,7 @@ def kill_terminal(port):
                     logger.warning(f"Failed to remove helper script {theme_script_path}: {e}")
             
             # Remove from terminals dict
-            del terminals[port]
+            del app.terminals[port]
             return True
         except subprocess.CalledProcessError as e:
             logger.error(f"Failed to kill tmux session: {e}")
@@ -257,19 +268,43 @@ def cleanup_all_terminals():
     logger.info("Cleaning up all terminal processes...")
     
     # Make a copy of the keys since we'll be modifying the dictionary
-    ports = list(terminals.keys())
+    ports = list(app.terminals.keys())
     
     for port in ports:
         kill_terminal(port)
         
     logger.info("Cleanup complete")
+    
+    # Clean up persisted variable files
+    logger.info("Cleaning up persisted variable files...")
+    try:
+        pattern = os.path.join(VARIABLE_STORAGE_DIR, 'variables_*.json')
+        files = glob.glob(pattern)
+        for file_path in files:
+            try:
+                os.remove(file_path)
+                logger.info(f"Removed variable file: {file_path}")
+            except OSError as e:
+                logger.warning(f"Failed to remove variable file {file_path}: {e}")
+    except Exception as e:
+        logger.error(f"Error cleaning up variable files: {e}")
+    logger.info("Variable file cleanup complete")
 
 # Register cleanup function
 atexit.register(cleanup_all_terminals)
 
-# Handle signals
+# Flag to prevent multiple signal handler executions
+_shutdown_in_progress = False
+
 def signal_handler(sig, frame):
     """Handle termination signals by cleaning up and exiting."""
+    global _shutdown_in_progress
+    
+    # Prevent multiple executions of the shutdown sequence
+    if _shutdown_in_progress:
+        return
+    
+    _shutdown_in_progress = True
     logger.info(f"Received signal {sig}, shutting down...")
     cleanup_all_terminals()
     sys.exit(0)
@@ -277,6 +312,18 @@ def signal_handler(sig, frame):
 # Register signal handlers
 signal.signal(signal.SIGINT, signal_handler)
 signal.signal(signal.SIGTERM, signal_handler)
+
+# Register blueprints
+app.register_blueprint(playbook_routes)
+app.register_blueprint(variable_routes)
+app.register_blueprint(terminal_routes)
+app.register_blueprint(sync_routes)
+app.register_blueprint(notes_routes)
+
+# Initialize SocketIO
+socketio = init_socketio(app)
+init_socketio_events(socketio)
+
 
 # Basic routes
 @app.route('/')
@@ -339,8 +386,8 @@ def get_playbook_file(filepath):
 def list_terminals():
     """Get a list of all active terminals."""
     terminal_list = []
-    with process_lock:
-        for port, terminal in terminals.items():
+    with app.process_lock:
+        for port, terminal in app.terminals.items():
             terminal_list.append({
                 'port': port,
                 'name': terminal.get('name', f'Terminal {port}'),
@@ -379,8 +426,8 @@ def new_terminal():
         )
         
         if ttyd_process:
-            with process_lock:
-                terminals[port] = {
+            with app.process_lock:
+                app.terminals[port] = {
                     'process': ttyd_process,
                     'tmux_session': tmux_session,
                     'created_at': time.time(),
@@ -419,13 +466,13 @@ def send_keys():
     port = int(data['port'])
     keys = data['keys']
     
-    if port not in terminals:
+    if port not in app.terminals:
         return jsonify({
             'success': False,
             'error': f'Terminal on port {port} not found'
         }), 404
     
-    tmux_session = terminals[port]['tmux_session']
+    tmux_session = app.terminals[port]['tmux_session']
     
     # Send the keys to the tmux session
     if send_keys_to_tmux(tmux_session, keys):
@@ -441,7 +488,7 @@ def delete_terminal(port):
     """Terminate a terminal session."""
     try:
         # Check if the terminal exists
-        if port not in terminals:
+        if port not in app.terminals:
             return jsonify({
                 'success': False,
                 'error': 'Terminal not found'
@@ -449,9 +496,9 @@ def delete_terminal(port):
             
         # Kill the terminal
         if kill_terminal(port):
-            with process_lock:
-                if port in terminals:
-                    del terminals[port]
+            with app.process_lock:
+                if port in app.terminals:
+                    del app.terminals[port]
                     
             logger.info(f"Deleted terminal on port {port}")
             return jsonify({
@@ -479,7 +526,7 @@ def rename_terminal(port):
     """Rename a terminal session."""
     try:
         # Check if the terminal exists
-        if port not in terminals:
+        if port not in app.terminals:
             return jsonify({
                 'success': False,
                 'error': 'Terminal not found'
@@ -490,8 +537,8 @@ def rename_terminal(port):
         new_name = data.get('name', f'Terminal {port}')
         
         # Update the terminal name
-        with process_lock:
-            terminals[port]['name'] = new_name
+        with app.process_lock:
+            app.terminals[port]['name'] = new_name
             
         logger.info(f"Renamed terminal on port {port} to '{new_name}'")
         return jsonify({
@@ -930,6 +977,10 @@ def list_all_variables():
         logger.error(f"Error listing variables: {e}")
         return jsonify({'success': False, 'error': str(e)}), 500
 
+# Make terminal management functions available to Flask app
+app.start_ttyd_process = start_ttyd_process
+app.kill_terminal = kill_terminal
+
 # Main entry point
 if __name__ == '__main__':
     signal.signal(signal.SIGINT, signal_handler)
@@ -967,8 +1018,8 @@ if __name__ == '__main__':
             logger.info(f"Started main terminal on port {initial_port}")
             
             # Store information about this terminal
-            with process_lock:
-                terminals[initial_port] = {
+            with app.process_lock:
+                app.terminals[initial_port] = {
                     'process': main_terminal_process,
                     'tmux_session': main_tmux_session,
                     'created_at': time.time(),
@@ -978,9 +1029,11 @@ if __name__ == '__main__':
             # Set the default terminal port for the template
             app.config['DEFAULT_TERMINAL_PORT'] = initial_port
             
-            # Start Flask app
+            # Start Flask app with SocketIO
             host = '0.0.0.0' if args.remote else '127.0.0.1'
-            app.run(host=host, port=args.port, debug=False, use_reloader=False)
+            
+            # Use socketio.run instead of app.run
+            socketio.run(app, host=host, port=args.port, debug=False, allow_unsafe_werkzeug=True)
         else:
             logger.error("Failed to start initial terminal. Check if ttyd and tmux are installed.")
             sys.exit(1)

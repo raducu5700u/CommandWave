@@ -1,0 +1,634 @@
+/* Code block styling with buttons - Streamlined version */
+.code-block-wrapper {
+    position: relative;
+    margin: 1.5em 0;
+    border-radius: 6px;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.5), 0 0 0 1px rgba(255, 255, 255, 0.05);
+    overflow: hidden;
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.code-block-wrapper:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 25px rgba(0, 0, 0, 0.6), 0 0 0 1px rgba(255, 255, 255, 0.08), 0 0 15px rgba(0, 255, 157, 0.2);
+}
+
+/* Code block header bar with gradient */
+.code-block-header {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 32px;
+    background: linear-gradient(90deg, rgba(30, 30, 46, 0.7) 0%, rgba(40, 40, 60, 0.9) 100%);
+    backdrop-filter: blur(4px);
+    -webkit-backdrop-filter: blur(4px);
+    z-index: 5;
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    padding: 0 8px;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+/* Language indicator for code blocks */
+.code-language-indicator {
+    position: absolute;
+    top: 8px;
+    left: 12px;
+    font-size: 11px;
+    color: rgba(255, 255, 255, 0.6);
+    font-family: 'JetBrains Mono', monospace;
+    z-index: 10;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+.code-language-indicator::before {
+    content: '';
+    display: inline-block;
+    width: 6px;
+    height: 6px;
+    background-color: #00ff9d;
+    border-radius: 50%;
+    margin-right: 5px;
+    vertical-align: middle;
+    box-shadow: 0 0 5px rgba(0, 255, 157, 0.7);
+}
+
+.code-language-indicator.bash::before {
+    background-color: #ff5f5f;
+    box-shadow: 0 0 5px rgba(255, 95, 95, 0.7);
+}
+
+.code-language-indicator.python::before {
+    background-color: #5f87ff;
+    box-shadow: 0 0 5px rgba(95, 135, 255, 0.7);
+}
+
+/* Button container */
+.code-actions {
+    position: absolute;
+    top: 6px;
+    right: 10px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    z-index: 10;
+    opacity: 0.95;
+    transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+    filter: drop-shadow(0 2px 8px rgba(0, 0, 0, 0.5));
+}
+
+.code-block-wrapper:hover .code-actions {
+    opacity: 1;
+}
+
+/* Futuristic holographic button style */
+.code-action-btn {
+    position: relative;
+    width: 36px;
+    height: 36px;
+    border: none;
+    background-color: transparent;
+    cursor: pointer;
+    outline: none;
+    transition: all 0.3s ease;
+    overflow: visible;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+/* Button frame */
+.code-action-btn::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: #080810;
+    border: 1px solid rgba(0, 255, 157, 0.4);
+    transform: skew(-5deg, 0);
+    z-index: -1;
+    transition: all 0.3s ease;
+}
+
+/* Copy button style */
+.copy-btn::before {
+    border-top: 1px solid #00ff9d;
+    border-left: 1px solid #00ff9d;
+    box-shadow: 
+        inset 0 0 8px rgba(0, 255, 157, 0.2),
+        0 0 5px rgba(0, 255, 157, 0.2);
+}
+
+/* Execute button style */
+.execute-btn::before {
+    border-top: 1px solid #ff3c78;
+    border-left: 1px solid #ff3c78; 
+    box-shadow: 
+        inset 0 0 8px rgba(255, 60, 120, 0.2),
+        0 0 5px rgba(255, 60, 120, 0.2);
+}
+
+/* Tech pattern overlay */
+.code-action-btn::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: 
+        linear-gradient(to bottom, 
+            rgba(255, 255, 255, 0.05) 0%, 
+            rgba(255, 255, 255, 0) 100%),
+        repeating-linear-gradient(
+            -45deg, 
+            transparent, 
+            transparent 2px, 
+            rgba(255, 255, 255, 0.03) 2px, 
+            rgba(255, 255, 255, 0.03) 4px
+        );
+    z-index: 1;
+    opacity: 0.7;
+    transition: opacity 0.3s ease;
+    pointer-events: none;
+}
+
+/* Icon styling */
+.code-action-btn svg {
+    position: relative;
+    width: 28px;
+    height: 28px;
+    z-index: 2;
+    transition: all 0.3s ease;
+    stroke-width: 2.5px; /* Making the icon lines thicker */
+}
+
+.copy-btn svg {
+    color: #00ff9d;
+    filter: drop-shadow(0 0 3px rgba(0, 255, 157, 0.5));
+}
+
+.execute-btn svg {
+    color: #ff3c78;
+    filter: drop-shadow(0 0 3px rgba(255, 60, 120, 0.5));
+}
+
+/* Corner markers - top left and bottom right */
+.copy-btn:before {
+    content: '';
+    box-shadow: 
+        -4px -4px 0 -3px #080810,
+        -4px -4px 0 -2px #00ff9d,
+        4px 4px 0 -3px #080810,
+        4px 4px 0 -2px #00ff9d;
+}
+
+.execute-btn:before {
+    content: '';
+    box-shadow: 
+        -4px -4px 0 -3px #080810,
+        -4px -4px 0 -2px #ff3c78,
+        4px 4px 0 -3px #080810,
+        4px 4px 0 -2px #ff3c78;
+}
+
+/* Hover effects */
+.code-action-btn:hover::before {
+    transform: skew(-8deg, 0) scale(1.05);
+}
+
+.copy-btn:hover::before {
+    border-color: #00ff9d;
+    box-shadow: 
+        0 0 12px rgba(0, 255, 157, 0.4),
+        inset 0 0 12px rgba(0, 255, 157, 0.3);
+}
+
+.execute-btn:hover::before {
+    border-color: #ff3c78;
+    box-shadow: 
+        0 0 12px rgba(255, 60, 120, 0.4),
+        inset 0 0 12px rgba(255, 60, 120, 0.3);
+}
+
+.code-action-btn:hover::after {
+    opacity: 1;
+}
+
+.code-action-btn:hover svg {
+    transform: scale(1.15);
+}
+
+.copy-btn:hover svg {
+    filter: drop-shadow(0 0 5px rgba(0, 255, 157, 0.8));
+}
+
+.execute-btn:hover svg {
+    filter: drop-shadow(0 0 5px rgba(255, 60, 120, 0.8));
+}
+
+/* Active state */
+.code-action-btn:active::before {
+    transform: skew(-2deg, 0) scale(0.98);
+}
+
+/* Tooltip redesign */
+.code-action-btn .tooltip {
+    position: absolute;
+    top: -30px;
+    right: 0;
+    background: #080810;
+    padding: 4px 8px;
+    font-size: 10px;
+    white-space: nowrap;
+    opacity: 0;
+    visibility: hidden;
+    transform: translateY(5px);
+    transition: all 0.3s ease;
+    font-family: 'JetBrains Mono', monospace;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    pointer-events: none;
+    z-index: 100;
+}
+
+.copy-btn .tooltip {
+    border-left: 1px solid #00ff9d;
+    color: #00ff9d;
+}
+
+.execute-btn .tooltip {
+    border-left: 1px solid #ff3c78;
+    color: #ff3c78;
+}
+
+.code-action-btn:hover .tooltip {
+    opacity: 1;
+    visibility: visible;
+    transform: translateY(0);
+}
+
+/* Copy animation */
+.copy-btn.copied::before {
+    background-color: rgba(0, 255, 157, 0.15);
+    animation: pulseGlow 1s ease-out;
+}
+
+@keyframes pulseGlow {
+    0% { box-shadow: 0 0 5px rgba(0, 255, 157, 0.3), inset 0 0 5px rgba(0, 255, 157, 0.2); }
+    50% { box-shadow: 0 0 15px rgba(0, 255, 157, 0.6), inset 0 0 15px rgba(0, 255, 157, 0.4); }
+    100% { box-shadow: 0 0 5px rgba(0, 255, 157, 0.3), inset 0 0 5px rgba(0, 255, 157, 0.2); }
+}
+
+/* Execute animation */
+.execute-btn.executing::before {
+    animation: executeGlow 1.5s infinite ease-in-out;
+}
+
+@keyframes executeGlow {
+    0% { box-shadow: 0 0 5px rgba(255, 60, 120, 0.3), inset 0 0 5px rgba(255, 60, 120, 0.2); }
+    50% { box-shadow: 0 0 15px rgba(255, 60, 120, 0.6), inset 0 0 15px rgba(255, 60, 120, 0.4); }
+    100% { box-shadow: 0 0 5px rgba(255, 60, 120, 0.3), inset 0 0 5px rgba(255, 60, 120, 0.2); }
+}
+
+/* Make sure all code blocks have proper styling */
+.code-block-wrapper pre {
+    margin: 0;
+    padding: 3em 1.2em 1.2em;
+    background-color: #151520;
+    border-radius: 6px;
+    overflow-x: auto;
+    font-family: 'JetBrains Mono', monospace;
+    line-height: 1.5;
+}
+
+/* Add specific styling for Prism tokens in code blocks */
+.code-block-wrapper pre code {
+    font-family: 'JetBrains Mono', monospace;
+    background: transparent;
+    padding: 0;
+    text-shadow: 0 1px 2px rgba(0, 0, 0, 0.5);
+}
+
+/* Token colors for syntax highlighting - enhance specific language elements */
+.code-block-wrapper .token.comment {
+    color: #6272a4;
+    font-style: italic;
+}
+
+.code-block-wrapper .token.keyword {
+    color: #ff79c6;
+    font-weight: bold;
+}
+
+.code-block-wrapper .token.string {
+    color: #f1fa8c;
+}
+
+.code-block-wrapper .token.number,
+.code-block-wrapper .token.boolean {
+    color: #bd93f9;
+}
+
+.code-block-wrapper .token.function {
+    color: #50fa7b;
+}
+
+.code-block-wrapper .token.operator {
+    color: #ff79c6;
+}
+
+.code-block-wrapper .token.punctuation {
+    color: #f8f8f2;
+}
+
+/* Special styling for bash commands */
+.language-bash .token.function {
+    color: #8be9fd;
+    font-weight: bold;
+}
+
+.language-bash .token.parameter {
+    color: #f1fa8c;
+}
+
+/* Python specific syntax highlighting */
+.language-python .token.decorator {
+    color: #ff79c6;
+    font-style: italic;
+}
+
+.language-python .token.class-name {
+    color: #8be9fd;
+    font-weight: bold;
+}
+
+/* Highlight specific important terms in command-line examples */
+.code-block-wrapper .important-term {
+    color: #ff5555;
+    font-weight: bold;
+    text-decoration: underline;
+}
+
+/* Add a subtle line number effect */
+.code-block-wrapper pre {
+    counter-reset: line;
+}
+
+.code-block-wrapper pre > code {
+    display: block;
+    position: relative;
+    padding-left: 1.5em;
+}
+
+.code-block-wrapper pre > code > span.line {
+    display: inline-block;
+    width: 100%;
+    position: relative;
+}
+
+.code-block-wrapper pre > code > span.line::before {
+    counter-increment: line;
+    content: counter(line);
+    position: absolute;
+    left: -1.5em;
+    width: 1em;
+    color: rgba(255, 255, 255, 0.3);
+    text-align: right;
+    font-size: 0.8em;
+    padding-right: 0.5em;
+}
+
+/* Override any potential syntax highlighting for command prompts and first lines */
+.code-block-wrapper pre > code > span.line {
+    color: inherit !important; /* Force all lines to use the same color */
+}
+
+/* Specifically target common prompt symbols and ensure they match other text */
+.code-block-wrapper pre > code > span.line:first-child,
+.code-block-wrapper pre[class*="language-"] > code > span.line:first-child,
+.code-block-wrapper[data-language="bash"] pre > code > span.line:first-child,
+.code-block-wrapper[data-language="shell"] pre > code > span.line:first-child,
+.code-block-wrapper[data-language="sh"] pre > code > span.line:first-child,
+.code-block-wrapper[data-language="console"] pre > code > span.line:first-child,
+.code-block-wrapper[data-language="cmd"] pre > code > span.line:first-child {
+    color: inherit !important;
+    font-weight: normal !important;
+    background: none !important;
+}
+
+/* Ensure dollar signs and command prompts don't get special styling */
+.code-block-wrapper pre > code > span.line:first-child > span,
+.code-block-wrapper pre > code > span.line > span {
+    color: inherit !important;
+    background: none !important;
+}
+
+/* Light glow effect on hover to indicate active area */
+.code-block-wrapper:hover pre {
+    box-shadow: inset 0 0 40px rgba(0, 255, 157, 0.03);
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+    .code-block-wrapper pre {
+        font-size: 0.85em;
+        padding: 3em 1em 1em;
+    }
+    
+    .code-action-btn {
+        width: 24px;
+        height: 24px;
+    }
+}
+
+/* Ensure the code blocks are properly styled in the playbook panel */
+.playbook-content .code-block-wrapper {
+    position: relative;
+}
+
+/* Code block editing styles */
+.code-block-wrapper.editing {
+    border: 1px solid var(--neon-green);
+    box-shadow: 0 0 15px rgba(0, 255, 157, 0.3), 0 0 0 1px rgba(0, 255, 157, 0.2);
+}
+
+.code-editable {
+    position: relative;
+    margin: 3em 0 0;
+    background-color: rgba(0, 15, 30, 0.6);
+    border-radius: 6px;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+}
+
+.code-editor {
+    width: 100%;
+    min-height: 200px;
+    background-color: rgba(20, 20, 35, 0.95);
+    color: var(--text-primary);
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 14px;
+    line-height: 1.5;
+    padding: 1.2em;
+    border: none;
+    resize: vertical;
+    outline: none;
+    border-left: 2px solid var(--neon-green);
+    tab-size: 2;
+}
+
+.code-editor:focus {
+    background-color: rgba(30, 30, 45, 0.95);
+    border-left: 2px solid var(--neon-green);
+    box-shadow: inset 0 0 10px rgba(0, 255, 157, 0.2);
+}
+
+.code-edit-actions {
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    padding: 0.5em 1em;
+    background-color: rgba(20, 20, 35, 0.8);
+    border-top: 1px solid rgba(0, 255, 157, 0.2);
+    gap: 0.5em;
+}
+
+.code-edit-save-btn,
+.code-edit-cancel-btn {
+    position: relative;
+    background-color: transparent;
+    border: none;
+    color: var(--text-primary);
+    padding: 0.5em 1em;
+    font-family: 'Orbitron', sans-serif;
+    font-size: 12px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 0.5em;
+    transition: all 0.3s ease;
+    border-radius: 3px;
+    overflow: hidden;
+    z-index: 1;
+    outline: none;
+}
+
+.code-edit-save-btn::before,
+.code-edit-cancel-btn::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.2);
+    z-index: -1;
+    transform: skew(-5deg, 0);
+    transition: all 0.3s ease;
+    border: 1px solid transparent;
+}
+
+.code-edit-save-btn::before {
+    border-top: 1px solid var(--neon-green);
+    border-left: 1px solid var(--neon-green);
+    box-shadow: inset 0 0 5px rgba(0, 255, 157, 0.2);
+}
+
+.code-edit-cancel-btn::before {
+    border-top: 1px solid var(--neon-pink);
+    border-left: 1px solid var(--neon-pink);
+    box-shadow: inset 0 0 5px rgba(255, 90, 140, 0.2);
+}
+
+.code-edit-save-btn:hover::before {
+    background-color: rgba(0, 255, 157, 0.15);
+    border-color: var(--neon-green);
+    box-shadow: 0 0 8px rgba(0, 255, 157, 0.3), inset 0 0 8px rgba(0, 255, 157, 0.2);
+}
+
+.code-edit-cancel-btn:hover::before {
+    background-color: rgba(255, 90, 140, 0.15);
+    border-color: var(--neon-pink);
+    box-shadow: 0 0 8px rgba(255, 90, 140, 0.3), inset 0 0 8px rgba(255, 90, 140, 0.3);
+}
+
+.code-edit-save-btn i,
+.code-edit-cancel-btn i {
+    font-size: 1em;
+}
+
+.code-edit-save-btn i {
+    color: var(--neon-green);
+    filter: drop-shadow(0 0 3px rgba(0, 255, 157, 0.5));
+}
+
+.code-edit-cancel-btn i {
+    color: var(--neon-pink);
+    filter: drop-shadow(0 0 3px rgba(255, 90, 140, 0.5));
+}
+
+.code-edit-save-btn:hover i {
+    filter: drop-shadow(0 0 5px rgba(0, 255, 157, 0.8));
+}
+
+.code-edit-cancel-btn:hover i {
+    filter: drop-shadow(0 0 5px rgba(255, 90, 140, 0.8));
+}
+
+/* Light theme variants */
+[data-theme="light"] .code-editor {
+    background-color: #f8f9fb;
+    color: #333;
+    border-left: 2px solid #00754a;
+}
+
+[data-theme="light"] .code-editor:focus {
+    background-color: #fff;
+    box-shadow: inset 0 0 10px rgba(0, 117, 74, 0.1);
+}
+
+[data-theme="light"] .code-edit-actions {
+    background-color: #edf2f7;
+    border-top: 1px solid rgba(0, 117, 74, 0.2);
+}
+
+[data-theme="light"] .code-edit-save-btn::before {
+    border-top: 1px solid #00754a;
+    border-left: 1px solid #00754a;
+    box-shadow: inset 0 0 5px rgba(0, 117, 74, 0.1);
+}
+
+[data-theme="light"] .code-edit-cancel-btn::before {
+    border-top: 1px solid #a8174a;
+    border-left: 1px solid #a8174a;
+    box-shadow: inset 0 0 5px rgba(168, 23, 74, 0.1);
+}
+
+[data-theme="light"] .code-edit-save-btn:hover::before {
+    background-color: rgba(0, 117, 74, 0.1);
+    border-color: #00754a;
+    box-shadow: 0 0 8px rgba(0, 117, 74, 0.2), inset 0 0 8px rgba(0, 117, 74, 0.1);
+}
+
+[data-theme="light"] .code-edit-cancel-btn:hover::before {
+    background-color: rgba(168, 23, 74, 0.1);
+    border-color: #a8174a;
+    box-shadow: 0 0 8px rgba(168, 23, 74, 0.2), inset 0 0 8px rgba(168, 23, 74, 0.1);
+}
+
+[data-theme="light"] .code-edit-save-btn i {
+    color: #00754a;
+    filter: drop-shadow(0 0 2px rgba(0, 117, 74, 0.3));
+}
+
+[data-theme="light"] .code-edit-cancel-btn i {
+    color: #a8174a;
+    filter: drop-shadow(0 0 2px rgba(168, 23, 74, 0.3));
+}

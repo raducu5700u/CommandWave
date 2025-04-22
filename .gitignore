@@ -63,3 +63,7 @@ logs/
 # OS specific
 .DS_Store
 Thumbs.db
+
+# Data files
+data/notes/*.md
+data/variables/*.json

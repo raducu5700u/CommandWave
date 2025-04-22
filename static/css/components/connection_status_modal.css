@@ -1,0 +1,26 @@
+/* Enhanced title styling for connection status modal */
+#connectionStatusModal .modal-header h3 {
+    color: #fff;
+    background: none !important;
+    -webkit-background-clip: unset !important;
+    -webkit-text-fill-color: unset !important;
+    background-clip: unset !important;
+    filter: none !important;
+    font-weight: 900;
+    font-size: 1.5rem;
+    letter-spacing: 0.13em;
+    line-height: 1.2;
+    text-shadow:
+        0 2px 12px var(--neon-blue),
+        0 0 2px #000,
+        0 0 0px #fff;
+    padding: 0.2em 0;
+    border-radius: 4px;
+    box-shadow: 0 0 0 4px rgba(20,20,40,0.7);
+    background-color: rgba(20,20,40,0.9);
+}
+
+#connectionStatusModal .modal-header {
+    border-bottom: 2px solid var(--neon-blue);
+    background: rgba(10,14,28,0.90);
+}

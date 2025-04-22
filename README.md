@@ -66,7 +66,7 @@ CommandWave provides a streamlined, web-based environment for managing multiple 
 * **Playbook Search**: Quickly search across all loaded playbooks for specific commands or text.
 * **Theme Selection**:
     * Switch between the default cyberpunk dark theme, neon light theme, and witch hazel theme.
-    * Theme preference is saved between sessions.
+    * Theme preference is saved in the browser and will persist between sessions.
     * Terminal areas remain dark in all themes for optimal readability.
 * **Enhanced Code Readability**:
     * Syntax highlighting with cyberpunk-style neon colors.
@@ -146,6 +146,7 @@ CommandWave provides a streamlined, web-based environment for managing multiple 
     * Click "Upload Playbook" to load `.md` files.
     * Click "Create Playbook" to author a new playbook within the app.
     * Playbooks appear in the section below the controls. Click the playbook title to expand/collapse its content.
+    * To close a playbook, press and hold the "X" icon on the playbook header. This hold-to-close action ensures the playbook closes for all users in real-time while suppressing redundant sync events.
     * Within code blocks (` ``` `), click:
         * **Copy**: Copies the code (with variables substituted) to the clipboard.
         * **Execute**: Sends the code (with variables substituted) to the *currently active* terminal tab for execution.

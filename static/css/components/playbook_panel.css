@@ -1,0 +1,813 @@
+/* components/playbook_panel.css
+   Styles for the playbook panel component.
+*/
+
+/**
+ * Playbook Panel Component Styles
+ * Styles for the playbook functionality in CommandWave
+ */
+
+/* Playbook Section Layout */
+.playbook-section {
+    flex: 1; 
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    max-width: 100%;
+    min-width: 0;
+    overflow: hidden;
+    position: relative;
+    background: linear-gradient(90deg, rgba(255,90,140,0.14) 0%, rgba(32,32,48,0.98) 100%);
+    border: 1.5px solid var(--neon-pink);
+    border-top: 2.5px solid var(--neon-pink);
+    border-radius: 12px;
+    box-shadow: 0 1px 3px 0 rgba(255,90,140,0.08);
+    padding: 1rem;
+    margin-bottom: 0;
+}
+
+[data-theme="light"] .playbook-section {
+    background: linear-gradient(90deg, rgba(209,39,101,0.08) 0%, rgba(240,244,248,0.98) 100%);
+    border: 1.5px solid var(--neon-pink);
+    border-top: 2.5px solid var(--neon-pink);
+}
+
+/* Playbook Header Row */
+.playbook-header-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding-bottom: 0.75rem;
+    border-bottom: 1px solid rgba(255,90,140,0.2);
+    flex-wrap: wrap;
+    gap: 0.75rem;
+}
+
+.playbook-header-row h2 {
+    font-family: 'Orbitron', sans-serif;
+    color: var(--neon-pink);
+    text-shadow: var(--shadow-pink);
+    font-size: 1.1rem;
+    margin: 0;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    letter-spacing: 1px;
+}
+
+.playbook-header-row h2 i {
+    color: var(--neon-pink);
+    text-shadow: 0 0 8px rgba(255, 90, 140, 0.8);
+    font-size: 0.9em;
+}
+
+/* Playbook Container */
+.playbook-container {
+    background-color: var(--background-secondary);
+    border: 1px solid var(--border-medium);
+    border-radius: 6px;
+    overflow: hidden;
+    margin-bottom: 1rem;
+    transition: all 0.3s ease;
+}
+
+[data-theme="light"] .playbook-container {
+    background-color: #f6f9fc;
+    border: 1px solid rgba(0, 131, 176, 0.2);
+}
+
+/* Playbook Header */
+.playbook-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0.75rem 1rem;
+    background: linear-gradient(90deg, rgba(25, 25, 45, 0.9) 0%, rgba(40, 30, 60, 0.9) 100%);
+    border-bottom: 1px solid var(--border-medium);
+    cursor: pointer;
+}
+
+[data-theme="light"] .playbook-header {
+    background: linear-gradient(90deg, #dbe4f0 0%, #c9d8e8 100%);
+    border-bottom: 1px solid rgba(0, 131, 176, 0.2);
+}
+
+.playbook-title {
+    font-family: 'Orbitron', sans-serif;
+    font-size: 1rem;
+    color: var(--neon-pink);
+    margin: 0;
+    text-shadow: var(--shadow-pink);
+}
+
+/* Playbook Content */
+.playbook-content {
+    padding: 1rem;
+    display: none; /* Hidden by default */
+    background-color: rgba(20, 20, 35, 0.8);
+    border-top: 1px solid rgba(255, 90, 140, 0.2);
+    transition: padding 0.3s ease;
+}
+
+/* Expanded state */
+.playbook.expanded .playbook-content {
+    display: block;
+    padding: 1rem;
+    max-height: 500px; /* Fixed height that's reliable */
+    overflow-y: auto;
+}
+
+/* Header icon rotation for expanded state */
+.playbook-header:before {
+    content: "\f105"; /* fa-angle-right */
+    font-family: "Font Awesome 5 Free";
+    font-weight: 900;
+    color: var(--neon-pink);
+    margin-right: 0.5rem;
+    transition: transform 0.3s ease;
+}
+
+.playbook.expanded .playbook-header:before {
+    transform: rotate(90deg);
+}
+
+[data-theme="light"] .playbook-content {
+    background-color: #ffffff;
+}
+
+/* Playbook text content */
+.playbook-text {
+    font-family: 'Roboto Mono', monospace;
+    font-size: 0.9rem;
+    line-height: 1.5;
+    color: var(--text-primary);
+    white-space: pre-wrap;
+    word-break: break-word;
+}
+
+/* Playbook Editor Styles */
+.playbook-editor {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+}
+
+.editor-toolbar {
+    display: flex;
+    gap: 0.5rem;
+    padding: 0.5rem;
+    background-color: var(--background-secondary);
+    border-radius: 4px;
+    border: 1px solid var(--border-light);
+}
+
+.editor-btn {
+    background-color: transparent;
+    border: none;
+    color: var(--text-secondary);
+    font-size: 1rem;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    padding: 0.3rem 0.6rem;
+    border-radius: 4px;
+}
+
+.editor-btn:hover {
+    color: var(--neon-pink);
+    background-color: rgba(255, 0, 150, 0.1);
+}
+
+.editor-container {
+    border: 1px solid var(--border-medium);
+    border-radius: 4px;
+    overflow: hidden;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    .playbook-title {
+        font-size: 0.9rem;
+    }
+    
+    .playbook-content {
+        padding: 0.8rem;
+    }
+    
+    .playbook-action-btn {
+        font-size: 1rem;
+    }
+    
+    .create-playbook-btn {
+        font-size: 0.8rem;
+        padding: 0.4rem 0.8rem;
+    }
+    
+    .playbook-controls {
+        flex-direction: column;
+        gap: 0.5rem;
+        align-items: flex-start;
+    }
+    
+    .playbook-actions {
+        width: 100%;
+        justify-content: flex-end;
+    }
+}
+
+/* Playbook Controls & Actions */
+.playbook-actions {
+    display: flex;
+    gap: 0.5rem;
+}
+
+.playbook-action-btn {
+    background-color: transparent;
+    border: none;
+    color: var(--text-secondary);
+    font-size: 1.2rem;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    padding: 0.2rem 0.5rem;
+    border-radius: 4px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.playbook-action-btn:hover {
+    color: var(--neon-pink);
+    background-color: rgba(255, 0, 150, 0.1);
+}
+
+.playbook-action-btn.delete:hover {
+    color: var(--neon-red);
+    background-color: rgba(255, 0, 0, 0.1);
+}
+
+.playbook-controls {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 1rem;
+    padding: 0.5rem;
+    background-color: rgba(30, 30, 60, 0.3);
+    border-radius: 6px;
+    border: 1px solid var(--border-light);
+}
+
+.create-playbook-btn {
+    background-color: rgba(255, 0, 150, 0.1);
+    border: 1px solid var(--neon-pink);
+    color: var(--neon-pink);
+    padding: 0.5rem 1rem;
+    border-radius: 4px;
+    cursor: pointer;
+    font-family: 'Orbitron', sans-serif;
+    font-size: 0.9rem;
+    transition: all 0.3s ease;
+    box-shadow: var(--shadow-pink);
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.create-playbook-btn:hover {
+    background-color: rgba(255, 0, 150, 0.2);
+    transform: translateY(-2px);
+}
+
+/* Playbooks Container */
+.playbooks-container {
+    height: 500px; /* Fixed height to ensure scrolling works */
+    overflow-y: auto;
+    padding-right: 0.5rem;
+}
+
+/* Individual Playbook Item */
+.playbook {
+    background-color: var(--background-secondary);
+    border: 1px solid rgba(255, 90, 140, 0.3);
+    border-radius: 6px;
+    overflow: hidden;
+    margin-bottom: 1rem;
+    transition: all 0.3s ease;
+    box-shadow: 0 0 8px rgba(255, 90, 140, 0.1);
+}
+
+[data-theme="light"] .playbook {
+    background-color: #f6f9fc;
+    border: 1px solid rgba(209, 39, 101, 0.3);
+}
+
+/* Playbook Header */
+.playbook-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0.75rem 1rem;
+    background: linear-gradient(90deg, rgba(255, 90, 140, 0.1) 0%, rgba(40, 30, 60, 0.9) 100%);
+    border-bottom: 1px solid rgba(255, 90, 140, 0.3);
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.playbook-header:hover {
+    background: linear-gradient(90deg, rgba(255, 90, 140, 0.2) 0%, rgba(40, 30, 60, 0.95) 100%);
+}
+
+[data-theme="light"] .playbook-header {
+    background: linear-gradient(90deg, rgba(209, 39, 101, 0.1) 0%, #e9eef6 100%);
+    border-bottom: 1px solid rgba(209, 39, 101, 0.2);
+}
+
+[data-theme="light"] .playbook-header:hover {
+    background: linear-gradient(90deg, rgba(209, 39, 101, 0.2) 0%, #e1e9f5 100%);
+}
+
+.playbook h3 {
+    font-family: 'Orbitron', sans-serif;
+    font-size: 1rem;
+    color: var(--neon-pink);
+    margin: 0;
+    text-shadow: var(--shadow-pink);
+}
+
+.playbook-controls {
+    display: flex;
+    gap: 0.5rem;
+}
+
+.playbook-controls button {
+    background: none;
+    border: none;
+    color: var(--text-secondary);
+    font-size: 1rem;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    padding: 0.2rem;
+    border-radius: 4px;
+}
+
+.playbook-controls button:hover {
+    color: var(--neon-pink);
+    background-color: rgba(255, 90, 140, 0.1);
+}
+
+.playbook-controls .edit-btn:hover {
+    color: var(--neon-cyan);
+}
+
+.playbook-controls .delete-btn:hover {
+    color: var(--neon-red);
+}
+
+/* Hide the entire controls container when playbook is collapsed, and restore it when expanded */
+.playbook:not(.expanded) .playbook-controls {
+    display: none;
+}
+
+.playbook.expanded .playbook-controls {
+    display: flex;
+}
+
+/* Force-hide controls when playbook is collapsed */
+.playbook:not(.expanded) .playbook-header .playbook-controls {
+    display: none !important;
+}
+
+/* Remove box around controls container for delete button */
+.playbook-header .playbook-controls {
+    background: none !important;
+    border: none !important;
+    padding: 0 !important;
+    margin: 0 !important;
+}
+
+/* Hold to delete button */
+.delete-btn {
+    position: relative;
+    overflow: hidden;
+}
+
+.delete-btn .progress-container {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    height: 3px;
+    background: rgba(255, 255, 255, 0.2);
+}
+
+.delete-btn .progress-bar {
+    height: 100%;
+    width: 0;
+    background: var(--neon-red);
+    transition: width 0.1s linear;
+    box-shadow: 0 0 5px var(--neon-red);
+}
+
+.delete-btn .countdown {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    color: var(--neon-red);
+    font-size: 0.75rem;
+    font-weight: bold;
+    opacity: 0;
+    transition: opacity 0.2s ease;
+}
+
+.delete-btn.deleting .countdown {
+    opacity: 1;
+}
+
+.delete-btn.deleting i {
+    opacity: 0.3;
+}
+
+.delete-btn.delete-confirmed {
+    background-color: var(--neon-red);
+    color: var(--bg-color);
+}
+
+.delete-btn.delete-confirmed i {
+    color: var(--bg-color);
+    opacity: 1;
+}
+
+/* Hide progress bar and countdown by default to remove any residual box */
+.playbook-header .delete-btn > .progress-container,
+.playbook-header .delete-btn > .countdown {
+    display: none !important;
+}
+
+/* Show progress bar and countdown only during hold-to-delete */
+.playbook-header .delete-btn.deleting > .progress-container,
+.playbook-header .delete-btn.deleting > .countdown {
+    display: block !important;
+}
+
+/* Remove border and outline from the delete button */
+.playbook-controls .delete-btn {
+    border: none;
+    outline: none;
+    background: none !important;
+    background-color: transparent !important;
+    padding: 0;
+    margin: 0;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+}
+
+/* Center playbook title when collapsed and restore spacing when expanded */
+.playbook:not(.expanded) .playbook-header {
+    justify-content: center !important;
+}
+.playbook.expanded .playbook-header {
+    justify-content: space-between !important;
+}
+
+/* Flatten controls container to remove any box styling around delete button when expanded */
+.playbook.expanded .playbook-header > .playbook-controls {
+    display: contents !important;
+}
+
+/* Flatten and remove any visible box/frame from playbook-controls wrapper */
+.playbook-controls {
+    display: contents !important;
+    background: none !important;
+    border: none !important;
+    box-shadow: none !important;
+    padding: 0 !important;
+    margin: 0 !important;
+}
+
+/* Hide delete button when playbook is collapsed */
+.playbook:not(.expanded) .playbook-header > button.delete-btn {
+    display: none !important;
+}
+
+/* Show delete button only when expanded */
+.playbook.expanded .playbook-header > button.delete-btn {
+    display: inline-flex !important;
+}
+
+/* Red color feedback on hold (shake) */
+.delete-btn.shaking,
+.delete-btn.shaking i {
+    color: #e74c3c !important;
+}
+
+/* Playbook Content Typography */
+.playbook-content h1,
+.playbook-content h2,
+.playbook-content h3 {
+    font-family: 'Orbitron', sans-serif;
+    color: var(--neon-pink);
+    margin-top: 1.5rem;
+    margin-bottom: 0.75rem;
+    text-shadow: var(--shadow-pink);
+}
+
+[data-theme="light"] .playbook-content h1,
+[data-theme="light"] .playbook-content h2,
+[data-theme="light"] .playbook-content h3 {
+    color: #ea1889;
+    text-shadow: none;
+}
+
+.playbook-content p {
+    margin-bottom: 1rem;
+}
+
+.playbook-content a {
+    color: var(--neon-blue);
+    text-decoration: none;
+    border-bottom: 1px dotted var(--neon-blue);
+    transition: all 0.3s ease;
+}
+
+[data-theme="light"] .playbook-content a {
+    color: #0083b0;
+    border-bottom: 1px dotted #0083b0;
+}
+
+.playbook-content a:hover {
+    color: var(--neon-cyan);
+    border-bottom: 1px solid var(--neon-cyan);
+    text-shadow: var(--shadow-cyan);
+}
+
+[data-theme="light"] .playbook-content a:hover {
+    color: #00a8e8;
+    border-bottom: 1px solid #00a8e8;
+    text-shadow: none;
+}
+
+.playbook-content pre {
+    background-color: var(--code-bg);
+    border: 1px solid var(--code-border);
+    border-radius: 4px;
+    padding: 1rem;
+    overflow-x: auto;
+    margin: 1rem 0;
+    font-family: 'Roboto Mono', monospace;
+    font-size: 0.9rem;
+}
+
+.playbook-content code {
+    background-color: var(--code-bg);
+    font-family: 'Roboto Mono', monospace;
+    padding: 0.2rem 0.4rem;
+    border-radius: 3px;
+    font-size: 0.9em;
+}
+
+.playbook-content li {
+    margin-bottom: 0.5rem;
+    color: var(--text-primary);
+}
+
+[data-theme="light"] .playbook-content li {
+    color: #333;
+}
+
+.playbook-content strong {
+    color: var(--neon-yellow);
+    font-weight: bold;
+}
+
+[data-theme="light"] .playbook-content strong {
+    color: #d4a017;
+}
+
+.playbook-content em {
+    color: var(--neon-green);
+    font-style: italic;
+}
+
+[data-theme="light"] .playbook-content em {
+    color: #00a67d;
+}
+
+.playbook-content blockquote {
+    border-left: 3px solid var(--neon-cyan);
+    padding-left: 1rem;
+    margin-left: 0;
+    color: var(--text-secondary);
+    font-style: italic;
+}
+
+[data-theme="light"] .playbook-content blockquote {
+    border-left: 3px solid #00a8e8;
+    color: #555;
+}
+
+/* Playbook Deletion Animation */
+.playbook.deleting {
+    animation: playbook-deleting 0.5s ease;
+    border-color: var(--neon-red);
+    opacity: 0.8;
+    pointer-events: none;
+}
+
+.playbook.deleted {
+    animation: playbook-deleted 0.3s ease forwards;
+}
+
+@keyframes playbook-deleting {
+    0% {
+        transform: scale(1);
+        box-shadow: 0 0 0 rgba(255, 0, 0, 0);
+    }
+    50% {
+        transform: scale(1.02);
+        box-shadow: 0 0 15px rgba(255, 0, 0, 0.5);
+    }
+    100% {
+        transform: scale(1);
+        box-shadow: 0 0 5px rgba(255, 0, 0, 0.3);
+    }
+}
+
+@keyframes playbook-deleted {
+    from {
+        transform: translateX(0);
+        opacity: 0.8;
+    }
+    to {
+        transform: translateX(-100%);
+        opacity: 0;
+        height: 0;
+        margin: 0;
+        padding: 0;
+    }
+}
+
+/* Light theme variants */
+[data-theme="light"] .playbook.deleting {
+    border-color: #ff3366;
+    box-shadow: 0 0 10px rgba(255, 51, 102, 0.3);
+}
+
+/* Override default playbook-controls styling to remove box/frame */
+.playbook-controls {
+    background: none !important;
+    border: none !important;
+    border-radius: 0 !important;
+    box-shadow: none !important;
+    padding: 0 !important;
+    margin: 0 !important;
+}
+
+/* Ensure delete button is frameless */
+.playbook-controls .delete-btn {
+    background: none !important;
+    border: none !important;
+    border-radius: 0 !important;
+    box-shadow: none !important;
+    padding: 0 !important;
+    margin: 0 !important;
+}
+
+/* Ensure delete button is completely frameless in all states */
+.playbook-controls .delete-btn,
+.playbook-controls .delete-btn:hover,
+.playbook-controls .delete-btn:focus,
+.playbook-controls .delete-btn:active {
+    background: none !important;
+    padding: 0 !important;
+    margin: 0 !important;
+    border: none !important;
+    border-radius: 0 !important;
+    box-shadow: none !important;
+    outline: none !important;
+}
+
+/* Ensure delete button is completely frameless (no default UA styles) */
+.delete-btn,
+.delete-btn:hover,
+.delete-btn:focus,
+.delete-btn:active {
+    background: transparent !important;
+    border: none !important;
+    outline: none !important;
+    padding: 0 !important;
+    margin: 0 !important;
+    appearance: none !important;
+    -webkit-appearance: none !important;
+    -moz-appearance: none !important;
+    box-shadow: none !important;
+}
+
+/* Ultimate override: remove all framing around controls wrapper and delete button */
+.playbook-header > .playbook-controls,
+.playbook-header .playbook-controls {
+    background: none !important;
+    border: none !important;
+    box-shadow: none !important;
+    padding: 0 !important;
+    margin: 0 !important;
+    display: inline-flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+}
+.playbook-header > button.delete-btn,
+.playbook-header button.delete-btn {
+    background: none !important;
+    border: none !important;
+    box-shadow: none !important;
+    padding: 0 !important;
+    margin: 0 !important;
+    display: inline-flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    color: var(--text-secondary) !important;
+    font-size: 1rem !important;
+    cursor: pointer !important;
+}
+
+/* Hide default progress visualization */
+.delete-btn > .progress-container,
+.delete-btn > .countdown {
+    display: none !important;
+}
+
+/* Shake animation during hold-to-delete */
+@keyframes shake {
+    0%, 100% { transform: translateX(0); }
+    10%, 30%, 50%, 70%, 90% { transform: translateX(-2px); }
+    20%, 40%, 60%, 80% { transform: translateX(2px); }
+}
+.delete-btn.shaking {
+    animation: shake 0.15s linear infinite;
+}
+
+/* Pop animation on delete confirmation */
+@keyframes pop {
+    0% { transform: scale(1); opacity: 1; }
+    50% { transform: scale(1.3); opacity: 0.8; }
+    100% { transform: scale(0); opacity: 0; }
+}
+.delete-btn.pop {
+    animation: pop 0.3s ease-out forwards;
+}
+
+/* Playbook NetExec Styles */
+[data-theme="light"] .playbook-content .note {
+    background-color: rgba(251, 192, 45, 0.1);
+    border-left: 3px solid #fbc02d;
+    padding: 10px 15px;
+    margin: 15px 0;
+    color: #333;
+}
+
+[data-theme="light"] .playbook-content .step {
+    background-color: rgba(0, 131, 176, 0.1);
+    border-left: 3px solid #0083b0;
+    padding: 10px 15px;
+    margin: 15px 0;
+}
+
+/* Fix step titles in the NetExec playbook */
+[data-theme="light"] .playbook-content h3 a {
+    color: #ea1889;
+    text-decoration: none;
+    border-bottom: none;
+    font-weight: bold;
+}
+
+[data-theme="light"] .playbook-content h3 a:hover {
+    color: #ff4081;
+    text-decoration: none;
+    border-bottom: none;
+}
+
+/* Playbook explanation text */
+[data-theme="light"] .playbook-content p.explanation {
+    background-color: rgba(0, 166, 125, 0.1);
+    border-left: 3px solid #00a67d;
+    padding: 10px 15px;
+    margin: 15px 0;
+}
+
+/* Final override: strip all box styling for the controls container and delete button */
+.playbook-header > .playbook-controls,
+.playbook-header .playbook-controls {
+    background: none !important;
+    border: none !important;
+    border-radius: 0 !important;
+    box-shadow: none !important;
+    padding: 0 !important;
+    margin: 0 !important;
+}
+.playbook-header .playbook-controls .delete-btn {
+    background: none !important;
+    border: none !important;
+    border-radius: 0 !important;
+    box-shadow: none !important;
+    padding: 0 !important;
+    margin: 0 !important;
+}

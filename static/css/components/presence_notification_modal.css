@@ -1,0 +1,398 @@
+/**
+ * Connection & Notification Center Modal Styles
+ * Cyberpunk-themed styles for the presence and notification modal
+ */
+
+/* Modal theming */
+#presenceNotificationModal .modal-content {
+    border: 1px solid var(--neon-blue);
+    box-shadow: 0 0 20px rgba(96, 239, 255, 0.25), inset 0 0 10px rgba(0, 0, 0, 0.3);
+    background: linear-gradient(
+        to bottom,
+        rgba(11, 11, 30, 0.95),
+        rgba(15, 20, 40, 0.95)
+    );
+    max-width: 550px;
+}
+
+#presenceNotificationModal .modal-header {
+    background: linear-gradient(
+        to right,
+        rgba(30, 30, 60, 0.8),
+        rgba(35, 35, 80, 0.8)
+    );
+    border-bottom: 1px solid rgba(96, 239, 255, 0.3);
+    padding: 0.8rem 1.2rem;
+}
+
+#presenceNotificationModal .modal-header h3 {
+    color: var(--neon-blue);
+    text-shadow: 0 0 10px rgba(96, 239, 255, 0.5);
+    font-size: 1.3rem;
+    letter-spacing: 1px;
+    display: flex;
+    align-items: center;
+}
+
+#presenceNotificationModal .modal-header h3::before {
+    content: '';
+    display: inline-block;
+    width: 15px;
+    height: 15px;
+    background: var(--neon-blue);
+    border-radius: 50%;
+    margin-right: 10px;
+    box-shadow: 0 0 10px var(--neon-blue);
+    animation: pulse 2s infinite;
+}
+
+#presenceNotificationModal .modal-close:hover {
+    color: var(--neon-blue);
+    text-shadow: 0 0 8px var(--neon-blue);
+}
+
+#presenceNotificationModal .modal-body {
+    padding: 1.2rem;
+    background-color: rgba(0, 0, 0, 0.2);
+}
+
+#presenceNotificationModal .modal-footer {
+    background: linear-gradient(
+        to right,
+        rgba(20, 20, 40, 0.8),
+        rgba(30, 30, 60, 0.8)
+    );
+    border-top: 1px solid rgba(96, 239, 255, 0.3);
+}
+
+#presenceNotificationModal .modal-btn {
+    background-color: rgba(96, 239, 255, 0.15);
+    color: var(--neon-blue);
+    border: 1px solid var(--neon-blue);
+    padding: 0.6rem 1.5rem;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    font-size: 0.9rem;
+    box-shadow: 0 0 10px rgba(96, 239, 255, 0.1);
+    position: relative;
+    overflow: hidden;
+}
+
+#presenceNotificationModal .modal-btn::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(
+        to right,
+        transparent,
+        rgba(96, 239, 255, 0.2),
+        transparent
+    );
+    transition: left 0.5s;
+}
+
+#presenceNotificationModal .modal-btn:hover {
+    background-color: rgba(96, 239, 255, 0.25);
+    box-shadow: 0 0 15px rgba(96, 239, 255, 0.3);
+    transform: translateY(-2px);
+}
+
+#presenceNotificationModal .modal-btn:hover::before {
+    left: 100%;
+}
+
+/* Connection Status Section */
+.connection-status-section {
+    background: rgba(0, 10, 30, 0.4);
+    border-radius: 6px;
+    padding: 1rem;
+    border-left: 3px solid var(--neon-blue);
+    margin-bottom: 1.2rem;
+}
+
+.connection-status-section h4 {
+    color: var(--neon-blue);
+    font-family: 'Orbitron', sans-serif;
+    margin-top: 0;
+    margin-bottom: 0.8rem;
+    font-size: 1.1rem;
+    display: flex;
+    align-items: center;
+}
+
+.connection-status-section h4::after {
+    content: '';
+    flex-grow: 1;
+    height: 1px;
+    background: linear-gradient(
+        to right,
+        rgba(96, 239, 255, 0.5),
+        transparent
+    );
+    margin-left: 10px;
+}
+
+#combinedConnectionStatusText,
+#combinedLastContactText {
+    margin: 0.5rem 0;
+    font-family: 'Roboto', sans-serif;
+    color: var(--text-secondary);
+    font-size: 0.95rem;
+    display: flex;
+    align-items: center;
+}
+
+#combinedConnectionStatusText strong,
+#combinedLastContactText strong {
+    margin-left: 5px;
+    color: var(--text-primary);
+    text-shadow: 0 0 5px rgba(255, 255, 255, 0.3);
+}
+
+/* Connected status style */
+.connected-status {
+    color: var(--neon-green) !important;
+    text-shadow: 0 0 5px rgba(0, 255, 0, 0.5) !important;
+}
+
+/* Notification History Section */
+.notification-history-section {
+    background: rgba(0, 10, 30, 0.4);
+    border-radius: 6px;
+    padding: 1rem;
+    border-left: 3px solid var(--neon-purple);
+}
+
+.notification-history-section h4 {
+    color: var(--neon-purple);
+    font-family: 'Orbitron', sans-serif;
+    margin-top: 0;
+    margin-bottom: 0.8rem;
+    font-size: 1.1rem;
+    display: flex;
+    align-items: center;
+}
+
+.notification-history-section h4::after {
+    content: '';
+    flex-grow: 1;
+    height: 1px;
+    background: linear-gradient(
+        to right,
+        rgba(150, 50, 255, 0.5),
+        transparent
+    );
+    margin-left: 10px;
+}
+
+/* Enhanced notification list */
+.notification-history-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    max-height: 250px;
+    overflow-y: auto;
+    border-radius: 4px;
+    /* Custom scrollbar styling */
+    scrollbar-width: thin;
+    scrollbar-color: var(--neon-blue) rgba(0, 0, 0, 0.3);
+}
+
+.notification-history-list::-webkit-scrollbar {
+    width: 8px;
+}
+
+.notification-history-list::-webkit-scrollbar-track {
+    background: rgba(0, 0, 0, 0.3);
+    border-radius: 4px;
+}
+
+.notification-history-list::-webkit-scrollbar-thumb {
+    background-color: var(--neon-blue);
+    border-radius: 4px;
+}
+
+.notification-history-item {
+    display: grid;
+    grid-template-columns: 16px 1fr auto;
+    grid-template-areas: "icon title time" "icon message message";
+    gap: 4px 8px;
+    padding: 10px;
+    border-bottom: 1px solid rgba(150, 50, 255, 0.1);
+    transition: background-color 0.2s;
+    position: relative;
+    overflow: hidden;
+}
+
+.notification-history-item::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 0;
+    height: 100%;
+    width: 3px;
+}
+
+.notification-history-item:hover {
+    background-color: rgba(20, 30, 60, 0.5);
+}
+
+.notification-history-item::after {
+    content: '';
+    position: absolute;
+    right: 0;
+    bottom: 0;
+    width: 100%;
+    height: 1px;
+    background: linear-gradient(
+        to right,
+        transparent,
+        rgba(150, 50, 255, 0.2),
+        transparent
+    );
+}
+
+.notification-history-item:last-child {
+    border-bottom: none;
+}
+
+.notification-history-item:last-child::after {
+    display: none;
+}
+
+/* Notification type icons */
+.notification-history-item::before {
+    content: '';
+    grid-area: icon;
+    display: block;
+    width: 8px;
+    height: 8px;
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: contain;
+    margin-right: 8px;
+    border-radius: 50%;
+    align-self: center;
+    position: relative;
+    top: 1px;
+}
+
+.notification-history-item.success::before {
+    background-color: var(--neon-green);
+    box-shadow: 0 0 8px var(--neon-green);
+}
+
+.notification-history-item.error::before {
+    background-color: var(--neon-red);
+    box-shadow: 0 0 8px var(--neon-red);
+}
+
+.notification-history-item.info::before {
+    background-color: var(--neon-blue);
+    box-shadow: 0 0 8px var(--neon-blue);
+}
+
+.notif-title {
+    grid-area: title;
+    font-weight: bold;
+    font-family: 'Orbitron', sans-serif;
+    font-size: 0.9rem;
+}
+
+.notif-message {
+    grid-area: message;
+    font-size: 0.85rem;
+    color: var(--text-secondary);
+    margin-left: 0;
+    padding-top: 2px;
+}
+
+.notif-time {
+    grid-area: time;
+    margin-left: auto;
+    font-size: 0.8rem;
+    color: var(--text-tertiary);
+    font-family: 'Courier New', monospace;
+    background: rgba(0, 0, 0, 0.3);
+    padding: 2px 6px;
+    border-radius: 4px;
+    border: 1px solid rgba(150, 50, 255, 0.2);
+}
+
+/* Notification type colors */
+.notification-history-item.success .notif-title { 
+    color: var(--neon-green); 
+    text-shadow: 0 0 5px rgba(0, 255, 0, 0.3);
+}
+
+.notification-history-item.error .notif-title { 
+    color: var(--neon-red); 
+    text-shadow: 0 0 5px rgba(255, 0, 0, 0.3);
+}
+
+.notification-history-item.info .notif-title { 
+    color: var(--neon-blue); 
+    text-shadow: 0 0 5px rgba(0, 150, 255, 0.3);
+}
+
+/* Animation */
+@keyframes pulse {
+    0% {
+        opacity: 1;
+        box-shadow: 0 0 5px var(--neon-blue);
+    }
+    50% {
+        opacity: 0.6;
+        box-shadow: 0 0 15px var(--neon-blue);
+    }
+    100% {
+        opacity: 1;
+        box-shadow: 0 0 5px var(--neon-blue);
+    }
+}
+
+/* Empty state */
+.notification-history-empty {
+    text-align: center;
+    padding: 20px;
+    color: var(--text-tertiary);
+    font-style: italic;
+    font-size: 0.9rem;
+    background: rgba(0, 0, 0, 0.2);
+    border-radius: 4px;
+    border: 1px dashed rgba(150, 50, 255, 0.2);
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+    #presenceNotificationModal .modal-content {
+        max-width: 95%;
+    }
+    
+    .connection-status-section,
+    .notification-history-section {
+        padding: 0.8rem;
+    }
+    
+    .notification-history-list {
+        max-height: 200px;
+    }
+    
+    .notification-history-item {
+        grid-template-columns: 16px 1fr;
+        grid-template-areas: 
+            "icon title" 
+            "icon message"
+            "time time";
+        padding: 8px;
+    }
+    
+    .notif-time {
+        margin-top: 5px;
+        margin-left: 0;
+        font-size: 0.75rem;
+    }
+}

@@ -1,0 +1,308 @@
+/* components/notes_panel.css
+   Styles for the notes panel component.
+*/
+
+/**
+ * Notes Panel Component Styles
+ * Styles for the notes functionality in CommandWave
+ */
+
+/* Notes Panel Container */
+.notes-panel {
+    position: fixed;
+    top: 80px;
+    right: -350px;
+    width: 350px;
+    height: calc(100vh - 80px);
+    background: linear-gradient(90deg, rgba(96,239,255,0.12) 0%, rgba(11,11,23,0.96) 100%);
+    border-left: 2px solid var(--neon-blue);
+    border-bottom: 2px solid var(--neon-blue);
+    box-shadow: -3px 0 15px rgba(96,239,255,0.15);
+    transition: right 0.3s ease, width 0.3s ease, height 0.3s ease;
+    z-index: 50;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+}
+
+/* Tab Notes Panel specific styling */
+#tabNotesPanel {
+    background: linear-gradient(90deg, rgba(255,90,140,0.12) 0%, rgba(11,11,23,0.96) 100%);
+    border-left: 2px solid var(--neon-pink);
+    border-bottom: 2px solid var(--neon-pink);
+    box-shadow: -3px 0 15px rgba(255,90,140,0.15);
+}
+
+.notes-panel.visible {
+    right: 0;
+}
+
+/* Note Size variations */
+[data-note-size="small"] .notes-panel {
+    width: 280px;
+    right: -280px;
+    font-size: 0.85rem;
+}
+
+[data-note-size="medium"] .notes-panel {
+    width: 350px;
+    right: -350px;
+    font-size: 0.9rem;
+}
+
+[data-note-size="large"] .notes-panel {
+    width: 450px;
+    right: -450px;
+    font-size: 1rem;
+}
+
+[data-note-size="small"] .notes-panel.visible {
+    right: 0;
+}
+
+[data-note-size="medium"] .notes-panel.visible {
+    right: 0;
+}
+
+[data-note-size="large"] .notes-panel.visible {
+    right: 0;
+}
+
+/* Extra Large and Huge note panel sizes */
+[data-note-size="xl"] .notes-panel {
+    width: 600px;
+    right: -600px;
+    font-size: 1.1rem;
+}
+
+[data-note-size="xl"] .notes-panel.visible {
+    right: 0;
+}
+
+[data-note-size="huge"] .notes-panel {
+    width: 90vw;
+    right: -90vw;
+    font-size: 1.15rem;
+}
+
+[data-note-size="huge"] .notes-panel.visible {
+    right: 0;
+}
+
+/* Notes Header */
+.notes-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0.8rem 1rem;
+    background: linear-gradient(90deg, rgba(96,239,255,0.18) 0%, rgba(11,11,23,0.98) 100%);
+    border-bottom: 1.5px solid rgba(96,239,255,0.3);
+    box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+}
+
+/* Tab Notes header specific styling */
+#tabNotesPanel .notes-header {
+    background: linear-gradient(90deg, rgba(255,90,140,0.18) 0%, rgba(11,11,23,0.98) 100%);
+    border-bottom: 1.5px solid rgba(255,90,140,0.3);
+}
+
+.notes-header h3 {
+    font-family: 'Orbitron', sans-serif;
+    color: var(--neon-blue);
+    font-size: 1.1rem;
+    text-shadow: var(--shadow-blue);
+    margin: 0;
+    letter-spacing: 1px;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+/* Tab Notes header text styling */
+#tabNotesPanel .notes-header h3 {
+    color: var(--neon-pink);
+    text-shadow: var(--shadow-pink);
+}
+
+.notes-header h3:before {
+    content: "\f249"; /* fa-sticky-note */
+    font-family: "Font Awesome 5 Free";
+    font-weight: 900;
+    font-size: 0.9em;
+}
+
+#tabNotesPanel .notes-header h3:before {
+    content: "\f24d"; /* fa-clone */
+}
+
+.notes-header h3.tab-name {
+    color: var(--neon-pink);
+    text-shadow: var(--shadow-pink);
+}
+
+/* Notes Buttons */
+.header-notes-btn {
+    background: rgba(11, 11, 23, 0.8);
+    border: 1px solid var(--neon-blue);
+    color: var(--neon-blue);
+    padding: 0.5rem 1rem;
+    border-radius: 4px;
+    cursor: pointer;
+    font-family: 'Orbitron', sans-serif;
+    font-size: 0.9rem;
+    transition: all 0.3s ease;
+    box-shadow: var(--shadow-blue);
+}
+
+.header-notes-btn:hover {
+    background-color: rgba(96, 239, 255, 0.1);
+    box-shadow: 0 0 10px rgba(96, 239, 255, 0.5);
+    transform: translateY(-2px);
+}
+
+.header-notes-btn:active {
+    transform: translateY(0);
+}
+
+.close-notes-btn {
+    background: none;
+    border: none;
+    color: var(--neon-blue);
+    font-size: 1.5rem;
+    cursor: pointer;
+    outline: none;
+    transition: all 0.3s;
+    text-shadow: 0 0 5px rgba(96, 239, 255, 0.5);
+    margin-left: 0.5rem;
+}
+
+/* Tab Notes close button styling */
+#tabNotesPanel .close-notes-btn {
+    color: var(--neon-pink);
+    text-shadow: 0 0 5px rgba(255, 90, 140, 0.5);
+}
+
+.close-notes-btn:hover {
+    color: #fff;
+    text-shadow: 0 0 8px rgba(96, 239, 255, 0.8);
+    transform: scale(1.1);
+}
+
+/* Tab Notes close button hover state */
+#tabNotesPanel .close-notes-btn:hover {
+    color: #fff;
+    text-shadow: 0 0 8px rgba(255, 90, 140, 0.8);
+}
+
+/* Notes Content Area */
+.notes-textarea, 
+#globalNotesText, 
+#tabNotesText {
+    flex: 1;
+    width: 100%;
+    height: 100%;
+    background: rgba(16, 16, 32, 0.6);
+    border: none;
+    color: var(--text-primary);
+    font-family: 'Roboto Mono', monospace;
+    font-size: 0.9rem;
+    resize: none;
+    outline: none;
+    padding: 1rem;
+    box-sizing: border-box;
+    min-height: calc(100% - 80px); /* Account for header */
+    overflow-y: auto;
+    box-shadow: inset 0 0 10px rgba(0, 0, 0, 0.4);
+    border-top: 1px solid rgba(96, 239, 255, 0.1);
+}
+
+/* Tab Notes text area styling */
+#tabNotesText {
+    border-top: 1px solid rgba(255, 90, 140, 0.1);
+}
+
+.notes-panel textarea {
+    flex-grow: 1;
+    resize: none;
+    background: rgba(16, 16, 32, 0.6);
+    color: var(--text-primary);
+    border: 1px solid rgba(96, 239, 255, 0.2);
+    border-radius: 4px;
+    padding: 0.75rem;
+    margin: 1rem;
+    font-family: 'Roboto Mono', monospace;
+    outline: none;
+    box-shadow: inset 0 0 8px rgba(0, 0, 0, 0.3);
+    transition: all 0.3s;
+    line-height: 1.4;
+}
+
+/* Tab Notes textarea border color */
+#tabNotesPanel textarea {
+    border: 1px solid rgba(255, 90, 140, 0.2);
+}
+
+.notes-panel textarea:focus {
+    border-color: var(--neon-blue);
+    box-shadow: 0 0 10px rgba(96, 239, 255, 0.3), inset 0 0 8px rgba(0, 0, 0, 0.3);
+}
+
+/* Tab Notes textarea focus state */
+#tabNotesPanel textarea:focus {
+    border-color: var(--neon-pink);
+    box-shadow: 0 0 10px rgba(255, 90, 140, 0.3), inset 0 0 8px rgba(0, 0, 0, 0.3);
+}
+
+/* Notes textarea size adjustments */
+[data-note-size="small"] .notes-panel textarea {
+    padding: 0.5rem;
+    font-size: 0.8rem;
+}
+
+[data-note-size="medium"] .notes-panel textarea {
+    padding: 0.75rem;
+    font-size: 0.9rem;
+}
+
+[data-note-size="large"] .notes-panel textarea {
+    padding: 1rem;
+    font-size: 1rem;
+}
+
+[data-note-size="xl"] .notes-panel textarea {
+    padding: 1.1rem;
+    font-size: 1.1rem;
+}
+
+[data-note-size="huge"] .notes-panel textarea {
+    padding: 1.2rem;
+    font-size: 1.15rem;
+}
+
+/* Scrollbar Styling for Notes Panel */
+.notes-panel textarea::-webkit-scrollbar {
+    width: 6px;
+}
+
+.notes-panel textarea::-webkit-scrollbar-track {
+    background: rgba(0, 0, 0, 0.2);
+}
+
+.notes-panel textarea::-webkit-scrollbar-thumb {
+    background: rgba(96, 239, 255, 0.4);
+    border-radius: 3px;
+}
+
+/* Tab Notes scrollbar thumb color */
+#tabNotesPanel textarea::-webkit-scrollbar-thumb {
+    background: rgba(255, 90, 140, 0.4);
+}
+
+.notes-panel textarea::-webkit-scrollbar-thumb:hover {
+    background: rgba(96, 239, 255, 0.6);
+}
+
+/* Tab Notes scrollbar thumb hover state */
+#tabNotesPanel textarea::-webkit-scrollbar-thumb:hover {
+    background: rgba(255, 90, 140, 0.6);
+}
