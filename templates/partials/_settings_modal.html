@@ -1,83 +1,311 @@
 <!-- Settings Modal Partial -->
-<div id="settingsModal" class="modal">
+<div id="settingsModal" class="modal" role="dialog" aria-labelledby="settingsTitle">
     <div class="modal-content">
         <div class="modal-header">
-            <h2>Settings</h2>
-            <button class="modal-close" id="closeSettingsModalBtn">&times;</button>
+            <h2 id="settingsTitle">Settings</h2>
+            <div class="modal-controls">
+                <button class="reset-btn" id="resetSettingsBtn" aria-label="Reset to defaults">Reset</button>
+                <button class="modal-close" id="closeSettingsModalBtn" aria-label="Close settings">&times;</button>
+            </div>
         </div>
         <div class="modal-body">
-            <!-- Settings form goes here -->
-            <form id="settingsForm">
-                <div class="settings-group">
-                    <h3 class="settings-section-title">[ THEMES ]</h3>
-                    <div class="theme-picker" id="themePicker">
-                        <div class="theme-card" data-theme="dark">
-                            <h4>Cyberpunk Dark</h4>
-                            <p>Classic dark mode with high-tech neon glow on deep backgrounds</p>
-                        </div>
-                        <div class="theme-card" data-theme="light">
-                            <h4>Neon Light</h4>
-                            <p>Bright, clean theme with saturated neon accents on light backgrounds</p>
-                        </div>
-                        <div class="theme-card" data-theme="witchhazel">
-                            <h4>Witch Hazel</h4>
-                            <p>Softer purple/pastel neon palette with mystical tech aesthetic</p>
-                        </div>
-                        <div class="theme-card" data-theme="outrun-sunset">
-                            <h4>Outrun Sunset</h4>
-                            <p>80s retrowave aesthetics with vibrant gradients and grid patterns</p>
-                        </div>
-                        <div class="theme-card" data-theme="digital-rain">
-                            <h4>Digital Rain</h4>
-                            <p>Matrix-inspired green code rain on deep black backgrounds</p>
-                        </div>
-                        <div class="theme-card" data-theme="holographic">
-                            <h4>Holographic</h4>
-                            <p>Translucent interfaces with shimmering rainbow highlights and glass effects</p>
-                        </div>
-                        <div class="theme-card" data-theme="corporate-dystopia">
-                            <h4>Corporate Dystopia</h4>
-                            <p>Clean slate grays with corporate tech styling and warning accents</p>
-                        </div>
-                        <div class="theme-card" data-theme="tokyo-night">
-                            <h4>Tokyo Night</h4>
-                            <p>Japanese cyberpunk aesthetics with indigo, pink and kanji elements</p>
-                        </div>
-                        <div class="theme-card" data-theme="amber-interface">
-                            <h4>Amber Interface</h4>
-                            <p>Retro amber monochrome terminal with scan lines and CRT effects</p>
-                        </div>
+            <!-- Two-column layout -->
+            <div class="settings-container">
+                <!-- Left Column - Categories Navigation -->
+                <div class="settings-categories">
+                    <div class="settings-search-container">
+                        <input type="text" id="settingsSearch" class="settings-search" placeholder="Search settings..." aria-label="Search settings">
+                        <span class="search-icon"><i class="fas fa-search"></i></span>
+                    </div>
+                    <ul class="category-list" role="tablist">
+                        <li class="category-item active" data-category="appearance" role="tab" aria-selected="true" tabindex="0">
+                            <div class="category-icon"><i class="fas fa-palette"></i></div>
+                            <span>Appearance</span>
+                        </li>
+                        <li class="category-item" data-category="noteSize" role="tab" aria-selected="false" tabindex="0">
+                            <div class="category-icon"><i class="fas fa-text-height"></i></div>
+                            <span>Note Size</span>
+                        </li>
+                        <li class="category-item" data-category="general" role="tab" aria-selected="false" tabindex="0">
+                            <div class="category-icon"><i class="fas fa-cog"></i></div>
+                            <span>General</span>
+                        </li>
+                        <li class="category-item" data-category="sync" role="tab" aria-selected="false" tabindex="0">
+                            <div class="category-icon"><i class="fas fa-sync-alt"></i></div>
+                            <span>Sync</span>
+                        </li>
+                        <li class="category-item" data-category="editor" role="tab" aria-selected="false" tabindex="0">
+                            <div class="category-icon"><i class="fas fa-edit"></i></div>
+                            <span>Editor</span>
+                        </li>
+                    </ul>
+                    
+                    <!-- Navigation buttons moved to the bottom of categories -->
+                    <div class="settings-navigation">
+                        <button class="nav-btn prev-btn" id="prevSettingsBtn" aria-label="Previous settings category">
+                            <i class="fas fa-chevron-left"></i> Prev
+                        </button>
+                        <button class="nav-btn next-btn" id="nextSettingsBtn" aria-label="Next settings category">
+                            Next <i class="fas fa-chevron-right"></i>
+                        </button>
                     </div>
                 </div>
                 
-                <!-- Note Size Settings -->
-                <div class="settings-group">
-                    <h3 class="settings-section-title">[ NOTE SIZE ]</h3>
-                    <div class="note-size-selector">
-                        <div class="note-size-option" data-size="small">
-                            <div class="note-size-preview note-size-small"></div>
-                            <span>Small</span>
+                <!-- Right Column - Settings Content -->
+                <div class="settings-content">
+                    <!-- Settings form goes here -->
+                    <form id="settingsForm">
+                        <!-- Appearance Panel -->
+                        <div class="settings-panel active" data-panel="appearance" role="tabpanel" aria-labelledby="appearance-tab">
+                            <div class="panel-header">
+                                <h3 class="settings-section-title">[ THEMES ]</h3>
+                                <p class="panel-description">Customize the visual style of CommandWave with these theme options. Changes preview in real-time.</p>
+                            </div>
+                            
+                            <div class="theme-picker" id="themePicker">
+                                <div class="theme-card" data-theme="dark">
+                                    <div class="theme-preview dark"></div>
+                                    <div class="preview-active-indicator"><i class="fas fa-eye"></i> Preview</div>
+                                    <h4>Cyberpunk Dark</h4>
+                                    <p>Classic dark mode with high-tech neon glow on deep backgrounds</p>
+                                </div>
+                                <div class="theme-card" data-theme="light">
+                                    <div class="theme-preview light"></div>
+                                    <div class="preview-active-indicator"><i class="fas fa-eye"></i> Preview</div>
+                                    <h4>Neon Light</h4>
+                                    <p>Bright, clean theme with saturated neon accents on light backgrounds</p>
+                                </div>
+                                <div class="theme-card" data-theme="witchhazel">
+                                    <div class="theme-preview witchhazel"></div>
+                                    <div class="preview-active-indicator"><i class="fas fa-eye"></i> Preview</div>
+                                    <h4>Witch Hazel</h4>
+                                    <p>Softer purple/pastel neon palette with mystical tech aesthetic</p>
+                                </div>
+                                <div class="theme-card" data-theme="outrun-sunset">
+                                    <div class="theme-preview outrun-sunset"></div>
+                                    <div class="preview-active-indicator"><i class="fas fa-eye"></i> Preview</div>
+                                    <h4>Outrun Sunset</h4>
+                                    <p>80s retrowave aesthetics with vibrant gradients and grid patterns</p>
+                                </div>
+                                <div class="theme-card" data-theme="digital-rain">
+                                    <div class="theme-preview digital-rain"></div>
+                                    <div class="preview-active-indicator"><i class="fas fa-eye"></i> Preview</div>
+                                    <h4>Digital Rain</h4>
+                                    <p>Matrix-inspired green code rain on deep black backgrounds</p>
+                                </div>
+                                <div class="theme-card" data-theme="holographic">
+                                    <div class="theme-preview holographic"></div>
+                                    <div class="preview-active-indicator"><i class="fas fa-eye"></i> Preview</div>
+                                    <h4>Holographic</h4>
+                                    <p>Translucent interfaces with shimmering rainbow highlights and glass effects</p>
+                                </div>
+                                <div class="theme-card" data-theme="corporate-dystopia">
+                                    <div class="theme-preview corporate-dystopia"></div>
+                                    <div class="preview-active-indicator"><i class="fas fa-eye"></i> Preview</div>
+                                    <h4>Corporate Dystopia</h4>
+                                    <p>Clean slate grays with corporate tech styling and warning accents</p>
+                                </div>
+                                <div class="theme-card" data-theme="tokyo-night">
+                                    <div class="theme-preview tokyo-night"></div>
+                                    <div class="preview-active-indicator"><i class="fas fa-eye"></i> Preview</div>
+                                    <h4>Tokyo Night</h4>
+                                    <p>Japanese cyberpunk aesthetics with indigo, pink and kanji elements</p>
+                                </div>
+                                <div class="theme-card" data-theme="amber-interface">
+                                    <div class="theme-preview amber-interface"></div>
+                                    <div class="preview-active-indicator"><i class="fas fa-eye"></i> Preview</div>
+                                    <h4>Amber Interface</h4>
+                                    <p>Retro amber monochrome terminal with scan lines and CRT effects</p>
+                                </div>
+                            </div>
                         </div>
-                        <div class="note-size-option" data-size="medium">
-                            <div class="note-size-preview note-size-medium"></div>
-                            <span>Medium</span>
+                        
+                        <!-- Note Size Panel -->
+                        <div class="settings-panel" data-panel="noteSize" role="tabpanel" aria-labelledby="noteSize-tab">
+                            <div class="panel-header">
+                                <h3 class="settings-section-title">[ NOTE SIZE ]</h3>
+                                <p class="panel-description">Adjust the display size of note elements in the CommandWave interface.</p>
+                            </div>
+                            
+                            <div class="note-size-selector">
+                                <div class="note-size-option" data-size="small">
+                                    <div class="note-size-preview note-size-small"></div>
+                                    <span>Small</span>
+                                </div>
+                                <div class="note-size-option" data-size="medium">
+                                    <div class="note-size-preview note-size-medium"></div>
+                                    <span>Medium</span>
+                                </div>
+                                <div class="note-size-option" data-size="large">
+                                    <div class="note-size-preview note-size-large"></div>
+                                    <span>Large</span>
+                                </div>
+                                <div class="note-size-option" data-size="xl">
+                                    <div class="note-size-preview note-size-xl"></div>
+                                    <span>XL</span>
+                                </div>
+                                <div class="note-size-option" data-size="huge">
+                                    <div class="note-size-preview note-size-huge"></div>
+                                    <span>Huge</span>
+                                </div>
+                            </div>
                         </div>
-                        <div class="note-size-option" data-size="large">
-                            <div class="note-size-preview note-size-large"></div>
-                            <span>Large</span>
+                        
+                        <!-- General Panel (placeholder) -->
+                        <div class="settings-panel" data-panel="general" role="tabpanel" aria-labelledby="general-tab">
+                            <div class="panel-header">
+                                <h3 class="settings-section-title">[ GENERAL SETTINGS ]</h3>
+                                <p class="panel-description">Configure the core behaviors and preferences of the CommandWave application.</p>
+                            </div>
+                            
+                            <div class="settings-option-group">
+                                <div class="settings-option">
+                                    <div class="settings-option-label">
+                                        <label for="startupBehavior">Startup Behavior</label>
+                                        <div class="tooltip" data-tooltip="Controls what CommandWave will do when it first launches">
+                                            <i class="fas fa-question-circle"></i>
+                                        </div>
+                                    </div>
+                                    <div class="settings-option-control">
+                                        <select id="startupBehavior" class="settings-select">
+                                            <option value="last">Restore last session</option>
+                                            <option value="new">Start new session</option>
+                                            <option value="empty">Start empty</option>
+                                        </select>
+                                    </div>
+                                </div>
+                                
+                                <div class="settings-option">
+                                    <div class="settings-option-label">
+                                        <label for="autosaveInterval">Autosave Interval (seconds)</label>
+                                        <div class="tooltip" data-tooltip="How frequently your work will be saved automatically (10-300 seconds)">
+                                            <i class="fas fa-question-circle"></i>
+                                        </div>
+                                    </div>
+                                    <div class="settings-option-control">
+                                        <div class="number-input-wrapper">
+                                            <input type="number" id="autosaveInterval" class="settings-input" min="10" max="300" value="60">
+                                            <div class="number-controls">
+                                                <button type="button" class="number-up" aria-label="Increase value"><i class="fas fa-chevron-up"></i></button>
+                                                <button type="button" class="number-down" aria-label="Decrease value"><i class="fas fa-chevron-down"></i></button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                
+                                <div class="settings-option toggle-option">
+                                    <div class="settings-option-label">
+                                        <label for="collapseVariables">Collapse Variables by Default</label>
+                                        <div class="tooltip" data-tooltip="When enabled, the Variables section will be collapsed when opening a new terminal tab">
+                                            <i class="fas fa-question-circle"></i>
+                                        </div>
+                                    </div>
+                                    <div class="settings-option-control">
+                                        <div class="toggle-switch">
+                                            <input type="checkbox" id="collapseVariables" class="toggle-input">
+                                            <label for="collapseVariables" class="toggle-label"></label>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
-                        <div class="note-size-option" data-size="xl">
-                            <div class="note-size-preview note-size-xl"></div>
-                            <span>XL</span>
+                        
+                        <!-- Sync Panel (placeholder) -->
+                        <div class="settings-panel" data-panel="sync" role="tabpanel" aria-labelledby="sync-tab">
+                            <div class="panel-header">
+                                <h3 class="settings-section-title">[ SYNC ]</h3>
+                                <p class="panel-description">Settings for synchronizing your CommandWave data across multiple devices.</p>
+                            </div>
+                            
+                            <div class="settings-info-message">
+                                <i class="fas fa-info-circle"></i>
+                                <span>Synchronization settings will be available in a future update.</span>
+                            </div>
+                            
+                            <div class="coming-soon-feature">
+                                <div class="feature-icon">
+                                    <i class="fas fa-cloud-upload-alt"></i>
+                                </div>
+                                <h4>Cloud Sync</h4>
+                                <p>Securely sync your playbooks, terminal sessions, and variables across multiple devices.</p>
+                            </div>
                         </div>
-                        <div class="note-size-option" data-size="huge">
-                            <div class="note-size-preview note-size-huge"></div>
-                            <span>Huge</span>
+                        
+                        <!-- Editor Panel (placeholder) -->
+                        <div class="settings-panel" data-panel="editor" role="tabpanel" aria-labelledby="editor-tab">
+                            <div class="panel-header">
+                                <h3 class="settings-section-title">[ EDITOR ]</h3>
+                                <p class="panel-description">Customize how the code and command editors behave in CommandWave.</p>
+                            </div>
+                            
+                            <div class="settings-option-group">
+                                <div class="settings-option">
+                                    <div class="settings-option-label">
+                                        <label for="editorFontSize">Font Size</label>
+                                        <div class="tooltip" data-tooltip="Sets the font size for all editor components (10-24px)">
+                                            <i class="fas fa-question-circle"></i>
+                                        </div>
+                                    </div>
+                                    <div class="settings-option-control">
+                                        <div class="number-input-wrapper">
+                                            <input type="number" id="editorFontSize" class="settings-input" min="10" max="24" value="14">
+                                            <div class="number-controls">
+                                                <button type="button" class="number-up" aria-label="Increase font size"><i class="fas fa-chevron-up"></i></button>
+                                                <button type="button" class="number-down" aria-label="Decrease font size"><i class="fas fa-chevron-down"></i></button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                
+                                <div class="settings-option toggle-option">
+                                    <div class="settings-option-label">
+                                        <label for="editorWordWrap">Word Wrap</label>
+                                        <div class="tooltip" data-tooltip="When enabled, text will wrap to the next line when reaching the edge of the editor">
+                                            <i class="fas fa-question-circle"></i>
+                                        </div>
+                                    </div>
+                                    <div class="settings-option-control">
+                                        <div class="toggle-switch">
+                                            <input type="checkbox" id="editorWordWrap" class="toggle-input" checked>
+                                            <label for="editorWordWrap" class="toggle-label"></label>
+                                        </div>
+                                    </div>
+                                </div>
+                                
+                                <div class="settings-option toggle-option">
+                                    <div class="settings-option-label">
+                                        <label for="editorLineNumbers">Show Line Numbers</label>
+                                        <div class="tooltip" data-tooltip="Displays line numbers in the margin of the editor">
+                                            <i class="fas fa-question-circle"></i>
+                                        </div>
+                                    </div>
+                                    <div class="settings-option-control">
+                                        <div class="toggle-switch">
+                                            <input type="checkbox" id="editorLineNumbers" class="toggle-input" checked>
+                                            <label for="editorLineNumbers" class="toggle-label"></label>
+                                        </div>
+                                    </div>
+                                </div>
+                                
+                                <div class="settings-option toggle-option">
+                                    <div class="settings-option-label">
+                                        <label for="editorAutoIndent">Auto-Indent</label>
+                                        <div class="tooltip" data-tooltip="Automatically indents code blocks based on syntax">
+                                            <i class="fas fa-question-circle"></i>
+                                        </div>
+                                    </div>
+                                    <div class="settings-option-control">
+                                        <div class="toggle-switch">
+                                            <input type="checkbox" id="editorAutoIndent" class="toggle-input" checked>
+                                            <label for="editorAutoIndent" class="toggle-label"></label>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
-                    </div>
+                    </form>
                 </div>
-                <!-- More settings can be added here -->
-            </form>
+            </div>
         </div>
         <div class="modal-footer">
             <button id="saveSettingsBtn" class="save-btn">Save</button>
