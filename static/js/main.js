@@ -24,6 +24,7 @@ import SyncManager from './sync/sync_manager.js';
 import PresenceManager from './ui/presence_manager.js';
 import './ui/settings_modal.js';
 import './ui/terminal_area.js';
+import { initResizer } from './ui/layout_manager.js';
 
 // Initialize when DOM is ready
 document.addEventListener('DOMContentLoaded', () => {
@@ -229,6 +230,8 @@ document.addEventListener('DOMContentLoaded', () => {
             return false;
         });
         
+        // initialize draggable layout resizer
+        initResizer();
         console.log('CommandWave initialized.');
     } catch (error) {
         console.error('Failed to initialize CommandWave:', error);

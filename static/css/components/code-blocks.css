@@ -452,6 +452,15 @@
     position: relative;
 }
 
+/* Wrap code blocks in playbook panel */
+.playbook-content .code-block-wrapper pre,
+.playbook-content .code-block-wrapper pre code {
+    white-space: pre-wrap !important;
+    word-break: break-word !important;
+    overflow-wrap: break-word !important;
+    overflow-x: hidden !important;
+}
+
 /* Code block editing styles */
 .code-block-wrapper.editing {
     border: 1px solid var(--neon-green);

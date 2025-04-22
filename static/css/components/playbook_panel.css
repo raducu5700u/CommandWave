@@ -461,43 +461,157 @@
     justify-content: center;
 }
 
-/* Center playbook title when collapsed and restore spacing when expanded */
-.playbook:not(.expanded) .playbook-header {
-    justify-content: center !important;
-}
-.playbook.expanded .playbook-header {
-    justify-content: space-between !important;
+/* Ensure delete button is completely frameless in all states */
+.playbook-controls .delete-btn,
+.playbook-controls .delete-btn:hover,
+.playbook-controls .delete-btn:focus,
+.playbook-controls .delete-btn:active {
+    background: none !important;
+    padding: 0 !important;
+    margin: 0 !important;
+    border: none !important;
+    border-radius: 0 !important;
+    box-shadow: none !important;
+    outline: none !important;
 }
 
-/* Flatten controls container to remove any box styling around delete button when expanded */
-.playbook.expanded .playbook-header > .playbook-controls {
-    display: contents !important;
+/* Ensure delete button is completely frameless (no default UA styles) */
+.delete-btn,
+.delete-btn:hover,
+.delete-btn:focus,
+.delete-btn:active {
+    background: transparent !important;
+    border: none !important;
+    outline: none !important;
+    padding: 0 !important;
+    margin: 0 !important;
+    appearance: none !important;
+    -webkit-appearance: none !important;
+    -moz-appearance: none !important;
+    box-shadow: none !important;
 }
 
-/* Flatten and remove any visible box/frame from playbook-controls wrapper */
-.playbook-controls {
-    display: contents !important;
+/* Ultimate override: remove all framing around controls wrapper and delete button */
+.playbook-header > .playbook-controls,
+.playbook-header .playbook-controls {
     background: none !important;
     border: none !important;
     box-shadow: none !important;
     padding: 0 !important;
     margin: 0 !important;
+    display: inline-flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+}
+.playbook-header > button.delete-btn,
+.playbook-header button.delete-btn {
+    background: none !important;
+    border: none !important;
+    box-shadow: none !important;
+    padding: 0 !important;
+    margin: 0 !important;
+    display: inline-flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    color: var(--text-secondary) !important;
+    font-size: 1rem !important;
+    cursor: pointer !important;
 }
 
-/* Hide delete button when playbook is collapsed */
-.playbook:not(.expanded) .playbook-header > button.delete-btn {
+/* Hide default progress visualization */
+.delete-btn > .progress-container,
+.delete-btn > .countdown {
     display: none !important;
 }
 
-/* Show delete button only when expanded */
-.playbook.expanded .playbook-header > button.delete-btn {
-    display: inline-flex !important;
+/* Shake animation during hold-to-delete */
+@keyframes shake {
+    0%, 100% { transform: translateX(0); }
+    10%, 30%, 50%, 70%, 90% { transform: translateX(-2px); }
+    20%, 40%, 60%, 80% { transform: translateX(2px); }
+}
+.delete-btn.shaking {
+    animation: shake 0.15s linear infinite;
 }
 
-/* Red color feedback on hold (shake) */
-.delete-btn.shaking,
-.delete-btn.shaking i {
-    color: #e74c3c !important;
+/* Pop animation on delete confirmation */
+@keyframes pop {
+    0% { transform: scale(1); opacity: 1; }
+    50% { transform: scale(1.3); opacity: 0.8; }
+    100% { transform: scale(0); opacity: 0; }
+}
+.delete-btn.pop {
+    animation: pop 0.3s ease-out forwards;
+}
+
+/* Playbook NetExec Styles */
+[data-theme="light"] .playbook-content .note {
+    background-color: rgba(251, 192, 45, 0.1);
+    border-left: 3px solid #fbc02d;
+    padding: 10px 15px;
+    margin: 15px 0;
+    color: #333;
+}
+
+[data-theme="light"] .playbook-content .step {
+    background-color: rgba(0, 131, 176, 0.1);
+    border-left: 3px solid #0083b0;
+    padding: 10px 15px;
+    margin: 15px 0;
+}
+
+/* Fix step titles in the NetExec playbook */
+[data-theme="light"] .playbook-content h3 a {
+    color: #ea1889;
+    text-decoration: none;
+    border-bottom: none;
+    font-weight: bold;
+}
+
+[data-theme="light"] .playbook-content h3 a:hover {
+    color: #ff4081;
+    text-decoration: none;
+    border-bottom: none;
+}
+
+/* Playbook explanation text */
+[data-theme="light"] .playbook-content p.explanation {
+    background-color: rgba(0, 166, 125, 0.1);
+    border-left: 3px solid #00a67d;
+    padding: 10px 15px;
+    margin: 15px 0;
+}
+
+/* Final override: strip all box styling for the controls container and delete button */
+.playbook-header > .playbook-controls,
+.playbook-header .playbook-controls {
+    background: none !important;
+    border: none !important;
+    border-radius: 0 !important;
+    box-shadow: none !important;
+    padding: 0 !important;
+    margin: 0 !important;
+}
+.playbook-header .playbook-controls .delete-btn {
+    background: none !important;
+    border: none !important;
+    border-radius: 0 !important;
+    box-shadow: none !important;
+    padding: 0 !important;
+    margin: 0 !important;
+}
+
+/* Wrap long lines in playbook code blocks */
+.playbook-content pre {
+    white-space: pre-wrap !important;
+    word-wrap: break-word !important;
+    overflow-wrap: break-word !important;
+    overflow-x: hidden !important;
+}
+
+.playbook-content pre code {
+    white-space: pre-wrap !important;
+    word-wrap: break-word !important;
 }
 
 /* Playbook Content Typography */
@@ -707,6 +821,7 @@
 .playbook-header .playbook-controls {
     background: none !important;
     border: none !important;
+    border-radius: 0 !important;
     box-shadow: none !important;
     padding: 0 !important;
     margin: 0 !important;
@@ -755,59 +870,41 @@
     animation: pop 0.3s ease-out forwards;
 }
 
-/* Playbook NetExec Styles */
-[data-theme="light"] .playbook-content .note {
-    background-color: rgba(251, 192, 45, 0.1);
-    border-left: 3px solid #fbc02d;
-    padding: 10px 15px;
-    margin: 15px 0;
-    color: #333;
+/* Center playbook title when collapsed and restore spacing when expanded */
+.playbook:not(.expanded) .playbook-header {
+    justify-content: center !important;
+}
+.playbook.expanded .playbook-header {
+    justify-content: space-between !important;
 }
 
-[data-theme="light"] .playbook-content .step {
-    background-color: rgba(0, 131, 176, 0.1);
-    border-left: 3px solid #0083b0;
-    padding: 10px 15px;
-    margin: 15px 0;
+/* Flatten controls container to remove any box styling around delete button when expanded */
+.playbook.expanded .playbook-header > .playbook-controls {
+    display: contents !important;
 }
 
-/* Fix step titles in the NetExec playbook */
-[data-theme="light"] .playbook-content h3 a {
-    color: #ea1889;
-    text-decoration: none;
-    border-bottom: none;
-    font-weight: bold;
-}
-
-[data-theme="light"] .playbook-content h3 a:hover {
-    color: #ff4081;
-    text-decoration: none;
-    border-bottom: none;
-}
-
-/* Playbook explanation text */
-[data-theme="light"] .playbook-content p.explanation {
-    background-color: rgba(0, 166, 125, 0.1);
-    border-left: 3px solid #00a67d;
-    padding: 10px 15px;
-    margin: 15px 0;
-}
-
-/* Final override: strip all box styling for the controls container and delete button */
-.playbook-header > .playbook-controls,
-.playbook-header .playbook-controls {
+/* Flatten and remove any visible box/frame from playbook-controls wrapper */
+.playbook-controls {
+    display: contents !important;
     background: none !important;
     border: none !important;
-    border-radius: 0 !important;
     box-shadow: none !important;
     padding: 0 !important;
     margin: 0 !important;
 }
-.playbook-header .playbook-controls .delete-btn {
-    background: none !important;
-    border: none !important;
-    border-radius: 0 !important;
-    box-shadow: none !important;
-    padding: 0 !important;
-    margin: 0 !important;
+
+/* Hide delete button when playbook is collapsed */
+.playbook:not(.expanded) .playbook-header > button.delete-btn {
+    display: none !important;
+}
+
+/* Show delete button only when expanded */
+.playbook.expanded .playbook-header > button.delete-btn {
+    display: inline-flex !important;
+}
+
+/* Red color feedback on hold (shake) */
+.delete-btn.shaking,
+.delete-btn.shaking i {
+    color: #e74c3c !important;
 }

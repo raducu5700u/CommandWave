@@ -180,12 +180,11 @@ body {
 
 /* Content Area */
 .content-area {
-    flex: 1;
+    /* Fixed left panel width and min-width */
+    flex: 0 0 30%;
+    min-width: 200px;
     overflow-y: auto;
     padding-right: 0;
-    width: 50%;
-    min-width: 0;
-    max-width: 50%;
     display: flex;
     flex-direction: column;
 }
@@ -1893,4 +1892,23 @@ body {
     border-radius: 2px;
     font-weight: bold;
     text-shadow: 0 0 5px rgba(255, 90, 140, 0.6);
+}
+
+/* Divider between panels */
+.resizer {
+    width: 8px;
+    background-color: var(--border-light);
+    cursor: col-resize;
+    user-select: none;
+}
+
+/* Cursor during drag */
+body.resizing {
+    cursor: col-resize;
+}
+
+/* Right panel flex and min-width */
+.terminal-area {
+    flex: 1 1 auto;
+    min-width: 300px;
 }
