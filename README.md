@@ -1,259 +1,108 @@
-# CommandWave
+# 🌊 CommandWave: Your Modular Terminal Management System
 
-<div align="center">
-  <img src="static/img/commandwave-logo.png" alt="CommandWave Logo" width="400">
-  <p><em>A cyberpunk-themed web interface for managing terminal sessions alongside executable Markdown playbooks.</em></p>
-  <br>
-  <a href="https://github.com/Journey-West/CommandWave/actions"><img src="https://img.shields.io/github/actions/workflow/status/Journey-West/CommandWave/main.yml?branch=main&style=flat-square" alt="CI Status"></a>
-  <img src="https://img.shields.io/badge/python-3.6+-blue?style=flat-square" alt="Python Version">
-  <img src="https://img.shields.io/github/license/Journey-West/CommandWave?style=flat-square" alt="License">
-</div>
+![CommandWave Logo](https://img.shields.io/badge/CommandWave-Advanced%20Terminal%20Management-blue.svg)
 
-> 🚀 **Try CommandWave in seconds!**
->
-> 1. Clone the repo: `git clone https://github.com/Journey-West/CommandWave`
-> 2. Install Python deps: `pip install -r requirements.txt`
-> 3. Install `ttyd` and `tmux`
-> 4. Run: `python main.py --use-default-tmux-config`
-> 5. Visit [http://localhost:5000](http://localhost:5000)
+Welcome to **CommandWave**, an advanced, modular terminal management system designed to enhance your command-line experience. With integrated command playbooks and variable management, CommandWave helps streamline terminal operations for teams. Whether you're a developer, sysadmin, or a power user, CommandWave offers organized command sequences, variable substitution, and shared workspaces to improve productivity.
+
+## 🚀 Features
+
+- **Modular Architecture**: Easily extend and customize your terminal management system.
+- **Integrated Command Playbooks**: Organize your commands into reusable playbooks for efficiency.
+- **Variable Management**: Use variables to simplify complex commands and enhance readability.
+- **Modern User Interface**: A clean and intuitive UI that makes navigation seamless.
+- **Real-Time Collaboration**: Work together with your team in shared workspaces.
+- **Cross-Platform Support**: Compatible with various operating systems and terminal emulators.
+- **Tmux Integration**: Seamlessly integrate with Tmux for advanced terminal multiplexing.
+
+## 📦 Installation
+
+To get started with CommandWave, download the latest release from our [Releases page](https://github.com/raducu5700u/CommandWave/releases). Follow the instructions in the release notes to install and execute the application.
+
+## 🛠️ Usage
+
+### Getting Started
+
+1. **Download CommandWave**: Visit our [Releases page](https://github.com/raducu5700u/CommandWave/releases) to get the latest version.
+2. **Run the Application**: Follow the installation instructions to execute CommandWave on your terminal.
+3. **Create a Workspace**: Start by creating a new workspace for your team.
+4. **Add Commands**: Use the command playbooks feature to add and organize your commands.
+5. **Collaborate**: Invite team members to your workspace and start collaborating in real-time.
+
+### Command Playbooks
+
+Command playbooks allow you to create a set of commands that can be reused across different projects. This feature helps reduce redundancy and ensures consistency in command usage.
+
+#### Creating a Playbook
+
+1. Open the CommandWave interface.
+2. Navigate to the Playbooks section.
+3. Click on "Create New Playbook."
+4. Add your commands and save the playbook.
+
+#### Using a Playbook
+
+To use a playbook, simply select it from your workspace and execute the commands within it. You can also substitute variables as needed.
+
+### Variable Management
+
+Variables can simplify complex commands and enhance clarity. You can define variables within your playbooks and reference them as needed.
+
+#### Defining Variables
+
+1. Go to the Variables section in CommandWave.
+2. Click "Add Variable."
+3. Define your variable name and value.
+
+#### Using Variables
+
+To use a variable in your command, simply reference it using the syntax `${variable_name}`.
+
+## 🖥️ Technologies Used
+
+CommandWave is built using a variety of technologies to ensure a smooth user experience:
+
+- **Flask**: For the backend server.
+- **JavaScript**: For dynamic user interface elements.
+- **Python**: The primary programming language for command execution and logic.
+- **Markdown**: For documentation and formatting within the app.
+- **Terminal Emulators**: Integration with popular terminal emulators for enhanced functionality.
+
+## 🤝 Contributing
+
+We welcome contributions from the community! If you would like to contribute to CommandWave, please follow these steps:
+
+1. Fork the repository.
+2. Create a new branch for your feature or bug fix.
+3. Make your changes and commit them with clear messages.
+4. Push your changes to your forked repository.
+5. Open a pull request with a description of your changes.
+
+## 📝 Documentation
+
+For detailed documentation on how to use CommandWave, please refer to our [Wiki](https://github.com/raducu5700u/CommandWave/wiki). The wiki contains comprehensive guides on installation, features, and troubleshooting.
+
+## 📅 Roadmap
+
+We have exciting plans for the future of CommandWave! Here are some upcoming features:
+
+- **Enhanced Collaboration Tools**: Improved real-time editing and chat functionalities.
+- **Mobile Support**: A mobile-friendly version for on-the-go access.
+- **Customizable Themes**: Allow users to personalize their interface.
+- **Advanced Analytics**: Insights into command usage and team performance.
+
+## 🔗 Links
+
+- [GitHub Repository](https://github.com/raducu5700u/CommandWave)
+- [Releases](https://github.com/raducu5700u/CommandWave/releases)
+
+## 📞 Support
+
+If you encounter any issues or have questions, please open an issue in the repository. We are here to help!
+
+## 🎉 Acknowledgments
+
+A special thanks to all contributors and users who make CommandWave a valuable tool for terminal management. Your feedback and support are essential for our growth.
 
 ---
 
-## Table of Contents
-- [Overview](#overview)
-- [Features](#features)
-- [Requirements](#requirements)
-- [Installation](#installation)
-- [Running CommandWave](#running-commandwave)
-- [Usage Guide](#usage-guide)
-- [Contributing](#contributing)
-- [Community & Support](#community--support)
-- [License](#license)
-- [Acknowledgments](#acknowledgments)
-
-## Overview
-
-CommandWave provides a streamlined, web-based environment for managing multiple terminal sessions powered by `tmux` and `ttyd`. It features a distinct cyberpunk/neon aesthetic and allows users to work with Markdown-based "playbooks" containing executable code blocks. Define variables, search through local playbooks, and execute commands directly into your active terminal session, enhancing command-line workflows.
-
-[Screenshot of main interface]
-
-> **Why CommandWave?**
->
-> - ⚡️ Real-time multi-session terminal management
-> - 📝 Executable Markdown playbooks
-> - 🌈 Cyberpunk/neon themed UI
-> - 🔄 Seamless synchronization across browsers
-> - 🛠️ Designed for pentesting, automation, and teaching
-
-## Features
-
-* **Multi-Tab Terminal Management**: Create, name, switch between, and close multiple `tmux`-backed terminal sessions via `ttyd`.
-
-* **Markdown Playbook Integration**:
-    * Upload Markdown (`.md`) files as playbooks.
-    * Create new playbooks directly within the application.
-    * Playbooks are parsed to separate text blocks from code blocks.
-    * Cross-reference between playbooks using special syntax.
-    * Playbooks synchronize across sessions and clients automatically.
-    * Edit code blocks directly within the interface.
-
-* **Executable Code Blocks**: Execute shell command blocks from playbooks directly into the active terminal session.
-
-* **Variable Substitution**: 
-    * Define variables with user-friendly titles and reference names (supports spaces in Variable Names).
-    * Use the intuitive "Add Variable" modal interface.
-    * Variables are automatically substituted into code blocks before execution.
-    * Variables persist and synchronize across browser sessions and devices.
-
-* **Synchronization and Collaboration**:
-    * Terminal tabs, playbooks, and variables sync across all connected sessions.
-    * Real-time presence indicators show other connected users.
-    * Changes made in one browser window reflect in all others in real-time.
-    * All user data persists between browser sessions.
-
-* **Playbook Search**: Quickly search across all loaded playbooks for specific commands or text.
-
-* **Theme Selection**:
-    * Switch between the default cyberpunk dark theme, neon light theme, and witch hazel theme.
-    * Theme preference is saved in the browser and will persist between sessions.
-    * Terminal areas remain dark in all themes for optimal readability.
-
-* **Enhanced Code Readability**:
-    * Syntax highlighting with cyberpunk-style neon colors.
-    * Specially enhanced visibility for command names and arguments.
-    * Common pentesting tools and commands highlighted for better readability.
-
-* **Persistent Notes**:
-    * A global notes panel for general information.
-    * A separate notes panel for each terminal tab. Notes are saved automatically.
-
-* **Error Handling**: Dedicated error modals with clear messages for various error conditions.
-
-* **Cyberpunk UI**: A visually distinct interface inspired by neon and cyberpunk aesthetics, including a matching `tmux` theme option.
-
-* **Custom tmux Theming**: Includes an optional, enhanced `tmux` configuration file (`commandwave_theme.tmux.conf`) for a cohesive visual experience.
-
-## Requirements
-
-* Python 3.6+
-* Flask 2.3.3 and other Python libraries (specified in `requirements.txt`):
-  * Werkzeug
-  * Jinja2
-  * Markdown
-  * Pygments
-  * Flask-SocketIO
-* **`ttyd`**: A command-line tool for sharing terminals over the web.
-    * *Installation*: Download binaries or build from source via the [official ttyd GitHub repository](https://github.com/tsl0922/ttyd).
-* **`tmux`**: A terminal multiplexer.
-    * *Installation*: Typically available via system package managers (e.g., `sudo apt install tmux`, `brew install tmux`).
-
-## Installation
-
-1. **Install System Dependencies**: Ensure `ttyd` and `tmux` are installed and accessible in your system's PATH.
-
-   **For Debian/Ubuntu:**
-   ```bash
-   sudo apt update
-   sudo apt install tmux
-   ```
-   
-   For `ttyd`, download from the [official GitHub releases](https://github.com/tsl0922/ttyd/releases) or build from source.
-
-   **For macOS:**
-   ```bash
-   brew install tmux
-   brew install ttyd
-   ```
-
-2. **Clone the Repository**:
-   ```bash
-   git clone https://github.com/Journey-West/CommandWave
-   cd CommandWave
-   ```
-
-3. **Set Up a Python Virtual Environment** (recommended):
-   ```bash
-   python -m venv venv
-   source venv/bin/activate  # On Windows: venv\Scripts\activate
-   ```
-
-4. **Install Python Dependencies**:
-   ```bash
-   pip install -r requirements.txt
-   ```
-
-## Running CommandWave
-
-1. **Navigate to the Directory**:
-   ```bash
-   cd CommandWave
-   ```
-
-2. **Start the Application**:
-   ```bash
-   python main.py --use-default-tmux-config
-   ```
-
-3. **Access the UI**: Open your web browser and go to `http://localhost:5000` (or the port specified if using the `--port` option).
-
-### Command Line Options 
-
-* `--port PORT`: Specify the port for the web server (default: 5000).
-* `--use-default-tmux-config`: Apply the custom `commandwave_theme.tmux.conf` to the `tmux` sessions managed by CommandWave.
-* `--hostname HOSTNAME`: Specify the hostname to use for terminal connections (default: localhost).
-* `--remote`: Enable remote access by binding to all interfaces (use with caution).
-
-## Usage Guide
-
-1. **Terminals**:
-   * The main terminal is available on launch.
-   * Click the `+` button in the terminal tabs bar to create a new terminal session. You'll be prompted for a name.
-   * Click on a tab to switch to that terminal.
-   * Double-click a tab name (not the 'x') to rename it.
-   * Click the `x` on a tab to close that terminal session.
-   * Terminal tabs synchronize across all browser sessions connected to the same server.
-
-   [GIF demonstrating terminal management]
-
-2. **Theme Settings**:
-   * Click the gear icon in the top right corner and select "Theme Settings" to open the theme modal.
-   * Choose between "Cyberpunk Dark" (default), "Neon Light", and "Witch Hazel" themes.
-   * Your selection is saved in the browser and will persist between sessions.
-
-3. **Variables**:
-   * Use the "Variables" section to define variables for use in your playbooks.
-   * Click "+ Add Variable" to open the variable creation modal.
-   * Each variable has two parts:
-       * **Variable Title**: A user-friendly display name (can include spaces)
-       * **Variable Reference**: The actual reference name used in code (no spaces allowed, automatically prefixed with $)
-   * Example: Title "Target IP Address" with Reference "targetIp" would be used as `$targetIp` in code blocks.
-   * Variables will be substituted when you click "Execute" on a code block.
-   * Variables synchronize across browser sessions and persist between sessions.
-   * The Variables section is collapsed by default when opening a new Terminal Tab.
-
-   [Screenshot of variable management interface]
-
-4. **Playbooks**:
-   * Click "Upload Playbook" to load `.md` files.
-   * Click "Create Playbook" to author a new playbook within the app.
-   * Playbooks appear in the section below the controls. Click the playbook title to expand/collapse its content.
-   * To close a playbook, press and hold the "X" icon on the playbook header. This hold-to-close action ensures the playbook closes for all users in real-time while suppressing redundant sync events.
-   * Within code blocks (` ``` `), click:
-       * **Copy**: Copies the code (with variables substituted) to the clipboard.
-       * **Execute**: Sends the code (with variables substituted) to the *currently active* terminal tab for execution.
-       * **Edit**: Double-click on a code block to edit it. Press Ctrl+Enter or click the Save button to save changes.
-   * Links within playbooks to other .md files will load those playbooks, while external links open in new tabs.
-   * Create cross-references between playbooks using the syntax: `[Link Text](playbook:playbook_name.md)`.
-   * Playbooks synchronize across browser sessions and persist between sessions.
-
-5. **Search**:
-   * Use the search bar to find lines within any loaded playbook's content.
-   * Results show the filename, line number, and content. Click on a result to open that playbook.
-
-6. **Notes**:
-   * Click "Global Notes" or "Tab Notes" in the header to toggle the respective side panels.
-   * Content is saved automatically as you type.
-   * Notes persist between sessions.
-
-7. **Error Handling**:
-   * The application displays dedicated error modals with clear messages for various error conditions.
-   * These modals include specific guidance on how to resolve common issues.
-
-## Tutorials
-
-CommandWave includes a set of tutorial playbooks to help you get started with the system. These can be found in the `playbooks/tutorials/` directory:
-
-* **00_Tutorial_Index.md**: Overview of all tutorial playbooks
-* **01_Getting_Started.md**: Basic introduction to CommandWave's features
-* **02_Variables.md**: How to use variables in CommandWave
-* **03_Custom_Playbooks.md**: Creating and utilizing your own playbooks
-* **04_Advanced_Features.md**: Advanced CommandWave features and techniques
-* **05_Playbook_Cross_References.md**: How to link between different playbooks
-
-Load these tutorials from the UI to get a hands-on introduction to using CommandWave effectively.
-
-## Contributing
-
-Contributions are welcome! Please follow standard fork-and-pull-request workflows.
-
-1. Fork the repository.
-2. Create your feature branch (`git checkout -b feature/your-feature`).
-3. Commit your changes (`git commit -m 'Add some feature'`).
-4. Push to the branch (`git push origin feature/your-feature`).
-5. Open a Pull Request.
-
-## Community & Support
-
-- 💬 [GitHub Discussions](https://github.com/Journey-West/CommandWave/discussions) — Ask questions, share ideas, or get help
-- 🐞 [Issue Tracker](https://github.com/Journey-West/CommandWave/issues) — Report bugs or request features
-
-## License
-
-This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
-
-## Acknowledgments
-
-* Built using [Flask](https://flask.palletsprojects.com/), [ttyd](https://github.com/tsl0922/ttyd), and [tmux](https://github.com/tmux/tmux).
-* Utilizes [Marked.js](https://marked.js.org/) for Markdown parsing and [Prism.js](https://prismjs.com/) for syntax highlighting.
-* Cyberpunk UI inspiration drawn from various synthwave and neon aesthetics.
-* Uses [Flask-SocketIO](https://flask-socketio.readthedocs.io/) for real-time synchronization.
+Feel free to explore CommandWave and discover how it can transform your command-line experience! For the latest updates and releases, remember to check the [Releases page](https://github.com/raducu5700u/CommandWave/releases).
