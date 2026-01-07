@@ -3,12 +3,9 @@ routes/terminal_routes.py
 Flask Blueprint for terminal-related API endpoints.
 """
 
-from flask import Blueprint, request, jsonify, current_app
-import subprocess
-import os
+from flask import Blueprint, request, jsonify
 import logging
-import time
-import socket
+import core.terminal_manager as terminal_manager
 
 # Configure logging
 logger = logging.getLogger('commandwave')
@@ -24,28 +21,12 @@ def create_terminal():
         data = request.get_json()
         tab_name = data.get('name', 'Terminal')
         
-        # Access app's terminals dictionary and process_lock
-        app = current_app
+        # Find an available port
+        port = terminal_manager.find_available_port(
+            terminal_manager.TERMINAL_PORT_RANGE[0], 
+            terminal_manager.TERMINAL_PORT_RANGE[1]
+        )
         
-        if not hasattr(app, 'terminals') or not hasattr(app, 'process_lock'):
-            logger.error("App missing required terminal management attributes")
-            logger.error(f"Available attributes: {dir(app)}")
-            return jsonify({'success': False, 'error': 'Terminal management not available'}), 500
-            
-        # Find an available port - similar to the main app's find_available_port
-        start_port = 7682
-        end_port = 7781
-        
-        port = None
-        for test_port in range(start_port, end_port + 1):
-            # Check if port is in use
-            with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s:
-                in_use = s.connect_ex(('127.0.0.1', test_port)) == 0
-                
-            if not in_use and test_port not in app.terminals:
-                port = test_port
-                break
-                
         if not port:
             logger.error("Could not find available port for new terminal")
             return jsonify({
@@ -55,39 +36,36 @@ def create_terminal():
             
         # Create new tmux session name
         tmux_session = f"commandwave-{port}"
-            
-        # Call the app's ttyd process starter function
-        if hasattr(app, 'start_ttyd_process'):
-            logger.error(f"Available attributes on app object: {dir(app)}")
-            # Use default tmux config
-            use_tmux_config = True
-            terminal_process = app.start_ttyd_process(port, tmux_session, use_tmux_config)
-            
-            if terminal_process:
-                # Store information about this terminal
-                with app.process_lock:
-                    app.terminals[port] = {
-                        'process': terminal_process,
-                        'tmux_session': tmux_session,
-                        'created_at': time.time(),
-                        'name': tab_name
-                    }
-                    
-                logger.info(f"Created new terminal on port {port} with name '{tab_name}'")
-                return jsonify({
-                    'success': True,
-                    'port': port,
+        
+        # Determine if we should use tmux config (could be passed in app config or default)
+        # For now, defaulting to True if it exists, similar to original logic logic
+        use_tmux_config = True
+        
+        terminal_process = terminal_manager.start_ttyd_process(port, tmux_session, use_tmux_config)
+        
+        if terminal_process:
+            # Store information about this terminal
+            import time
+            with terminal_manager.process_lock:
+                terminal_manager.terminals[port] = {
+                    'process': terminal_process,
+                    'tmux_session': tmux_session,
+                    'created_at': time.time(),
                     'name': tab_name
-                }), 200
-            else:
-                return jsonify({
-                    'success': False,
-                    'error': 'Failed to create terminal process'
-                }), 500
+                }
+                
+            logger.info(f"Created new terminal on port {port} with name '{tab_name}'")
+            return jsonify({
+                'success': True,
+                'port': port,
+                'name': tab_name
+            }), 200
         else:
-            logger.error("App missing start_ttyd_process function")
-            logger.error(f"Available attributes on app object: {dir(app)}")
-            return jsonify({'success': False, 'error': 'Terminal creation not supported'}), 500
+            return jsonify({
+                'success': False,
+                'error': 'Failed to create terminal process'
+            }), 500
+            
     except Exception as e:
         logger.error(f"Error creating new terminal: {e}")
         return jsonify({
@@ -100,8 +78,7 @@ def rename_terminal(port):
     """Rename a terminal session."""
     try:
         # Check if the terminal exists
-        app = current_app
-        if not hasattr(app, 'terminals') or port not in app.terminals:
+        if port not in terminal_manager.terminals:
             return jsonify({
                 'success': False,
                 'error': 'Terminal not found'
@@ -112,8 +89,8 @@ def rename_terminal(port):
         new_name = data.get('name', f'Terminal {port}')
         
         # Update the terminal name
-        with app.process_lock:
-            app.terminals[port]['name'] = new_name
+        with terminal_manager.process_lock:
+            terminal_manager.terminals[port]['name'] = new_name
             
         logger.info(f"Renamed terminal on port {port} to '{new_name}'")
         return jsonify({
@@ -136,32 +113,22 @@ def delete_terminal(port):
     """Terminate a terminal session."""
     try:
         # Check if the terminal exists
-        app = current_app
-        if not hasattr(app, 'terminals') or port not in app.terminals:
+        if port not in terminal_manager.terminals:
             return jsonify({
                 'success': False,
                 'error': 'Terminal not found'
             }), 404
             
-        # Access the kill_terminal function
-        if hasattr(app, 'kill_terminal'):
-            # Kill the terminal
-            if app.kill_terminal(port):
-                logger.info(f"Deleted terminal on port {port}")
-                return jsonify({
-                    'success': True
-                })
-            else:
-                return jsonify({
-                    'success': False,
-                    'error': f'Failed to delete terminal on port {port}'
-                }), 500
+        # Kill the terminal
+        if terminal_manager.kill_terminal(port):
+            logger.info(f"Deleted terminal on port {port}")
+            return jsonify({
+                'success': True
+            })
         else:
-            logger.error("App missing kill_terminal function")
-            logger.error(f"Available attributes on app object: {dir(app)}")
             return jsonify({
                 'success': False,
-                'error': 'Terminal deletion not supported'
+                'error': f'Failed to delete terminal on port {port}'
             }), 500
     except Exception as e:
         logger.error(f"Error deleting terminal on port {port}: {e}")
@@ -173,16 +140,9 @@ def delete_terminal(port):
 @terminal_routes.route('/list', methods=['GET'])
 def list_terminals():
     """Get a list of all active terminals."""
-    app = current_app
-    if not hasattr(app, 'terminals') or not hasattr(app, 'process_lock'):
-        return jsonify({
-            'success': True,
-            'terminals': []
-        })
-    
     terminal_list = []
-    with app.process_lock:
-        for port, terminal in app.terminals.items():
+    with terminal_manager.process_lock:
+        for port, terminal in terminal_manager.terminals.items():
             terminal_list.append({
                 'port': port,
                 'name': terminal.get('name', f'Terminal {port}'),
@@ -213,16 +173,17 @@ def send_command():
         if not command:
             return jsonify({'success': False, 'error': 'No command specified'}), 400
         
-        logger.info(f"Sending command to terminal {port}: {command}")
+        logger.info(f"Sending command to terminal {port}")
         
         # Convert port to int for dictionary lookup
-        port_int = int(port)
+        try:
+            port_int = int(port)
+        except ValueError:
+             return jsonify({'success': False, 'error': 'Invalid port format'}), 400
         
         terminal_info = None
-        # Access the terminals dictionary safely through the app context
-        app = current_app
-        if hasattr(app, 'terminals') and port_int in app.terminals:
-            terminal_info = app.terminals[port_int]
+        if port_int in terminal_manager.terminals:
+            terminal_info = terminal_manager.terminals[port_int]
         
         if not terminal_info or 'tmux_session' not in terminal_info:
             logger.error(f"No terminal information found for port {port}")
@@ -233,25 +194,18 @@ def send_command():
             
         tmux_session = terminal_info['tmux_session']
         
-        # Use tmux to send the command to the correct terminal
-        # Escape single quotes in the command to prevent shell injection
-        safe_command = command.replace("'", "'\\''")
-        tmux_command = f"tmux send-keys -t {tmux_session} '{safe_command}' Enter"
-        
-        # Execute the tmux command
-        result = subprocess.run(tmux_command, shell=True, capture_output=True, text=True)
-        
-        if result.returncode != 0:
-            logger.error(f"Error sending command: {result.stderr}")
+        # Use simple send_keys_to_tmux which is now safe/doesn't use shell=True
+        # command sent as keys + Enter
+        if terminal_manager.send_keys_to_tmux(tmux_session, command + '\n'):
+            return jsonify({
+                'success': True,
+                'message': f'Command sent to terminal {port}'
+            })
+        else:
             return jsonify({
                 'success': False, 
-                'error': f'Failed to send command: {result.stderr}'
+                'error': 'Failed to send keys to tmux'
             }), 500
-        
-        return jsonify({
-            'success': True,
-            'message': f'Command sent to terminal {port}'
-        })
         
     except Exception as e:
         logger.exception(f"Error sending command: {str(e)}")
